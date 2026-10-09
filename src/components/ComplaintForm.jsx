@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useComplaints } from '../context/ComplaintContext';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
@@ -14,6 +15,8 @@ import AuthorityRecommendationCard from './AuthorityRecommendationCard';
 export default function ComplaintForm() {
   const { language, t } = useLanguage();
   const { saveConfirmedComplaint } = useComplaints();
+  const routeLocation = useLocation();
+  const prefill = routeLocation?.state || {};
 
   // Voice recognition
   const {
@@ -25,9 +28,9 @@ export default function ComplaintForm() {
   } = useSpeechRecognition();
   const [voiceNotice, setVoiceNotice] = useState(null);
 
-  // Form input states
-  const [text, setText] = useState('');
-  const [location, setLocation] = useState('');
+  // Form input states (supports prefill from AI Assistant)
+  const [text, setText] = useState(prefill.text || prefill.complaintText || '');
+  const [location, setLocation] = useState(prefill.location || '');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 

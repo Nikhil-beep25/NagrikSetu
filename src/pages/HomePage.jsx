@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import ComplaintForm from '../components/ComplaintForm';
 
@@ -332,6 +333,14 @@ export default function HomePage() {
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
                 </a>
+
+                <Link
+                  to="/assistant"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-chakra-800 hover:bg-chakra-900 text-white px-6 py-3.5 text-sm sm:text-base font-bold transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
+                >
+                  <span>🤖</span>
+                  <span>{language === 'hi' ? 'AI सहायक से पूछें' : 'Ask AI Assistant'}</span>
+                </Link>
               </div>
 
               {/* Trust Indicators */}

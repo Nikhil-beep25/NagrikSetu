@@ -17,10 +17,12 @@ import dotenv from 'dotenv';
 import {
   analyzeComplaintWithGemini,
   findGovernmentServiceWithGemini,
+  interactWithCitizenAssistantGemini,
   isGeminiConfigured,
 } from './geminiService.js';
 import { detectEmergencyHazard } from '../src/services/emergencySafetyDetector.js';
 import { detectServiceIntent } from '../src/services/governmentServiceNavigator.js';
+import { processAssistantMessage } from '../src/services/unifiedAssistantEngine.js';
 
 dotenv.config();
 
@@ -257,6 +259,83 @@ app.post('/api/find-government-service', rateLimitMiddleware, async (req, res) =
         ...deterministicResult,
         isAiAssisted: false,
         fallbackNotice: 'Natural language search fallback used.',
+      },
+    });
+  }
+});
+
+// Unified AI Citizen Assistant endpoint (Phase 8)
+app.post('/api/citizen-assistant', rateLimitMiddleware, async (req, res) => {
+  const { message, conversationHistory, selectedState, selectedCity, language } = req.body || {};
+
+  // 1. Input validation
+  if (!message || typeof message !== 'string' || !message.trim()) {
+    return res.status(400).json({
+      success: false,
+      error: 'empty_message',
+      message: 'Citizen message cannot be empty.',
+    });
+  }
+
+  const safeMessage = message.trim().slice(0, 3000);
+  const safeHistory = Array.isArray(conversationHistory)
+    ? conversationHistory.slice(-10).map((m) => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: String(m.content || '').slice(0, 1500),
+      }))
+    : [];
+  const safeState = typeof selectedState === 'string' ? selectedState.slice(0, 100) : null;
+  const safeCity = typeof selectedCity === 'string' ? selectedCity.slice(0, 100) : null;
+  const safeLanguage = language === 'hi' ? 'hi' : 'en';
+
+  // 2. Pre-flight emergency safety check
+  const emergencyHazard = detectEmergencyHazard(safeMessage);
+  if (emergencyHazard) {
+    const deterministicResult = processAssistantMessage(safeMessage, safeHistory, safeLanguage);
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...deterministicResult,
+        isAiAssisted: false,
+      },
+    });
+  }
+
+  // 3. Fallback check if Gemini is not configured
+  if (!isGeminiConfigured()) {
+    const deterministicResult = processAssistantMessage(safeMessage, safeHistory, safeLanguage);
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...deterministicResult,
+        isAiAssisted: false,
+        fallbackNotice: 'AI assistance is temporarily unavailable. Basic guidance is being provided.',
+      },
+    });
+  }
+
+  // 4. Call Gemini Conversational Assistant
+  try {
+    const assistantResult = await interactWithCitizenAssistantGemini(
+      safeMessage,
+      safeHistory,
+      safeState,
+      safeCity,
+      safeLanguage
+    );
+    return res.status(200).json({
+      success: true,
+      data: assistantResult.data,
+    });
+  } catch (err) {
+    console.warn('[Gemini Citizen Assistant] Falling back to deterministic engine:', err.message);
+    const deterministicResult = processAssistantMessage(safeMessage, safeHistory, safeLanguage);
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...deterministicResult,
+        isAiAssisted: false,
+        fallbackNotice: 'AI assistance is temporarily unavailable. Basic guidance is being provided.',
       },
     });
   }

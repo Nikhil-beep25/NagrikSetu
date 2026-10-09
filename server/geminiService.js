@@ -15,6 +15,7 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import { detectEmergencyHazard } from '../src/services/emergencySafetyDetector.js';
 import { detectServiceIntent } from '../src/services/governmentServiceNavigator.js';
+import { processAssistantMessage } from '../src/services/unifiedAssistantEngine.js';
 
 export const VALID_CATEGORIES = [
   'Garbage',
@@ -506,3 +507,147 @@ Strict GovTech Rules:
     },
   };
 }
+
+/**
+ * Unified AI Citizen Assistant Conversation Handler (Phase 8)
+ *
+ * @param {string} message
+ * @param {Array<{role: string, content: string}>} conversationHistory
+ * @param {string|null} selectedState
+ * @param {string|null} selectedCity
+ * @param {string} [language]
+ * @returns {Promise<{success: boolean, data: object}>}
+ */
+export async function interactWithCitizenAssistantGemini(
+  message,
+  conversationHistory = [],
+  selectedState = null,
+  selectedCity = null,
+  language = 'en'
+) {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) {
+    throw new Error('Gemini API key is unconfigured on the server.');
+  }
+
+  // First verify deterministic engine result
+  const deterministicFallback = processAssistantMessage(
+    message,
+    conversationHistory,
+    language
+  );
+
+  // If deterministic engine detected an acute emergency hazard, return it immediately without API latency
+  if (deterministicFallback.isEmergency) {
+    return {
+      success: true,
+      data: {
+        ...deterministicFallback,
+        isAiAssisted: false,
+      },
+    };
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+  const modelName = 'gemini-2.5-flash';
+
+  const systemInstruction = `You are NagrikSetu, an AI Citizen Assistant for India.
+You assist citizens with:
+1. CIVIC_COMPLAINT: Garbage, Road/Pothole, Streetlight, Water, Drainage. If the complaint lacks a specific location (colony, ward, or street), ask for it.
+2. GOVERNMENT_SERVICE: Verified state certificates (Delhi & Uttar Pradesh / Agra: Birth Certificate, Income Certificate, Caste Certificate, Domicile Certificate) and National Passport Services.
+   - If user asks for Birth, Income, Caste, or Domicile without specifying state, ask if they are applying from Delhi or Uttar Pradesh (Agra).
+   - If user mentions Uttar Pradesh or Agra, link to UP e-District services. If Delhi, link to Delhi e-District.
+   - For Passport, mention mandatory in-person biometrics appointment at Passport Seva Kendra (PSK).
+3. DOCUMENT_GUIDANCE: Verified documents from official rules (Aadhaar, residence proof, self-declaration, etc.). Never ask to upload sensitive identity cards.
+4. APPOINTMENT_GUIDANCE: Explain online vs physical visit.
+5. EMERGENCY: If any electrical hazard, open manhole, or severe flood is mentioned, warn immediately and advise calling 112 or 1912.
+6. GENERAL_GUIDANCE: Explaining platform capabilities.
+7. UNKNOWN: Inquiries outside municipal complaints or verified government services.
+
+CRITICAL RULES:
+- Never fabricate fees, URLs, or fake government departments.
+- Respond in the language used by the citizen (English, Hindi, or Hinglish).
+- Be polite, helpful, and concise.`;
+
+  // Format recent chat history (last 6 messages max)
+  const formattedHistory = (conversationHistory || [])
+    .slice(-6)
+    .map((msg) => `${msg.role === 'user' ? 'Citizen' : 'Assistant'}: ${msg.content}`)
+    .join('\n');
+
+  const prompt = `${formattedHistory ? `Recent Conversation History:\n${formattedHistory}\n\n` : ''}Current Citizen Message: "${message}"
+${selectedState ? `Selected State Hint: ${selectedState}` : ''}
+${selectedCity ? `Selected City Hint: ${selectedCity}` : ''}
+
+Classify the intent and generate a helpful citizen response.`;
+
+  const assistantSchema = {
+    type: Type.OBJECT,
+    properties: {
+      reply: { type: Type.STRING },
+      intent: {
+        type: Type.STRING,
+        enum: [
+          'CIVIC_COMPLAINT',
+          'GOVERNMENT_SERVICE',
+          'DOCUMENT_GUIDANCE',
+          'APPOINTMENT_GUIDANCE',
+          'GENERAL_GUIDANCE',
+          'EMERGENCY',
+          'UNKNOWN',
+        ],
+      },
+      serviceId: { type: Type.STRING },
+      category: { type: Type.STRING },
+      location: { type: Type.STRING },
+      requiresClarification: { type: Type.BOOLEAN },
+      clarificationType: { type: Type.STRING },
+    },
+    required: ['reply', 'intent', 'requiresClarification'],
+  };
+
+  const apiPromise = ai.models.generateContent({
+    model: modelName,
+    contents: prompt,
+    config: {
+      systemInstruction,
+      responseMimeType: 'application/json',
+      responseSchema: assistantSchema,
+      temperature: 0.2,
+    },
+  });
+
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Citizen Assistant Gemini request timed out')), 12000)
+  );
+
+  const response = await Promise.race([apiPromise, timeoutPromise]);
+  const textOutput = response.text;
+
+  if (!textOutput) {
+    throw new Error('Gemini Assistant returned empty response.');
+  }
+
+  const parsed = JSON.parse(textOutput);
+
+  // Blend AI response with verified suggested actions from deterministic engine
+  const suggestedActions = deterministicFallback.suggestedActions || [];
+
+  return {
+    success: true,
+    data: {
+      reply: parsed.reply || deterministicFallback.reply,
+      intent: parsed.intent || deterministicFallback.intent,
+      serviceId: parsed.serviceId || deterministicFallback.serviceId || null,
+      category: parsed.category || deterministicFallback.category || null,
+      location: parsed.location || deterministicFallback.location || null,
+      requiresClarification: parsed.requiresClarification ?? deterministicFallback.requiresClarification ?? false,
+      clarificationType: parsed.clarificationType || deterministicFallback.clarificationType || null,
+      suggestedActions,
+      isEmergency: parsed.intent === 'EMERGENCY',
+      isAiAssisted: true,
+      modelUsed: modelName,
+    },
+  };
+}
+

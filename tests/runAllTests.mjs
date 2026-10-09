@@ -23,6 +23,7 @@ const suites = [
   { name: 'Emergency Safety Classification (Phase 5 Fix)', file: 'tests/testEmergencyClassification.mjs' },
   { name: 'Authority Detection (Phase 6 Engine)', file: 'tests/testAuthorityDetection.mjs' },
   { name: 'Government Service Navigator (Phase 7 Engine)', file: 'tests/testGovernmentServices.mjs' },
+  { name: 'Unified AI Citizen Assistant (Phase 8 Engine)', file: 'tests/testUnifiedAssistant.mjs' },
 ];
 
 

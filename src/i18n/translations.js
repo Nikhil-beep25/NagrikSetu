@@ -242,6 +242,33 @@ const translations = {
     serviceDisclaimerNotice:
       'NagrikSetu is an independent citizen assistance platform. Government service information is provided for guidance. Always verify requirements on the official government portal.',
 
+    // AI Citizen Assistant (Phase 8)
+    navAssistant: 'AI Assistant',
+    assistantTitle: 'NagrikSetu AI Citizen Assistant',
+    assistantSubtitle:
+      'Ask questions, report civic grievances, discover verified government services, and get checklist guidance.',
+    assistantWelcomeMsg:
+      "Namaste! I'm NagrikSetu, your AI citizen assistant. Tell me what you need help with.",
+    assistantInputPlaceholder:
+      'Type your message in English, Hindi, or Hinglish (e.g. Mere area me kachra pada hai)...',
+    assistantSendBtn: 'Send',
+    assistantClearBtn: 'Clear Chat',
+    assistantSuggestedHeading: 'Suggested Quick Prompts',
+    assistantActionCivic: 'Report a Civic Problem',
+    assistantActionServices: 'Find Government Services',
+    assistantActionDocs: 'Required Documents',
+    assistantActionAppointment: 'Appointment Guidance',
+    assistantFallbackNotice:
+      'AI assistance is temporarily unavailable. Basic guidance is being provided.',
+    assistantThinking: 'Thinking...',
+    assistantPrepareComplaintBtn: 'Prepare Complaint',
+    assistantViewServiceBtn: 'View Service Details',
+    assistantViewDocsBtn: 'View Document Checklist',
+    assistantOfficialPortalBtn: 'Visit Official Portal',
+    assistantEmergencyWarning: 'EMERGENCY SAFETY ALERT',
+    assistantEmergencyAdvice:
+      'NagrikSetu is an administrative civic platform and does NOT automatically contact emergency responders. Please call 112 directly.',
+
     // Footer
     footerTagline: 'Making civic access simple with AI.',
     footerRights: '© 2026 AI Civic Access. All rights reserved.',
@@ -488,6 +515,33 @@ const translations = {
     serviceBackBtn: 'सभी सेवाओं पर वापस जाएं',
     serviceDisclaimerNotice:
       'नागरिकसेतु एक स्वतंत्र नागरिक सहायता मंच है। सरकारी सेवा की जानकारी मार्गदर्शन हेतु है। कृपया आधिकारिक पोर्टल पर पुष्टि करें।',
+
+    // AI Citizen Assistant (Phase 8)
+    navAssistant: 'AI सहायक',
+    assistantTitle: 'नागरिकसेतु AI नागरिक सहायक',
+    assistantSubtitle:
+      'अपनी भाषा में सवाल पूछें, नागरिक समस्याएं दर्ज करें, और सरकारी सेवाओं की सत्यापित जानकारी पाएं।',
+    assistantWelcomeMsg:
+      'नमस्ते! मैं नागरिकसेतु हूँ। बताइए, आपको किस काम में सहायता चाहिए?',
+    assistantInputPlaceholder:
+      'अपना संदेश अंग्रेजी, हिंदी या हिंग्लिश में लिखें (जैसे मेरे क्षेत्र में कचरा पड़ा है)...',
+    assistantSendBtn: 'भेजें',
+    assistantClearBtn: 'बातचीत साफ़ करें',
+    assistantSuggestedHeading: 'सुझाए गए त्वरित प्रश्न',
+    assistantActionCivic: 'नागरिक समस्या दर्ज करें',
+    assistantActionServices: 'सरकारी सेवाएं खोजें',
+    assistantActionDocs: 'आवश्यक दस्तावेज',
+    assistantActionAppointment: 'अपॉइंटमेंट प्रक्रिया',
+    assistantFallbackNotice:
+      'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन प्रदान किया जा रहा है।',
+    assistantThinking: 'सोच रहा हूँ...',
+    assistantPrepareComplaintBtn: 'शिकायत तैयार करें',
+    assistantViewServiceBtn: 'सेवा विवरण देखें',
+    assistantViewDocsBtn: 'दस्तावेज चेकलिस्ट',
+    assistantOfficialPortalBtn: 'आधिकारिक पोर्टल',
+    assistantEmergencyWarning: 'आपातकालीन सुरक्षा चेतावनी',
+    assistantEmergencyAdvice:
+      'नागरिकसेतु एक प्रशासनिक नागरिक मंच है और यह आपातकालीन सेवाओं को स्वतः कॉल नहीं करता। कृपया सीधे 112 पर कॉल करें।',
 
     // Footer
     footerTagline: 'AI के साथ नागरिक पहुंच को सरल बनाना।',
