@@ -18,6 +18,7 @@ import {
   analyzeComplaintWithGemini,
   isGeminiConfigured,
 } from './geminiService.js';
+import { detectEmergencyHazard } from '../src/services/emergencySafetyDetector.js';
 
 dotenv.config();
 
@@ -60,11 +61,38 @@ app.get('/api/health', (req, res) => {
     status: 'ok',
     service: 'NagrikSetu AI Engine',
     model: process.env.GEMINI_MODEL || 'gemini-3.5-flash',
-
     geminiConfigured: isGeminiConfigured(),
     timestamp: new Date().toISOString(),
   });
 });
+
+// Helper to construct emergency response from deterministic safety detector
+function buildEmergencyPayload(hazard, text, loc, modelName = 'gemini-3.5-flash', isAi = false) {
+  return {
+    category: hazard.category,
+    subcategory: hazard.subcategory,
+    summary: text,
+    originalDescription: text,
+    location: loc || null,
+    duration: null,
+    urgency: 'High',
+    urgencyReason: 'Immediate acute public safety hazard detected.',
+    detectedLanguage: 'Multilingual / Indic',
+    missingInformation: loc ? [] : ['Exact landmark or location of hazard'],
+    suggestedAction: hazard.guidanceSteps?.[2] || 'Contact emergency services (112) immediately.',
+    isCivicComplaint: true,
+    isEmergency: true,
+    isSupported: hazard.isSupported,
+    hazardType: hazard.hazardType,
+    safetyMessage: hazard.safetyMessage,
+    guidanceSteps: hazard.guidanceSteps,
+    emergencyNumbers: hazard.emergencyNumbers,
+    safetyNotice: hazard.safetyMessage,
+    isAiAssisted: isAi,
+    isFallback: !isAi,
+    modelUsed: modelName,
+  };
+}
 
 // Analyze complaint endpoint
 app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
@@ -92,8 +120,18 @@ app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
 
   const safeLocation = typeof location === 'string' ? location.slice(0, 300).trim() : '';
 
-  // 2. Check if Gemini credentials are configured
+  // 2. Pre-flight deterministic emergency safety detector
+  const emergencyHazard = detectEmergencyHazard(trimmedText);
+
+  // 3. Check if Gemini credentials are configured
   if (!isGeminiConfigured()) {
+    if (emergencyHazard) {
+      return res.status(200).json({
+        success: true,
+        data: buildEmergencyPayload(emergencyHazard, trimmedText, safeLocation, 'deterministic-safety-engine', false),
+      });
+    }
+
     return res.status(200).json({
       success: false,
       fallbackRequired: true,
@@ -102,10 +140,31 @@ app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
     });
   }
 
-  // 3. Call Gemini API
+  // 4. Call Gemini API
   try {
     const analysis = await analyzeComplaintWithGemini(trimmedText, safeLocation, language || 'en');
 
+    // If either Gemini or deterministic detector flags an emergency, deliver emergency payload immediately
+    if (analysis.data.isEmergency || emergencyHazard) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          ...analysis.data,
+          ...(emergencyHazard ? {
+            isEmergency: true,
+            isSupported: emergencyHazard.isSupported,
+            category: emergencyHazard.category,
+            subcategory: emergencyHazard.subcategory,
+            safetyMessage: emergencyHazard.safetyMessage,
+            guidanceSteps: emergencyHazard.guidanceSteps,
+            emergencyNumbers: emergencyHazard.emergencyNumbers,
+            safetyNotice: emergencyHazard.safetyMessage,
+          } : {}),
+        },
+      });
+    }
+
+    // Only non-emergency unsupported requests are returned as unsupported_category
     if (!analysis.data.isCivicComplaint || analysis.data.category === 'Unsupported') {
       return res.status(200).json({
         success: false,
@@ -121,8 +180,15 @@ app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
       data: analysis.data,
     });
   } catch (err) {
-    // Log safe error without sensitive credentials
     console.error('[NagrikSetu Backend] Gemini Analysis Failed:', err.message || err);
+
+    // If Gemini fails (429 rate limit, timeout, etc.) and an emergency is detected, guarantee safety output
+    if (emergencyHazard) {
+      return res.status(200).json({
+        success: true,
+        data: buildEmergencyPayload(emergencyHazard, trimmedText, safeLocation, process.env.GEMINI_MODEL || 'gemini-3.5-flash', false),
+      });
+    }
 
     return res.status(200).json({
       success: false,
@@ -132,6 +198,7 @@ app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
     });
   }
 });
+
 
 // Generic 404 handler for API routes
 app.use('/api', (req, res) => {

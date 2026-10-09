@@ -43,6 +43,11 @@ const categoryIcons = {
       <path d="M2 19c6.667-6 13.333 0 20-6" />
     </svg>
   ),
+  Other: (
+    <svg className="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+    </svg>
+  ),
 };
 
 export default function AnalysisResultCard({ result, onEdit, onContinue, onRetry }) {
@@ -134,8 +139,71 @@ export default function AnalysisResultCard({ result, onEdit, onContinue, onRetry
           </div>
         )}
 
-        {/* High-Urgency Safety Notice Banner */}
-        {priority === 'High' && (
+        {/* Dedicated Prominent Emergency Safety Warning Alert */}
+        {result.isEmergency ? (
+          <div className="rounded-2xl border-2 border-red-500 bg-red-50/95 p-5 shadow-sm animate-fade-slide-up space-y-3.5">
+            <div className="flex items-center justify-between flex-wrap gap-2 border-b border-red-200 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="flex h-3 w-3 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+                </span>
+                <h4 className="text-sm font-extrabold text-red-900 tracking-wide uppercase">
+                  {t('emergencyCriticalAlert')}
+                </h4>
+              </div>
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-red-800 bg-red-100 border border-red-300 rounded-full px-2.5 py-0.5">
+                ⚡ {result.subcategory || 'Immediate Hazard'}
+              </span>
+            </div>
+
+            {/* Direct Safety Advisory & Safe Distance Notice */}
+            <div className="text-xs text-red-950 font-medium leading-relaxed bg-white/85 rounded-xl p-3.5 border border-red-200">
+              <p className="font-bold text-red-900 mb-1">
+                ⚠️ {result.safetyMessage || t('emergencyStayClear')}
+              </p>
+              {!result.isSupported && (
+                <p className="text-[11px] text-red-800 mt-1.5 leading-normal">
+                  ℹ️ {t('emergencyUnsupportedExplanation')}
+                </p>
+              )}
+            </div>
+
+            {/* Emergency Action Helplines (112 & 1912) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <a
+                href="tel:112"
+                className="flex items-center justify-center gap-2.5 h-11 px-4 rounded-xl bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white font-extrabold text-xs shadow-xs transition-all"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+                </svg>
+                <span>{t('emergencyCall112')}</span>
+              </a>
+
+              {(result.hazardType === 'electrical_hazard' || (result.subcategory && result.subcategory.toLowerCase().includes('electrical'))) ? (
+                <a
+                  href="tel:1912"
+                  className="flex items-center justify-center gap-2.5 h-11 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-[0.98] text-white font-extrabold text-xs shadow-xs transition-all"
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                  </svg>
+                  <span>{t('emergencyCall1912')}</span>
+                </a>
+              ) : (
+                <div className="flex items-center justify-center gap-1.5 h-11 px-3 rounded-xl bg-red-100/80 border border-red-200 text-red-900 font-bold text-xs text-center">
+                  <span>🚨 Urgent On-Site Hazard</span>
+                </div>
+              )}
+            </div>
+
+            {/* Non-dispatch Disclaimer */}
+            <p className="text-[11px] text-red-700/90 italic text-center pt-0.5">
+              ⚠️ {t('emergencyDisclaimer')}
+            </p>
+          </div>
+        ) : priority === 'High' ? (
           <div className="rounded-xl border border-red-200 bg-red-50/90 p-3.5 flex items-start gap-3 text-xs text-red-900 animate-fade-slide-up">
             <span className="text-base shrink-0 mt-0.5">🚨</span>
             <div>
@@ -145,7 +213,7 @@ export default function AnalysisResultCard({ result, onEdit, onContinue, onRetry
               </p>
             </div>
           </div>
-        )}
+        ) : null}
 
         {/* Extracted Problem Statement */}
         <div>
@@ -301,7 +369,11 @@ export default function AnalysisResultCard({ result, onEdit, onContinue, onRetry
           onClick={onContinue}
           className="flex-1 h-11 flex items-center justify-center gap-2 rounded-lg bg-bharat-coral hover:bg-[#d84315] px-4 text-sm font-bold text-white active:scale-[0.99] transition-all duration-150 shadow-sm text-center"
         >
-          <span>{t('resultContinue')}</span>
+          <span>
+            {result.isEmergency && !result.isSupported
+              ? (language === 'hi' ? 'दस्तावेजीकरण रिकॉर्ड बनाएं' : 'Generate Record for Reference')
+              : t('resultContinue')}
+          </span>
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6" />
           </svg>

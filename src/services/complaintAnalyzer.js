@@ -12,6 +12,8 @@
  * - The response fails schema validation
  */
 
+import { detectEmergencyHazard } from './emergencySafetyDetector.js';
+
 const SUPPORTED_CATEGORIES = [
   'Garbage',
   'Road/Pothole',
@@ -19,6 +21,7 @@ const SUPPORTED_CATEGORIES = [
   'Water',
   'Drainage',
 ];
+
 
 /**
  * Keyword maps for each category.
@@ -48,7 +51,7 @@ const CATEGORY_KEYWORDS = {
   Streetlight: [
     // English
     'streetlight', 'street light', 'light pole', 'lamp post', 'lamp',
-    'bulb', 'street lamp', 'pole light', 'lighting',
+    'bulb', 'street lamp', 'pole light', 'lighting', 'dark', 'broken light', 'broken streetlight',
     // Hinglish (Latin script)
     'bijli', 'light', 'bulb', 'street light', 'khamba',
     'batti', 'roshni', 'light band', 'light kharab', 'light nahi',
@@ -92,7 +95,7 @@ const HIGH_PRIORITY_KEYWORDS = [
   'health', 'bimari', 'bimaari', 'disease', 'infection',
   'emergency', 'urgent', 'jaldi', 'turant',
   'overflow', 'flooding', 'waterlogging', 'bhara', 'bhar gaya',
-  'broken', 'collapse', 'gir gaya', 'toot gaya',
+  'collapse', 'gir gaya',
   'खतरनाक', 'हादसा', 'बीमारी', 'आपातकाल', 'तुरंत', 'जल्दी',
 ];
 
@@ -118,7 +121,15 @@ function detectCategory(normalizedText) {
     scores[category] = 0;
     for (const keyword of keywords) {
       const normalizedKeyword = keyword.toLowerCase().trim();
-      if (normalizedText.includes(normalizedKeyword)) {
+      let matched = false;
+      if (/^[a-z0-9\s]+$/i.test(normalizedKeyword)) {
+        const regex = new RegExp(`(^|\\s)${normalizedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|\\s)`, 'i');
+        matched = regex.test(normalizedText);
+      } else {
+        matched = normalizedText.includes(normalizedKeyword);
+      }
+
+      if (matched) {
         // Longer keyword matches get higher weight
         scores[category] += normalizedKeyword.split(' ').length;
       }
@@ -198,6 +209,7 @@ function generateProblemStatement(normalizedText, category) {
 
 /**
  * Rule-based fallback analysis execution.
+
  * Guaranteed to run locally without network dependencies.
  *
  * @param {string} trimmed - Trimmed raw text.
@@ -206,6 +218,39 @@ function generateProblemStatement(normalizedText, category) {
  * @returns {{success: boolean, data?: object, error?: string}}
  */
 export function ruleBasedAnalyzeComplaint(trimmed, userLocation, fallbackReason = 'AI assistance is temporarily unavailable.') {
+  // Pre-flight deterministic emergency safety detector
+  const emergency = detectEmergencyHazard(trimmed);
+  if (emergency) {
+    return {
+      success: true,
+      data: {
+        problem: trimmed,
+        category: emergency.category,
+        subcategory: emergency.subcategory,
+        location: userLocation?.trim() || '',
+        priority: 'High',
+        urgency: 'High',
+        urgencyReason: 'Immediate acute public safety hazard detected.',
+        duration: null,
+        missingInformation: userLocation?.trim() ? [] : ['Exact location or landmark of the hazard'],
+        suggestedAction: emergency.guidanceSteps?.[2] || 'Contact emergency services (112 or 1912) immediately.',
+        detectedLanguage: 'Multilingual / Indic',
+        originalText: trimmed,
+        isAiAssisted: false,
+        isFallback: true,
+        isEmergency: true,
+        isSupported: emergency.isSupported,
+        hazardType: emergency.hazardType,
+        safetyMessage: emergency.safetyMessage,
+        guidanceSteps: emergency.guidanceSteps,
+        emergencyNumbers: emergency.emergencyNumbers,
+        fallbackNotice: 'Basic emergency safety assessment is active.',
+        fallbackReason,
+        safetyNotice: emergency.safetyMessage,
+      },
+    };
+  }
+
   const normalized = normalize(trimmed);
   const category = detectCategory(normalized);
 
@@ -230,6 +275,7 @@ export function ruleBasedAnalyzeComplaint(trimmed, userLocation, fallbackReason 
       subcategory: `${category} Service Request`,
       location: userLocation?.trim() || '',
       priority,
+      urgency: priority,
       urgencyReason: priority === 'High' ? 'Flagged based on reported conditions or duration' : 'Standard priority civic maintenance',
       duration,
       missingInformation: userLocation?.trim() ? [] : ['Exact location or landmark'],
@@ -238,6 +284,9 @@ export function ruleBasedAnalyzeComplaint(trimmed, userLocation, fallbackReason 
       originalText: trimmed,
       isAiAssisted: false,
       isFallback: true,
+      isEmergency: false,
+      isSupported: true,
+      safetyMessage: null,
       fallbackNotice: 'Basic complaint analysis is being used because AI assistance is temporarily unavailable.',
       fallbackReason,
       safetyNotice: priority === 'High'
@@ -246,6 +295,7 @@ export function ruleBasedAnalyzeComplaint(trimmed, userLocation, fallbackReason 
     },
   };
 }
+
 
 /**
  * Main analysis entrypoint.
@@ -315,14 +365,21 @@ export async function analyzeComplaint(complaintText, userLocation = '', options
             suggestedAction: result.data.suggestedAction || '',
             detectedLanguage: result.data.detectedLanguage || 'English',
             originalText: trimmed,
-            isAiAssisted: true,
-            isFallback: false,
-            fallbackNotice: null,
+            isAiAssisted: result.data.isAiAssisted !== false,
+            isFallback: Boolean(result.data.isFallback),
+            isEmergency: Boolean(result.data.isEmergency),
+            isSupported: result.data.isSupported !== false,
+            hazardType: result.data.hazardType || null,
+            safetyMessage: result.data.safetyMessage || null,
+            guidanceSteps: result.data.guidanceSteps || [],
+            emergencyNumbers: result.data.emergencyNumbers || [],
+            fallbackNotice: result.data.fallbackNotice || null,
             safetyNotice: result.data.safetyNotice || null,
-            modelUsed: result.data.modelUsed || 'gemini-2.5-flash',
+            modelUsed: result.data.modelUsed || 'gemini-3.5-flash',
           },
         };
       }
+
 
       // If backend explicitly marked category as unsupported
       if (result.error === 'unsupported_category') {

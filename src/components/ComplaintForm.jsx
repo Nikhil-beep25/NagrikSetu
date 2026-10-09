@@ -5,6 +5,7 @@ import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { analyzeComplaint } from '../services/complaintAnalyzer';
 import { generateComplaint } from '../services/complaintGenerator';
 import { recommendAuthority } from '../services/authorityService';
+import { detectEmergencyHazard } from '../services/emergencySafetyDetector';
 import AnalysisResultCard from './AnalysisResultCard';
 import ComplaintPreviewCard from './ComplaintPreviewCard';
 import AuthorityRecommendationCard from './AuthorityRecommendationCard';
@@ -169,7 +170,9 @@ export default function ComplaintForm() {
     setAuthorityRecommendation(null);
     setConfirmedComplaint(null);
 
-    if (!location.trim()) {
+    // Pre-flight check: never block acute emergency hazards from receiving safety instructions
+    const emergencyHazard = detectEmergencyHazard(text);
+    if (!emergencyHazard && !location.trim()) {
       setError('missing_location');
       return;
     }

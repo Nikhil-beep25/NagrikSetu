@@ -44,6 +44,12 @@ export const PROTOTYPE_AUTHORITY_MAP = {
     // Intentionally unconfigured to test and demonstrate the safe fallback
     officialPortalUrl: null,
   },
+  Other: {
+    authority: 'Electricity Distribution Company (Discom) / Emergency Helplines (112 & 1912)',
+    reason: 'Acute hazards and power infrastructure require specialized utility or emergency first responders.',
+    portalName: 'National Emergency Response System (112) / Power Discom (1912)',
+    officialPortalUrl: null,
+  },
 };
 
 /**

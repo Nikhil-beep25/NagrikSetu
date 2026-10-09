@@ -20,6 +20,7 @@ const suites = [
   { name: 'Phase 5 (Tracking Ledger)', file: 'tests/testPhase5.mjs' },
   { name: 'Phase 6 (Voice & Accessibility)', file: 'tests/testPhase6.mjs' },
   { name: 'Gemini AI Integration (Phase 5 Engine)', file: 'tests/testGeminiAnalysis.mjs' },
+  { name: 'Emergency Safety Classification (Phase 5 Fix)', file: 'tests/testEmergencyClassification.mjs' },
 ];
 
 

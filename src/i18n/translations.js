@@ -58,6 +58,16 @@ const translations = {
     safetyNoticeTitle: 'Emergency & Hazard Advisory',
     safetyNoticeText:
       'NagrikSetu is an administrative grievance platform, not an emergency response service. For acute public safety hazards or life-threatening emergencies, please contact emergency helplines (e.g. 112).',
+    emergencyCriticalAlert: 'CRITICAL SAFETY ALERT — IMMEDIATE HAZARD',
+    emergencyStayClear: 'Stay at least 10 meters (33 feet) away. Do not touch wires, metal poles, or standing water.',
+    emergencyCall112: 'Call 112 (National Emergency)',
+    emergencyCall1912: 'Call 1912 (Electricity Discom)',
+    emergencyUnsupportedExplanation:
+      'This is an acute electrical hazard requiring immediate on-site response from electricity authorities and emergency services, not a standard municipal grievance.',
+    emergencyDisclaimer:
+      'NagrikSetu is an administrative grievance tool and has NOT dispatched emergency teams. You must call 112 or 1912 directly.',
+    emergencyActionsTitle: 'Immediate Safety Actions',
+    emergencySafeDistanceNotice: 'Maintain safe distance immediately',
     detectedLanguageLabel: 'Detected Language',
     subcategoryLabel: 'Subcategory',
 
@@ -222,6 +232,16 @@ const translations = {
     safetyNoticeTitle: 'आपातकालीन व जोखिम सूचना',
     safetyNoticeText:
       'नागरिकसेतु एक प्रशासनिक शिकायत मंच है, आपातकालीन प्रतिक्रिया सेवा नहीं। गंभीर खतरे या आपात स्थिति के लिए कृपया तुरंत आपातकालीन हेल्पलाइन (जैसे 112) पर संपर्क करें।',
+    emergencyCriticalAlert: 'गंभीर सुरक्षा चेतावनी — तत्काल जोखिम',
+    emergencyStayClear: 'कम से कम 10 मीटर (33 फीट) की दूरी बनाए रखें। तार, धातु के खंभे या भरे पानी को न छुएं।',
+    emergencyCall112: '112 पर कॉल करें (राष्ट्रीय आपातकाल)',
+    emergencyCall1912: '1912 पर कॉल करें (विद्युत डिस्कॉम)',
+    emergencyUnsupportedExplanation:
+      'यह एक गंभीर विद्युत जोखिम है जिसके लिए विद्युत वितरण निगम और आपातकालीन सेवाओं से तत्काल मौके पर कार्रवाई की आवश्यकता है, न कि सामान्य नगरपालिका शिकायत।',
+    emergencyDisclaimer:
+      'नागरिकसेतु एक प्रशासनिक शिकायत पोर्टल है और इसने आपातकालीन टीम नहीं भेजी है। कृपया 112 या 1912 पर सीधे कॉल करें।',
+    emergencyActionsTitle: 'तत्काल सुरक्षा कदम',
+    emergencySafeDistanceNotice: 'तुरंत सुरक्षित दूरी बनाए रखें',
     detectedLanguageLabel: 'पहचानी गई भाषा',
     subcategoryLabel: 'उप-श्रेणी',
 

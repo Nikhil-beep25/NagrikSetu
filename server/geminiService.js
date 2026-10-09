@@ -13,6 +13,7 @@
  */
 
 import { GoogleGenAI, Type } from '@google/genai';
+import { detectEmergencyHazard } from '../src/services/emergencySafetyDetector.js';
 
 export const VALID_CATEGORIES = [
   'Garbage',
@@ -20,17 +21,28 @@ export const VALID_CATEGORIES = [
   'Streetlight',
   'Water',
   'Drainage',
+  'Other',
   'Unsupported',
 ];
 
-
 /**
- * Normalizes category variations into the 5 canonical NagrikSetu categories.
+ * Normalizes category variations into the 5 canonical NagrikSetu categories or Other/Unsupported.
  */
-export function normalizeCategory(categoryStr) {
+export function normalizeCategory(categoryStr, originalText = '') {
+  // If original text is an acute electrical hazard, strictly categorize as Other (not Streetlight)
+  if (originalText) {
+    const hazard = detectEmergencyHazard(originalText);
+    if (hazard && hazard.category === 'Other') {
+      return 'Other';
+    }
+  }
+
   if (!categoryStr) return 'Unsupported';
   const clean = String(categoryStr).trim().toLowerCase();
 
+  if (clean.includes('other') || clean.includes('electrical') || clean.includes('hazard')) {
+    return 'Other';
+  }
   if (clean.includes('garbage') || clean.includes('sanitation') || clean.includes('waste') || clean.includes('kachra') || clean.includes('kooda')) {
     return 'Garbage';
   }
@@ -53,6 +65,7 @@ export function normalizeCategory(categoryStr) {
   return 'Unsupported';
 }
 
+
 /**
  * Checks whether the Gemini API key is configured in the environment.
  */
@@ -69,12 +82,12 @@ const COMPLAINT_ANALYSIS_SCHEMA = {
   properties: {
     category: {
       type: Type.STRING,
-      enum: ['Garbage', 'Road/Pothole', 'Streetlight', 'Water', 'Drainage', 'Unsupported'],
-      description: 'Primary civic category or Unsupported if not a municipal civic problem.',
+      enum: ['Garbage', 'Road/Pothole', 'Streetlight', 'Water', 'Drainage', 'Other', 'Unsupported'],
+      description: 'Primary civic category, Other for electrical hazards, or Unsupported if not a municipal civic problem.',
     },
     subcategory: {
       type: Type.STRING,
-      description: 'Specific subcategory, e.g., Uncollected Waste, Deep Pothole, Broken Lamp Post, etc.',
+      description: 'Specific subcategory, e.g., Electrical Hazard, Open Manhole, Uncollected Waste, Deep Pothole, etc.',
     },
     summary: {
       type: Type.STRING,
@@ -127,6 +140,19 @@ const COMPLAINT_ANALYSIS_SCHEMA = {
       type: Type.BOOLEAN,
       description: 'True if this is a genuine municipal civic grievance, False if personal, passport, taxation, etc.',
     },
+    isEmergency: {
+      type: Type.BOOLEAN,
+      description: 'True if acute danger, open live wire, open manhole, or life safety hazard.',
+    },
+    isSupported: {
+      type: Type.BOOLEAN,
+      description: 'True if within the 5 supported municipal categories, False if grid emergency / other.',
+    },
+    safetyMessage: {
+      type: Type.STRING,
+      description: 'Direct emergency safety instruction for the citizen, or null.',
+      nullable: true,
+    },
   },
   required: [
     'category',
@@ -149,12 +175,40 @@ export function validateAndNormalizeGeminiResponse(rawJson, originalText, userLo
     throw new Error('Malformed AI response: expected JSON object.');
   }
 
-  const rawCat = rawJson.category || '';
-  const normalizedCat = normalizeCategory(rawCat);
-  const isCivic = rawJson.isCivicComplaint !== false && normalizedCat !== 'Unsupported';
+  // Pre-flight deterministic emergency hazard detection
+  const detectedHazard = detectEmergencyHazard(originalText);
 
-  const category = isCivic ? normalizedCat : 'Unsupported';
-  const urgency = rawJson.urgency === 'High' ? 'High' : 'Normal';
+  const rawCat = rawJson.category || '';
+  let normalizedCat = normalizeCategory(rawCat, originalText);
+  let isCivic = rawJson.isCivicComplaint !== false && normalizedCat !== 'Unsupported';
+
+  let category = isCivic ? normalizedCat : 'Unsupported';
+  let urgency = rawJson.urgency === 'High' ? 'High' : 'Normal';
+  let isEmergency = Boolean(rawJson.isEmergency || detectedHazard);
+  let isSupported = category !== 'Unsupported' && category !== 'Other';
+  let safetyMessage = rawJson.safetyMessage || null;
+  let subcategory = rawJson.subcategory || `${category} Issue`;
+  let emergencyNumbers = detectedHazard?.emergencyNumbers || [
+    { label: 'National Emergency Response Helpline', number: '112' },
+  ];
+  let guidanceSteps = detectedHazard?.guidanceSteps || [];
+
+  // Enforce deterministic emergency overrides for acute hazards
+  if (detectedHazard) {
+    isEmergency = true;
+    urgency = 'High';
+    category = detectedHazard.category;
+    subcategory = detectedHazard.subcategory;
+    isSupported = detectedHazard.isSupported;
+    safetyMessage = detectedHazard.safetyMessage;
+    guidanceSteps = detectedHazard.guidanceSteps;
+    emergencyNumbers = detectedHazard.emergencyNumbers;
+  } else if (isEmergency) {
+    urgency = 'High';
+    if (!safetyMessage) {
+      safetyMessage = 'Potentially dangerous condition detected. Please stay at a safe distance and contact emergency services (112) if immediate danger exists.';
+    }
+  }
 
   // Construct structured duration if provided
   let duration = null;
@@ -184,7 +238,7 @@ export function validateAndNormalizeGeminiResponse(rawJson, originalText, userLo
 
   return {
     category,
-    subcategory: rawJson.subcategory || `${category} Issue`,
+    subcategory,
     summary: rawJson.summary || originalText,
     originalDescription: originalText,
     location: effectiveLocation || null,
@@ -194,13 +248,19 @@ export function validateAndNormalizeGeminiResponse(rawJson, originalText, userLo
     urgencyReason: rawJson.urgencyReason || (urgency === 'High' ? 'Safety concern reported' : 'Routine civic maintenance request'),
     detectedLanguage: rawJson.detectedLanguage || 'English',
     missingInformation: missingInfo,
-    suggestedAction: rawJson.suggestedAction || 'Submit to municipal department for verification and action.',
+    suggestedAction: rawJson.suggestedAction || (isEmergency && !isSupported ? 'Contact emergency services (112 or 1912) immediately.' : 'Submit to municipal department for verification and action.'),
     isCivicComplaint: isCivic,
+    isEmergency,
+    isSupported,
+    safetyMessage,
+    guidanceSteps,
+    emergencyNumbers,
     safetyNotice: urgency === 'High'
-      ? 'Potentially hazardous condition detected. NagrikSetu is an administrative grievance platform, not an emergency response dispatch. For acute life-threatening emergencies, please also contact official emergency helplines (e.g., 112).'
+      ? (safetyMessage || 'Potentially hazardous condition detected. NagrikSetu is an administrative grievance platform, not an emergency response dispatch. For acute life-threatening emergencies, please contact official emergency helplines (e.g., 112).')
       : null,
   };
 }
+
 
 /**
  * Analyzes a civic complaint using the Gemini API.
