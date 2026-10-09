@@ -10,6 +10,8 @@ import HowItWorksPage from './pages/HowItWorksPage';
 import ReportComplaintPage from './pages/ReportComplaintPage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
+import ServicesPage from './pages/ServicesPage';
+import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
@@ -26,6 +28,8 @@ export default function App() {
               <Route path="/report" element={<ReportComplaintPage />} />
               <Route path="/complaints" element={<MyComplaintsPage />} />
               <Route path="/complaints/:id" element={<ComplaintDetailsPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/:serviceId" element={<ServiceDetailsPage />} />
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignUpPage />} />
             </Route>

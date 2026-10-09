@@ -194,6 +194,54 @@ const translations = {
     complaintStatusConfirmed: 'Confirmed — Authority Identified',
     complaintsSavedCount: 'Saved Complaints',
 
+    // Government Services Navigator (Phase 7)
+    navServices: 'Government Services',
+    servicesTitle: 'Government Service Navigator',
+    servicesSubtitle:
+      'Verified guidance for Indian government certificates, citizen identity, and official portals.',
+    servicesSearchPlaceholder:
+      'Search government services or ask in your own words (e.g. Income certificate, passport appointment)...',
+    servicesCategoryFilter: 'Category',
+    servicesStateFilter: 'State / Region',
+    servicesAllStates: 'All States / National',
+    servicesAllCategories: 'All Categories',
+    servicesFoundCount: 'services found',
+    servicesNoResults: 'No government services matched your criteria.',
+    servicesClearFilters: 'Clear Filters',
+    servicesAiSearchPrompt: 'Ask AI Service Assistant',
+    servicesAiSearching: 'Consulting verified service records...',
+    servicesCivicRedirectNotice:
+      'Looking to report a local civic issue (pothole, garbage, streetlight, water supply)?',
+    servicesCivicRedirectBtn: 'Go to Civic Complaint Portal',
+    servicesStatePromptTitle: 'Please Select Your State',
+    servicesStatePromptDesc:
+      'Procedures and official application portals vary by state. Please choose your state to view verified requirements:',
+    serviceOverviewTitle: 'Service Overview',
+    serviceDepartmentLabel: 'Issuing Department',
+    serviceStateLabel: 'State / Territory',
+    serviceEligibilityTitle: 'Eligibility Criteria',
+    serviceDocumentsTitle: 'Interactive Document Checklist',
+    serviceDocumentsSubtitle:
+      'Track your preparation step-by-step. Informational only — NagrikSetu never collects your personal documents.',
+    serviceDocProgress: 'Preparation Progress',
+    serviceDocMarked: 'prepared',
+    serviceDocResetBtn: 'Reset Checklist',
+    serviceDocMandatoryBadge: 'Mandatory',
+    serviceDocOptionalBadge: 'Optional / Conditional',
+    serviceStepsTitle: 'Step-by-Step Application Procedure',
+    serviceAppointmentTitle: 'Appointment Requirements',
+    serviceAppointmentRequiredBadge: 'Appointment Required',
+    serviceAppointmentNotRequiredBadge: 'No Physical Appointment (100% Online)',
+    serviceAppointmentNotice:
+      'NagrikSetu does not book appointments on your behalf. All appointments must be scheduled directly on the verified official portal.',
+    servicePortalBtn: 'Visit Official Government Portal',
+    serviceSourceVerificationTitle: 'GovTech Verification & Public Sources',
+    serviceVerificationStatusLabel: 'Verification Status',
+    serviceLastVerifiedLabel: 'Last Verified',
+    serviceBackBtn: 'Back to All Services',
+    serviceDisclaimerNotice:
+      'NagrikSetu is an independent citizen assistance platform. Government service information is provided for guidance. Always verify requirements on the official government portal.',
+
     // Footer
     footerTagline: 'Making civic access simple with AI.',
     footerRights: '© 2026 AI Civic Access. All rights reserved.',
@@ -392,6 +440,54 @@ const translations = {
     complaintsRecordedNotice: 'वर्तमान सत्र में दर्ज शिकायतें',
     complaintStatusConfirmed: 'पुष्ट — प्राधिकरण पहचाना गया',
     complaintsSavedCount: 'सहेजी गई शिकायतें',
+
+    // Government Services Navigator (Phase 7)
+    navServices: 'सरकारी सेवाएं',
+    servicesTitle: 'सरकारी सेवा नेविगेटर',
+    servicesSubtitle:
+      'भारतीय सरकारी प्रमाण पत्र, नागरिक पहचान और आधिकारिक पोर्टलों की सत्यापित मार्गदर्शिका।',
+    servicesSearchPlaceholder:
+      'सरकारी सेवाएं खोजें या अपने शब्दों में पूछें (जैसे आय प्रमाण पत्र, पासपोर्ट अपॉइंटमेंट)...',
+    servicesCategoryFilter: 'श्रेणी',
+    servicesStateFilter: 'राज्य / क्षेत्र',
+    servicesAllStates: 'सभी राज्य / राष्ट्रीय',
+    servicesAllCategories: 'सभी श्रेणियां',
+    servicesFoundCount: 'सेवाएं उपलब्ध',
+    servicesNoResults: 'आपके चयन से मेल खाती कोई सरकारी सेवा नहीं मिली।',
+    servicesClearFilters: 'फ़िल्टर हटाएं',
+    servicesAiSearchPrompt: 'AI सेवा सहायक से पूछें',
+    servicesAiSearching: 'सत्यापित सेवा अभिलेखों की जांच हो रही है...',
+    servicesCivicRedirectNotice:
+      'क्या आप स्थानीय नागरिक समस्या (सड़क, कचरा, स्ट्रीटलाइट, पानी) की शिकायत करना चाहते हैं?',
+    servicesCivicRedirectBtn: 'शिकायत निवारण पोर्टल पर जाएं',
+    servicesStatePromptTitle: 'कृपया अपना राज्य चुनें',
+    servicesStatePromptDesc:
+      'प्रक्रियाएं और आधिकारिक पोर्टल राज्य अनुसार भिन्न होते हैं। सत्यापित आवश्यकताएं देखने के लिए अपना राज्य चुनें:',
+    serviceOverviewTitle: 'सेवा विवरण',
+    serviceDepartmentLabel: 'जारीकर्ता विभाग',
+    serviceStateLabel: 'राज्य / क्षेत्र',
+    serviceEligibilityTitle: 'पात्रता मापदंड',
+    serviceDocumentsTitle: 'इंटरैक्टिव दस्तावेज चेकलिस्ट',
+    serviceDocumentsSubtitle:
+      'अपनी तैयारी को चरणबद्ध रूप से ट्रैक करें। केवल मार्गदर्शन हेतु — नागरिकसेतु आपके दस्तावेज एकत्र नहीं करता।',
+    serviceDocProgress: 'तैयारी की प्रगति',
+    serviceDocMarked: 'तैयार',
+    serviceDocResetBtn: 'चेकलिस्ट रीसेट करें',
+    serviceDocMandatoryBadge: 'अनिवार्य',
+    serviceDocOptionalBadge: 'वैकल्पिक / परिस्थिति अनुसार',
+    serviceStepsTitle: 'चरणबद्ध आवेदन प्रक्रिया',
+    serviceAppointmentTitle: 'अपॉइंटमेंट आवश्यकताएं',
+    serviceAppointmentRequiredBadge: 'अपॉइंटमेंट अनिवार्य',
+    serviceAppointmentNotRequiredBadge: 'अपॉइंटमेंट की आवश्यकता नहीं (पूर्णतः ऑनलाइन)',
+    serviceAppointmentNotice:
+      'नागरिकसेतु आपकी ओर से अपॉइंटमेंट बुक नहीं करता। सभी अपॉइंटमेंट सीधे आधिकारिक पोर्टल पर बुक किए जाने चाहिए।',
+    servicePortalBtn: 'आधिकारिक सरकारी पोर्टल पर जाएं',
+    serviceSourceVerificationTitle: 'सरकारी स्रोत एवं सत्यापन जानकारी',
+    serviceVerificationStatusLabel: 'सत्यापन स्थिति',
+    serviceLastVerifiedLabel: 'अंतिम सत्यापन',
+    serviceBackBtn: 'सभी सेवाओं पर वापस जाएं',
+    serviceDisclaimerNotice:
+      'नागरिकसेतु एक स्वतंत्र नागरिक सहायता मंच है। सरकारी सेवा की जानकारी मार्गदर्शन हेतु है। कृपया आधिकारिक पोर्टल पर पुष्टि करें।',
 
     // Footer
     footerTagline: 'AI के साथ नागरिक पहुंच को सरल बनाना।',

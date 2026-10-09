@@ -16,9 +16,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import {
   analyzeComplaintWithGemini,
+  findGovernmentServiceWithGemini,
   isGeminiConfigured,
 } from './geminiService.js';
 import { detectEmergencyHazard } from '../src/services/emergencySafetyDetector.js';
+import { detectServiceIntent } from '../src/services/governmentServiceNavigator.js';
 
 dotenv.config();
 
@@ -195,6 +197,67 @@ app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
       fallbackRequired: true,
       error: err.code || 'gemini_error',
       message: 'Gemini AI processing encountered an issue. Fallback to rule-based analysis required.',
+    });
+  }
+});
+
+// Find government service endpoint (Phase 7 Service Navigator)
+app.post('/api/find-government-service', rateLimitMiddleware, async (req, res) => {
+  const { query, state, language } = req.body || {};
+
+  if (!query || typeof query !== 'string' || !query.trim()) {
+    return res.status(400).json({
+      success: false,
+      error: 'empty_query',
+      message: 'Search query cannot be empty.',
+    });
+  }
+
+  const safeQuery = query.trim().slice(0, 1000);
+  const safeState = typeof state === 'string' ? state.trim().slice(0, 100) : null;
+
+  // 1. Run deterministic ground-truth parser first
+  const deterministicResult = detectServiceIntent(safeQuery, safeState);
+
+  // If deterministicResult recognized an acute civic complaint (e.g. pothole / garbage)
+  if (deterministicResult.intent === 'civic_complaint') {
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...deterministicResult,
+        isAiAssisted: false,
+      },
+    });
+  }
+
+  // 2. Check if Gemini is configured
+  if (!isGeminiConfigured()) {
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...deterministicResult,
+        isAiAssisted: false,
+        fallbackNotice: 'Deterministic service navigator active (Gemini key unconfigured).',
+      },
+    });
+  }
+
+  // 3. Enhance with Gemini natural language understanding if available
+  try {
+    const aiResult = await findGovernmentServiceWithGemini(safeQuery, safeState, language || 'en');
+    return res.status(200).json({
+      success: true,
+      data: aiResult.data,
+    });
+  } catch (err) {
+    console.warn('[Gemini Service Search] Falling back to deterministic engine:', err.message);
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...deterministicResult,
+        isAiAssisted: false,
+        fallbackNotice: 'Natural language search fallback used.',
+      },
     });
   }
 });

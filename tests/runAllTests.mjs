@@ -22,6 +22,7 @@ const suites = [
   { name: 'Gemini AI Integration (Phase 5 Engine)', file: 'tests/testGeminiAnalysis.mjs' },
   { name: 'Emergency Safety Classification (Phase 5 Fix)', file: 'tests/testEmergencyClassification.mjs' },
   { name: 'Authority Detection (Phase 6 Engine)', file: 'tests/testAuthorityDetection.mjs' },
+  { name: 'Government Service Navigator (Phase 7 Engine)', file: 'tests/testGovernmentServices.mjs' },
 ];
 
 

@@ -14,6 +14,7 @@
 
 import { GoogleGenAI, Type } from '@google/genai';
 import { detectEmergencyHazard } from '../src/services/emergencySafetyDetector.js';
+import { detectServiceIntent } from '../src/services/governmentServiceNavigator.js';
 
 export const VALID_CATEGORIES = [
   'Garbage',
@@ -352,6 +353,156 @@ ${userLocation ? `Citizen Stated Location: "${userLocation}"` : 'Citizen Stated 
       modelUsed: modelName,
       isAiAssisted: true,
       isFallback: false,
+    },
+  };
+}
+
+/**
+ * Structured schema for Government Service Intent Search
+ */
+const GOVERNMENT_SERVICE_SEARCH_SCHEMA = {
+  type: Type.OBJECT,
+  properties: {
+    intent: {
+      type: Type.STRING,
+      description: 'government_service | civic_complaint | unsupported',
+    },
+    serviceName: {
+      type: Type.STRING,
+      description: 'Exact matching service name: Birth Certificate, Income Certificate, Caste Certificate, Domicile / Residence Certificate, Passport Services, or null if civic_complaint / unsupported.',
+      nullable: true,
+    },
+    detectedState: {
+      type: Type.STRING,
+      description: 'State mentioned or relevant: Delhi, Uttar Pradesh, National, or null.',
+      nullable: true,
+    },
+    requiresState: {
+      type: Type.BOOLEAN,
+      description: 'True if the service is state-specific (Birth, Income, Caste, Domicile) and user did not specify Delhi or Uttar Pradesh.',
+    },
+    explanation: {
+      type: Type.STRING,
+      description: 'Helpful guidance explaining what service this corresponds to, or why it routes to complaints.',
+    },
+  },
+  required: ['intent', 'requiresState', 'explanation'],
+};
+
+/**
+ * Searches and routes government service inquiries using Gemini API.
+ * Grounded strictly in verified government services.
+ *
+ * @param {string} queryText - User question in English, Hindi, or Hinglish.
+ * @param {string} [stateInput] - Optional state hint (e.g. 'Delhi', 'Uttar Pradesh').
+ * @param {string} [preferredLang] - 'en' | 'hi'.
+ * @returns {Promise<{success: boolean, data?: object}>}
+ */
+export async function findGovernmentServiceWithGemini(queryText, stateInput = '', preferredLang = 'en') {
+  if (!isGeminiConfigured()) {
+    const error = new Error('GEMINI_API_KEY is not configured on the server.');
+    error.code = 'MISSING_API_KEY';
+    throw error;
+  }
+
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+  const systemPrompt = `You are the Government Service Navigator Assistant for NagrikSetu, an AI civic assistance platform for India.
+Citizens ask questions about government certificates, citizen procedures, or civic complaints in English, Hindi, or Hinglish.
+
+Our Verified Government Service Catalog currently covers:
+1. Birth Certificate (Delhi or Uttar Pradesh including Agra)
+2. Income Certificate (Delhi or Uttar Pradesh including Agra)
+3. Caste Certificate (SC/ST/OBC - Delhi or Uttar Pradesh)
+4. Domicile / Residence Certificate (Delhi or Uttar Pradesh including Agra)
+5. Passport Services (Ministry of External Affairs - National / All India)
+
+Strict GovTech Rules:
+- If citizen describes a civic complaint (road pothole, garbage, streetlight, drainage, sewer, water supply disruption), set intent to "civic_complaint". Do NOT match to a certificate.
+- If citizen asks for a certificate without specifying a state (e.g. "Mujhe income certificate banwana hai"), set intent to "government_service", serviceName to "Income Certificate", and requiresState to true.
+- If state is Delhi, UP, or National, set detectedState accordingly.
+- NEVER invent government fees, fake portals, or unverified departments.
+- Explanation must be helpful, concise, in ${preferredLang === 'hi' ? 'Hindi' : 'English'}.`;
+
+  const userPrompt = `Citizen Query: "${queryText}"\nDeclared State: "${stateInput || 'None'}"`;
+
+  const timeoutMs = 10000;
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => {
+      const err = new Error(`Gemini API request timed out after ${timeoutMs}ms.`);
+      err.code = 'TIMEOUT';
+      reject(err);
+    }, timeoutMs);
+  });
+
+  const apiPromise = ai.models.generateContent({
+    model: modelName,
+    contents: [
+      { role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] },
+    ],
+    config: {
+      responseMimeType: 'application/json',
+      responseSchema: GOVERNMENT_SERVICE_SEARCH_SCHEMA,
+      temperature: 0.1,
+    },
+  });
+
+  const response = await Promise.race([apiPromise, timeoutPromise]);
+  const textOutput = response.text;
+
+  if (!textOutput) {
+    throw new Error('Gemini API returned an empty response.');
+  }
+
+  const parsed = JSON.parse(textOutput);
+
+  // Cross-reference with deterministic engine ground-truth
+  const deterministicFallback = detectServiceIntent(queryText, stateInput || parsed.detectedState);
+
+  // If Gemini says civic_complaint or deterministic engine says civic_complaint
+  if (parsed.intent === 'civic_complaint' || deterministicFallback.intent === 'civic_complaint') {
+    return {
+      success: true,
+      data: {
+        intent: 'civic_complaint',
+        message: parsed.explanation || deterministicFallback.message,
+        hiMessage: deterministicFallback.hiMessage,
+        matchedService: null,
+        serviceId: null,
+        targetRoute: '/report',
+        requiresState: false,
+        isAiAssisted: true,
+        modelUsed: modelName,
+      },
+    };
+  }
+
+  // Resolve matching service from verified directory
+  let resolvedService = deterministicFallback.matchedService;
+  let serviceId = deterministicFallback.serviceId;
+  let requiresState = deterministicFallback.requiresState;
+
+  if (parsed.requiresState) {
+    requiresState = true;
+  }
+
+  return {
+    success: true,
+    data: {
+      intent: parsed.intent || deterministicFallback.intent,
+      serviceType: deterministicFallback.serviceType || parsed.serviceName,
+      hiServiceType: deterministicFallback.hiServiceType,
+      serviceId: requiresState ? null : (serviceId || deterministicFallback.serviceId),
+      matchedService: requiresState ? null : resolvedService,
+      state: deterministicFallback.state || parsed.detectedState || null,
+      requiresState,
+      message: parsed.explanation || deterministicFallback.message,
+      hiMessage: deterministicFallback.hiMessage,
+      availableServices: deterministicFallback.availableServices || [],
+      targetRoute: requiresState ? '/services' : deterministicFallback.targetRoute,
+      isAiAssisted: true,
+      modelUsed: modelName,
     },
   };
 }
