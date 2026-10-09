@@ -59,7 +59,8 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     service: 'NagrikSetu AI Engine',
-    model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    model: process.env.GEMINI_MODEL || 'gemini-3.5-flash',
+
     geminiConfigured: isGeminiConfigured(),
     timestamp: new Date().toISOString(),
   });

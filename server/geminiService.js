@@ -217,7 +217,8 @@ export async function analyzeComplaintWithGemini(complaintText, userLocation = '
     throw error;
   }
 
-  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
+
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   const systemPrompt = `You are the civic grievance intelligence engine for NagrikSetu, an AI assistance platform for Indian citizens.
