@@ -5,6 +5,7 @@ import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { analyzeComplaint } from '../services/complaintAnalyzer';
 import { generateComplaint } from '../services/complaintGenerator';
 import { recommendAuthority } from '../services/authorityService';
+import { SUPPORTED_CITIES } from '../data/authorityDirectory';
 import { detectEmergencyHazard } from '../services/emergencySafetyDetector';
 import AnalysisResultCard from './AnalysisResultCard';
 import ComplaintPreviewCard from './ComplaintPreviewCard';
@@ -29,6 +30,14 @@ export default function ComplaintForm() {
   const [location, setLocation] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  // Phase 6 Intelligent Location States
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedState, setSelectedState] = useState('');
+  const [locality, setLocality] = useState('');
+  const [isLocatingGPS, setIsLocatingGPS] = useState(false);
+  const [gpsNotice, setGpsNotice] = useState(null);
+  const [showManualLocation, setShowManualLocation] = useState(false);
 
   // Workflow states: 'input' | 'understanding' | 'preview' | 'authority'
   const [workflowStep, setWorkflowStep] = useState('input');
@@ -105,11 +114,117 @@ export default function ComplaintForm() {
     }
   };
 
+  const updateFullLocation = (newLocality, newCity, newState) => {
+    const parts = [];
+    if (newLocality && newLocality.trim()) parts.push(newLocality.trim());
+    if (newCity && newCity.trim() && !newLocality?.toLowerCase().includes(newCity.toLowerCase())) {
+      parts.push(newCity.trim());
+    }
+    if (newState && newState.trim() && !parts.some((p) => p.toLowerCase().includes(newState.toLowerCase()))) {
+      parts.push(newState.trim());
+    }
+    const combined = parts.join(', ');
+    setLocation(combined);
+    if (combined && error === 'missing_location') setError(null);
+    return combined;
+  };
+
+  const handleSelectCity = (cityName) => {
+    setSelectedCity(cityName);
+    let matchedState = '';
+    if (['Agra', 'Noida', 'Greater Noida', 'Ghaziabad'].includes(cityName)) {
+      matchedState = 'Uttar Pradesh';
+    } else if (['Delhi', 'New Delhi'].includes(cityName)) {
+      matchedState = 'Delhi';
+    } else if (['Gurugram', 'Faridabad'].includes(cityName)) {
+      matchedState = 'Haryana';
+    }
+    if (matchedState) setSelectedState(matchedState);
+    updateFullLocation(locality, cityName, matchedState || selectedState);
+  };
+
+  const handleLocalityChange = (val) => {
+    setLocality(val);
+    updateFullLocation(val, selectedCity, selectedState);
+  };
+
   /**
-   * Quick fill location with sample prototype location (Agra, UP)
+   * Optional browser GPS location detector.
+   * Permission-based, non-automatic. Uses browser Geolocation API.
+   */
+  const handleRequestGPS = () => {
+    if (!('geolocation' in navigator)) {
+      setGpsNotice(t('locationGpsUnavailable'));
+      return;
+    }
+
+    setIsLocatingGPS(true);
+    setGpsNotice(t('locationLocating'));
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setIsLocatingGPS(false);
+        const { latitude, longitude } = position.coords;
+
+        // Approximate geofencing for verified pilot regions
+        let detectedCity = null;
+        let detectedState = null;
+
+        if (latitude >= 27.05 && latitude <= 27.30 && longitude >= 77.85 && longitude <= 78.15) {
+          detectedCity = 'Agra';
+          detectedState = 'Uttar Pradesh';
+        } else if (latitude >= 28.40 && latitude <= 28.90 && longitude >= 76.85 && longitude <= 77.38) {
+          detectedCity = 'Delhi';
+          detectedState = 'Delhi';
+        } else if (latitude >= 28.48 && latitude <= 28.64 && longitude >= 77.30 && longitude <= 77.44) {
+          detectedCity = 'Noida';
+          detectedState = 'Uttar Pradesh';
+        } else if (latitude >= 28.38 && latitude <= 28.52 && longitude >= 77.45 && longitude <= 77.58) {
+          detectedCity = 'Greater Noida';
+          detectedState = 'Uttar Pradesh';
+        } else if (latitude >= 28.60 && latitude <= 28.75 && longitude >= 77.38 && longitude <= 77.55) {
+          detectedCity = 'Ghaziabad';
+          detectedState = 'Uttar Pradesh';
+        } else if (latitude >= 28.38 && latitude <= 28.55 && longitude >= 76.92 && longitude <= 77.12) {
+          detectedCity = 'Gurugram';
+          detectedState = 'Haryana';
+        } else if (latitude >= 28.30 && latitude <= 28.48 && longitude >= 77.25 && longitude <= 77.40) {
+          detectedCity = 'Faridabad';
+          detectedState = 'Haryana';
+        }
+
+        if (detectedCity) {
+          setSelectedCity(detectedCity);
+          setSelectedState(detectedState);
+          updateFullLocation(locality, detectedCity, detectedState);
+          setGpsNotice(
+            `${t('locationGpsDetected')}: ${latitude.toFixed(4)}°N, ${longitude.toFixed(4)}°E ~ ${detectedCity} (${detectedState})`
+          );
+        } else {
+          const coordStr = `${latitude.toFixed(4)}°N, ${longitude.toFixed(4)}°E`;
+          setGpsNotice(`${t('locationGpsDetected')}: ${coordStr}`);
+          if (!locality) {
+            setLocality(coordStr);
+            updateFullLocation(coordStr, selectedCity, selectedState);
+          }
+        }
+      },
+      () => {
+        setIsLocatingGPS(false);
+        setGpsNotice(t('locationGpsError'));
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
+  };
+
+  /**
+   * Quick fill location with sample pilot location (Agra, UP)
    */
   const handleUseCurrentWard = () => {
-    const sampleLoc = language === 'hi' ? 'आगरा, उत्तर प्रदेश' : 'Agra, Uttar Pradesh';
+    setSelectedCity('Agra');
+    setSelectedState('Uttar Pradesh');
+    setLocality(language === 'hi' ? 'सिकंदरा' : 'Sikandra');
+    const sampleLoc = language === 'hi' ? 'सिकंदरा, आगरा, उत्तर प्रदेश' : 'Sikandra, Agra, Uttar Pradesh';
     setLocation(sampleLoc);
     if (error === 'missing_location') setError(null);
   };
@@ -219,9 +334,16 @@ export default function ComplaintForm() {
 
   const handleConfirmComplaint = (finalData) => {
     const category = analysisResult?.category || finalData.category;
-    const finalLocation = analysisResult?.location || finalData.location;
+    const finalLocation = analysisResult?.location || finalData.location || location;
 
-    const rec = recommendAuthority(category, finalLocation);
+    const rec = recommendAuthority(category, finalLocation, {
+      city: selectedCity || undefined,
+      state: selectedState || undefined,
+      locality: locality || undefined,
+      isEmergency: Boolean(analysisResult?.isEmergency),
+      hazardType: analysisResult?.hazardType,
+      intelligent: true,
+    });
     setAuthorityRecommendation(rec);
 
     const saved = saveConfirmedComplaint({
@@ -229,7 +351,7 @@ export default function ComplaintForm() {
       originalText: text,
       category,
       priority: analysisResult?.priority || finalData.priority,
-      recommendedAuthority: rec.authority,
+      recommendedAuthority: rec.recommendedAuthority || rec.authority,
       officialPortalUrl: rec.officialPortalUrl,
       portalName: rec.portalName,
       imageUrl: imagePreview || null,
@@ -244,6 +366,12 @@ export default function ComplaintForm() {
     if (isListening) stopListening();
     setText('');
     setLocation('');
+    setSelectedCity('');
+    setSelectedState('');
+    setLocality('');
+    setIsLocatingGPS(false);
+    setGpsNotice(null);
+    setShowManualLocation(false);
     setImageFile(null);
     setImagePreview(null);
     setAnalysisResult(null);
@@ -416,64 +544,186 @@ export default function ComplaintForm() {
               </button>
             </div>
 
-            {/* Symmetrically Aligned Location & Visual Evidence Row */}
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Location Input with centered GPS button */}
-              <div className="relative flex items-center">
-                <div className="pointer-events-none absolute left-3 flex items-center">
-                  <svg className="h-4 w-4 text-chakra-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  value={location}
-                  onChange={(e) => {
-                    setLocation(e.target.value);
-                    if (error === 'missing_location') setError(null);
-                  }}
-                  placeholder={t('formLocationPlaceholder')}
-                  disabled={isAnalyzing}
-                  className={`w-full h-11 rounded-lg border bg-surface-dim pl-9.5 pr-22 text-sm text-text-primary placeholder:text-text-muted focus:border-chakra-700 focus:ring-2 focus:ring-kesari-300 focus:outline-none transition-all duration-150 disabled:opacity-60 ${
-                    error === 'missing_location'
-                      ? 'border-error ring-2 ring-red-100'
-                      : 'border-border-input'
-                  }`}
-                />
+            {/* Phase 6: Verified Pilot Cities & Location Section */}
+            <div className="mt-4 pt-3 border-t border-border-dim">
+              <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                <span className="text-[11px] font-bold text-chakra-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-kesari-600">🏛️</span>
+                  <span>{t('locationSelectPilotCity')}</span>
+                </span>
                 <button
                   type="button"
-                  onClick={handleUseCurrentWard}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 text-[11px] font-bold text-chakra-700 hover:text-chakra-900 bg-white border border-border-input rounded-md hover:bg-chakra-50 shadow-2xs transition-colors flex items-center gap-1"
-                  title="Auto-fill Agra, Uttar Pradesh"
+                  onClick={() => setShowManualLocation(!showManualLocation)}
+                  className="text-[11px] font-semibold text-chakra-600 hover:text-chakra-900 underline transition-colors"
                 >
-                  <span>📍</span>
-                  <span>{language === 'hi' ? 'आगरा, उ.प्र.' : 'Agra, UP'}</span>
+                  {showManualLocation
+                    ? (language === 'hi' ? 'स्मार्ट शहर चयनकर्ता' : 'Use Smart City Selector')
+                    : (language === 'hi' ? 'कस्टम पता दर्ज करें' : 'Manual Address Entry')}
                 </button>
               </div>
 
-              {/* Photographic Evidence Upload Button with matching h-11 height */}
-              <div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                  id="image-upload"
-                />
-                <label
-                  htmlFor="image-upload"
-                  className="flex h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-border-input bg-surface-dim px-4 text-sm font-semibold text-text-secondary hover:border-chakra-400 hover:text-chakra-700 hover:bg-white transition-all duration-150 text-center w-full shadow-2xs"
-                >
-                  <svg className="h-4 w-4 text-kesari-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
-                  <span className="truncate">{t('formUploadLabel')}</span>
-                </label>
+              {/* Pilot City Quick Chips */}
+              <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                {SUPPORTED_CITIES.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => (c.name === 'Agra' ? handleUseCurrentWard() : handleSelectCity(c.name))}
+                    className={`px-2.5 py-1 text-xs font-semibold rounded-full border transition-all ${
+                      selectedCity === c.name
+                        ? 'bg-chakra-700 text-white border-chakra-800 shadow-2xs'
+                        : 'bg-white text-text-secondary border-border-input hover:border-chakra-400 hover:bg-chakra-50'
+                    }`}
+                  >
+                    {c.name === 'Agra' ? '📍 Agra (Pilot)' : c.name}
+                  </button>
+                ))}
               </div>
+
+              {/* Smart City & State Dropdowns (if not in single-field manual mode) */}
+              {!showManualLocation && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                  <div>
+                    <label htmlFor="city-select" className="block text-[11px] font-bold text-text-secondary mb-1">
+                      {t('locationCitySelect')}
+                    </label>
+                    <select
+                      id="city-select"
+                      value={selectedCity}
+                      onChange={(e) => handleSelectCity(e.target.value)}
+                      disabled={isAnalyzing}
+                      className="w-full h-10 rounded-lg border border-border-input bg-surface-dim px-3 text-xs text-text-primary focus:border-chakra-700 focus:ring-2 focus:ring-kesari-300 focus:outline-none transition-all"
+                    >
+                      <option value="">{t('locationCitySelect')}</option>
+                      {SUPPORTED_CITIES.map((c) => (
+                        <option key={c.id} value={c.name}>
+                          {c.name} ({c.state})
+                        </option>
+                      ))}
+                      <option value="Other">{language === 'hi' ? 'अन्य / कस्टम' : 'Other / Custom'}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="state-select" className="block text-[11px] font-bold text-text-secondary mb-1">
+                      {t('locationStateSelect')}
+                    </label>
+                    <select
+                      id="state-select"
+                      value={selectedState}
+                      onChange={(e) => {
+                        setSelectedState(e.target.value);
+                        updateFullLocation(locality, selectedCity, e.target.value);
+                      }}
+                      disabled={isAnalyzing}
+                      className="w-full h-10 rounded-lg border border-border-input bg-surface-dim px-3 text-xs text-text-primary focus:border-chakra-700 focus:ring-2 focus:ring-kesari-300 focus:outline-none transition-all"
+                    >
+                      <option value="">{t('locationStateSelect')}</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Other">{language === 'hi' ? 'अन्य राज्य' : 'Other State'}</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+
+              {/* Symmetrically Aligned Locality & Visual Evidence Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Locality Input with GPS button */}
+                <div className="relative flex items-center">
+                  <div className="pointer-events-none absolute left-3 flex items-center">
+                    <svg className="h-4 w-4 text-chakra-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <input
+                    id="locality-input"
+                    type="text"
+                    value={showManualLocation ? location : locality}
+                    onChange={(e) => {
+                      if (showManualLocation) {
+                        setLocation(e.target.value);
+                        if (error === 'missing_location') setError(null);
+                      } else {
+                        handleLocalityChange(e.target.value);
+                      }
+                    }}
+                    placeholder={showManualLocation ? t('formLocationPlaceholder') : t('locationLocalityPlaceholder')}
+                    disabled={isAnalyzing}
+                    className={`w-full h-11 rounded-lg border bg-surface-dim pl-9.5 pr-24 text-sm text-text-primary placeholder:text-text-muted focus:border-chakra-700 focus:ring-2 focus:ring-kesari-300 focus:outline-none transition-all duration-150 disabled:opacity-60 ${
+                      error === 'missing_location'
+                        ? 'border-error ring-2 ring-red-100'
+                        : 'border-border-input'
+                    }`}
+                  />
+                  {/* Optional Permission-based GPS Button */}
+                  <button
+                    type="button"
+                    onClick={handleRequestGPS}
+                    disabled={isLocatingGPS || isAnalyzing}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 px-2.5 py-1 text-[11px] font-bold text-chakra-700 hover:text-chakra-900 bg-white border border-border-input rounded-md hover:bg-chakra-50 shadow-2xs transition-colors flex items-center gap-1 disabled:opacity-60"
+                    title="Request browser GPS (permission-based)"
+                  >
+                    {isLocatingGPS ? (
+                      <span className="flex items-center gap-1">
+                        <svg className="h-3 w-3 animate-spin text-chakra-600" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                        </svg>
+                        <span className="text-[10px]">{t('locationLocating')}</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        <span>📡</span>
+                        <span>{t('locationUseGps')}</span>
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Photographic Evidence Upload Button with matching h-11 height */}
+                <div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className="flex h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-border-input bg-surface-dim px-4 text-sm font-semibold text-text-secondary hover:border-chakra-400 hover:text-chakra-700 hover:bg-white transition-all duration-150 text-center w-full shadow-2xs"
+                  >
+                    <svg className="h-4 w-4 text-kesari-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                    <span className="truncate">{t('formUploadLabel')}</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* GPS Notification Banner if active */}
+              {gpsNotice && (
+                <div className="mt-2.5 flex items-center justify-between gap-2 rounded-lg bg-chakra-50 border border-chakra-200 px-3 py-1.5 text-xs text-chakra-800">
+                  <div className="flex items-center gap-1.5 truncate">
+                    <span className="text-chakra-600">📍</span>
+                    <span className="truncate font-medium">{gpsNotice}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setGpsNotice(null)}
+                    className="text-text-muted hover:text-chakra-900 font-bold ml-2 shrink-0 text-sm"
+                    aria-label="Dismiss GPS notice"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Evidence Image Preview */}

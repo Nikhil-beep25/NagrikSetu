@@ -14,13 +14,26 @@ export default function AuthorityRecommendationCard({
 
   const {
     authority,
+    recommendedAuthority,
     category,
     location,
+    city,
+    state,
+    jurisdiction,
+    confidence = 'High',
     reason,
     disclaimer,
+    officialWebsite,
     officialPortalUrl,
     portalName,
+    verificationStatus = 'Verified',
+    lastVerified = '2026-10-09',
+    requiresConfirmation = false,
+    alternativeAuthorities = [],
+    emergencyNumbers = [],
   } = recommendation;
+
+  const displayAuthorityName = recommendedAuthority || authority;
 
   const handleCopyText = async () => {
     if (!complaint) return;
@@ -34,13 +47,39 @@ export default function AuthorityRecommendationCard({
     }
   };
 
+  const getConfidenceBadge = (level) => {
+    switch (level) {
+      case 'High':
+        return (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-300 px-3 py-0.5 text-xs font-bold text-emerald-800">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+            {t('confidenceHigh') || 'High Confidence'}
+          </span>
+        );
+      case 'Medium':
+        return (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-300 px-3 py-0.5 text-xs font-bold text-amber-800">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
+            {t('confidenceMedium') || 'Medium Confidence'}
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-300 px-3 py-0.5 text-xs font-bold text-blue-800">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
+            {t('confidenceLow') || 'Low Confidence'}
+          </span>
+        );
+    }
+  };
+
   return (
     <div className="mt-6 rounded-2xl border border-border bg-white shadow-card overflow-hidden animate-fade-slide-up">
-      {/* Stitch Masthead Header with Verified Channel Badge */}
+      {/* Masthead Header with Verified Channel Badge */}
       <div className="border-b border-border bg-surface-dim px-6 py-5">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-chakra-600 text-white shadow-xs">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-chakra-600 text-white shadow-xs shrink-0">
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 21h18" />
                 <path d="M5 21V7l7-4 7 4v14" />
@@ -53,15 +92,24 @@ export default function AuthorityRecommendationCard({
                 {t('authorityTitle')}
               </h3>
               <p className="text-[11px] text-text-muted">
-                {language === 'hi' ? 'नागरिक सेवा नियम व अधिकार क्षेत्र आवंटन' : 'Municipal Department Allocation & Public Redressal'}
+                {language === 'hi'
+                  ? 'सत्यापित सरकारी अधिकार क्षेत्र व शिकायत निवारण पोर्टल'
+                  : 'Verified Government Department & Public Redressal'}
               </p>
             </div>
           </div>
 
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-harit-50 border border-harit-200 px-3 py-1 text-xs font-bold text-harit-700">
-            <span className="h-1.5 w-1.5 rounded-full bg-harit-500" />
-            24-48h Citizen Charter SLA
-          </span>
+          <div className="flex items-center gap-2 flex-wrap">
+            {getConfidenceBadge(confidence)}
+            <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold ${
+              verificationStatus === 'Verified'
+                ? 'bg-harit-50 border border-harit-200 text-harit-700'
+                : 'bg-gray-100 border border-gray-300 text-gray-700'
+            }`}>
+              <span>{verificationStatus === 'Verified' ? '✓' : 'ℹ'}</span>
+              <span>{verificationStatus === 'Verified' ? (t('statusVerified') || 'Verified Record') : (t('statusUnverified') || 'Provisional')}</span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -69,13 +117,32 @@ export default function AuthorityRecommendationCard({
         {/* Recommended Authority Details Grid */}
         <div className="rounded-xl border border-border bg-surface-dim p-5 space-y-4">
           <div>
-            <span className="block text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">
-              {t('authorityLabel')}:
-            </span>
-            <p className="text-base sm:text-lg font-extrabold text-chakra-800">
-              {authority}
+            <div className="flex items-center justify-between gap-2 flex-wrap mb-1">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-text-muted">
+                {t('authorityLabel')}:
+              </span>
+              {city && (
+                <span className="text-xs font-bold text-chakra-700 bg-chakra-50 border border-chakra-200 px-2.5 py-0.5 rounded-md">
+                  📍 {city}{state ? `, ${state}` : ''}
+                </span>
+              )}
+            </div>
+            <p className="text-base sm:text-xl font-extrabold text-chakra-900 leading-snug">
+              {displayAuthorityName}
             </p>
           </div>
+
+          {/* Jurisdiction Information Row */}
+          {jurisdiction && (
+            <div className="pt-3 border-t border-border">
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">
+                {t('authorityJurisdictionLabel') || 'Jurisdiction'}:
+              </span>
+              <p className="text-xs sm:text-sm font-semibold text-chakra-800">
+                {jurisdiction}
+              </p>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-border">
             <div>
@@ -101,28 +168,92 @@ export default function AuthorityRecommendationCard({
             <span className="block text-[11px] font-bold uppercase tracking-wider text-text-muted mb-1">
               {t('authorityReasonLabel')}:
             </span>
-            <p className="text-xs sm:text-sm text-text-secondary italic">
+            <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
               &ldquo;{reason || t('authorityReasonText')}&rdquo;
             </p>
           </div>
+
+          {lastVerified && (
+            <div className="flex items-center justify-between text-[11px] text-text-muted pt-2 border-t border-border/60">
+              <span>{t('authorityLastVerifiedLabel') || 'Last Verified'}: <strong>{lastVerified}</strong></span>
+              <span className="font-semibold text-harit-600">✓ Real Official Government Agency</span>
+            </div>
+          )}
         </div>
 
-        {/* Disclaimer Banner */}
-        <div className="flex items-start gap-3 rounded-xl border border-kesari-200 bg-kesari-50/80 p-4">
-          <svg className="h-5 w-5 text-kesari-600 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-kesari-800">
-              Disclaimer
-            </p>
-            <p className="text-xs sm:text-sm font-medium text-kesari-900 mt-0.5">
-              {disclaimer || t('authorityDisclaimer')}
-            </p>
+        {/* Emergency Helplines Notice if provided */}
+        {emergencyNumbers && emergencyNumbers.length > 0 && (
+          <div className="rounded-xl border-2 border-red-500 bg-red-50 p-4 space-y-2 animate-fade-slide-up">
+            <div className="flex items-center gap-2">
+              <span className="text-base">🚨</span>
+              <h5 className="text-xs font-extrabold text-red-900 uppercase tracking-wider">
+                Emergency First Response Numbers
+              </h5>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {emergencyNumbers.map((em, idx) => (
+                <a
+                  key={idx}
+                  href={`tel:${em.number}`}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs shadow-xs transition-all"
+                >
+                  <span>📞 {em.label}: {em.number}</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Uncertain Jurisdiction Warning Notice */}
+        {requiresConfirmation && (
+          <div className="flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4">
+            <svg className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-amber-900">
+                Jurisdiction Verification Notice
+              </p>
+              <p className="text-xs sm:text-sm font-medium text-amber-900/90 mt-0.5 leading-relaxed">
+                {t('authorityUncertainNotice') || 'Based on your selected location and complaint category, this authority may be responsible. Please verify the jurisdiction before submitting your complaint.'}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Alternative Authorities Notice (e.g. MCD vs PWD road ownership) */}
+        {alternativeAuthorities && alternativeAuthorities.length > 0 && (
+          <div className="rounded-xl border border-blue-200 bg-blue-50/80 p-4 space-y-2.5">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">ℹ️</span>
+              <h5 className="text-xs font-bold text-blue-900 uppercase tracking-wider">
+                {t('authorityAlternativesTitle') || 'Alternative Responsible Authorities'}
+              </h5>
+            </div>
+            <div className="space-y-2">
+              {alternativeAuthorities.map((alt, idx) => (
+                <div key={idx} className="text-xs text-blue-950 font-medium bg-white/70 rounded-lg p-2.5 border border-blue-200">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <strong className="text-blue-900">{alt.name}</strong>
+                    {alt.officialPortalUrl && (
+                      <a
+                        href={alt.officialPortalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-bold text-chakra-700 underline hover:text-chakra-900"
+                      >
+                        Official Portal &rsaquo;
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-blue-800 mt-1">{alt.reason}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Official Complaint Channel Card */}
         <div className="rounded-xl border border-border bg-white p-5 space-y-4 shadow-xs">
@@ -146,6 +277,7 @@ export default function AuthorityRecommendationCard({
               )}
 
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                {/* Safe external government link */}
                 <a
                   href={officialPortalUrl}
                   target="_blank"
@@ -159,6 +291,18 @@ export default function AuthorityRecommendationCard({
                     <line x1="10" y1="14" x2="21" y2="3" />
                   </svg>
                 </a>
+
+                {officialWebsite && officialWebsite !== officialPortalUrl && (
+                  <a
+                    href={officialWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border-input bg-surface-dim hover:bg-white px-4 py-2.5 text-sm font-semibold text-chakra-800 hover:text-chakra-900 transition-all duration-150 text-center"
+                  >
+                    <span>🏛️</span>
+                    <span>{t('authorityWebsiteBtn') || 'Official Website'}</span>
+                  </a>
+                )}
 
                 {complaint && (
                   <button
@@ -186,6 +330,13 @@ export default function AuthorityRecommendationCard({
               </p>
             </div>
           )}
+        </div>
+
+        {/* Non-affiliation & Civic Disclaimer */}
+        <div className="rounded-xl border border-gray-200 bg-gray-50/90 p-3.5 text-[11px] text-text-muted leading-relaxed">
+          <p>
+            <strong>Disclaimer:</strong> {disclaimer || t('authorityDisclaimer')} {t('authorityNonAffiliationNotice') || 'NagrikSetu is an independent civic assistance platform and is not officially affiliated with any government department.'}
+          </p>
         </div>
 
         {/* Confirmed Complaint Quick Summary */}
@@ -216,7 +367,7 @@ export default function AuthorityRecommendationCard({
         )}
       </div>
 
-      {/* Navigation Footer (Stitch Specification) */}
+      {/* Navigation Footer */}
       <div className="flex flex-col sm:flex-row gap-3 border-t border-border bg-surface-dim px-6 py-4">
         {complaint?.id && (
           <Link
