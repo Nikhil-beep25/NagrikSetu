@@ -69,11 +69,21 @@ export function normalizeCategory(categoryStr, originalText = '') {
 
 
 /**
+ * Retrieves the Gemini API key if properly configured.
+ */
+export function getGeminiApiKey() {
+  const key = process.env.GEMINI_API_KEY;
+  if (key && typeof key === 'string' && key.trim().length > 0 && key !== 'your_gemini_api_key_here') {
+    return key.trim();
+  }
+  return null;
+}
+
+/**
  * Checks whether the Gemini API key is configured in the environment.
  */
 export function isGeminiConfigured() {
-  const key = process.env.GEMINI_API_KEY;
-  return Boolean(key && key.trim().length > 0 && key !== 'your_gemini_api_key_here');
+  return Boolean(getGeminiApiKey());
 }
 
 /**
@@ -279,7 +289,7 @@ export async function analyzeComplaintWithGemini(complaintText, userLocation = '
     throw error;
   }
 
-  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -406,7 +416,7 @@ export async function findGovernmentServiceWithGemini(queryText, stateInput = ''
     throw error;
   }
 
-  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   const systemPrompt = `You are the Government Service Navigator Assistant for NagrikSetu, an AI civic assistance platform for India.
@@ -549,7 +559,7 @@ export async function interactWithCitizenAssistantGemini(
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 
   const systemInstruction = `You are NagrikSetu, an AI Citizen Assistant for India.
 You assist citizens with:
