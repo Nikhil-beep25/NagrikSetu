@@ -125,6 +125,7 @@ export default function ComplaintDetailsPage() {
               <div>
                 <div className="flex items-center gap-2.5 flex-wrap">
                   <span className="font-mono text-xs font-extrabold px-2.5 py-1 rounded-md bg-chakra-50 text-chakra-800 border border-chakra-200">
+                    <span className="text-[10px] text-text-muted font-normal mr-1">{language === 'hi' ? 'स्थानीय संदर्भ:' : 'Local Ref:'}</span>
                     {complaint.id}
                   </span>
                   <span className="rounded-full border border-border bg-surface-dim px-3 py-0.5 text-xs font-bold text-text-primary">

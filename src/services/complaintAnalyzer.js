@@ -13,6 +13,7 @@
  */
 
 import { detectEmergencyHazard } from './emergencySafetyDetector.js';
+import { getApiEndpoint } from '../utils/apiConfig.js';
 
 const SUPPORTED_CATEGORIES = [
   'Garbage',
@@ -323,12 +324,8 @@ export async function analyzeComplaint(complaintText, userLocation = '', options
     return ruleBasedAnalyzeComplaint(trimmed, userLocation, 'Explicitly requested offline analysis.');
   }
 
-  // Construct API endpoint URL (handles both browser and Node.js testing environments)
-  let apiUrl = '/api/analyze-complaint';
-  if (typeof window === 'undefined') {
-    const port = process.env.PORT || 5001;
-    apiUrl = `http://localhost:${port}/api/analyze-complaint`;
-  }
+  // Construct API endpoint URL (handles browser, VITE_API_URL, and Node.js testing environments)
+  const apiUrl = getApiEndpoint('/api/analyze-complaint');
 
   try {
     const controller = new AbortController();

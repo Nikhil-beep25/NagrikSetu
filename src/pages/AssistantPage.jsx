@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import { processAssistantMessage } from '../services/unifiedAssistantEngine';
+import { getApiEndpoint } from '../utils/apiConfig';
 
 const STORAGE_KEY = 'nagriksetu_assistant_history';
 let messageSeq = 0;
@@ -102,7 +103,7 @@ export default function AssistantPage() {
 
     try {
       // First attempt backend Gemini assistant endpoint
-      const response = await fetch('/api/citizen-assistant', {
+      const response = await fetch(getApiEndpoint('/api/citizen-assistant'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

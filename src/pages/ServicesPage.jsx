@@ -5,6 +5,7 @@ import {
   getAllServices,
   detectServiceIntent,
 } from '../services/governmentServiceNavigator';
+import { getApiEndpoint } from '../utils/apiConfig';
 
 export default function ServicesPage() {
   const { t, language } = useLanguage();
@@ -35,7 +36,7 @@ export default function ServicesPage() {
 
     try {
       // First attempt backend Gemini-powered endpoint
-      const res = await fetch('/api/find-government-service', {
+      const res = await fetch(getApiEndpoint('/api/find-government-service'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -75,6 +75,14 @@ export default function SignUpPage() {
               ? 'AI नागरिक सहायता केंद्र में शामिल हों व आगरा नगर क्षेत्र की समस्याओं का समाधान पाएं'
               : 'Join the AI Civic Redressal portal for Agra, Uttar Pradesh to report issues & track resolutions'}
           </p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold">
+            <span>🛡️</span>
+            <span>
+              {language === 'hi'
+                ? 'प्रोटोटाइप सत्र: केवल प्रदर्शन हेतु। वास्तविक पहचान पत्र या संवेदनशील डेटा एकत्र नहीं होता।'
+                : 'Prototype Session: For demonstration only. No sensitive identity documents collected.'}
+            </span>
+          </div>
         </div>
 
         {/* Main Material Card */}

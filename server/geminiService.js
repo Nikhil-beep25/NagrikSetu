@@ -549,7 +549,7 @@ export async function interactWithCitizenAssistantGemini(
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const modelName = 'gemini-2.5-flash';
+  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
   const systemInstruction = `You are NagrikSetu, an AI Citizen Assistant for India.
 You assist citizens with:

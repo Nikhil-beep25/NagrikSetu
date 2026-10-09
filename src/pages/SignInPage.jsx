@@ -44,6 +44,14 @@ export default function SignInPage() {
               ? 'अपनी शिकायतों को ट्रैक करने के लिए लॉगिन करें'
               : 'Sign in to access your civic grievance ledger & track SLA status'}
           </p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold">
+            <span>🛡️</span>
+            <span>
+              {language === 'hi'
+                ? 'प्रोटोटाइप सत्र: केवल प्रदर्शन हेतु। पासवर्ड या संवेदनशील डेटा एकत्र नहीं होता।'
+                : 'Prototype Session: For demonstration only. No real passwords or sensitive data collected.'}
+            </span>
+          </div>
         </div>
 
         {/* Main Material Card */}
