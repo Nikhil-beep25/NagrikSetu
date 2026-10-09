@@ -77,7 +77,16 @@ export function generateComplaint(analysis) {
   const { category, location, originalText, problem } = analysis;
   const trimmedLoc = location?.trim();
   const locationPhrase = trimmedLoc ? trimmedLoc : 'the mentioned area';
-  const duration = extractDuration(originalText || problem);
+  let duration = extractDuration(originalText || problem);
+  if (!duration && analysis.duration) {
+    if (typeof analysis.duration === 'string') {
+      duration = analysis.duration;
+    } else if (analysis.duration.value && analysis.duration.unit) {
+      duration = `${analysis.duration.value} ${analysis.duration.unit}`;
+    } else if (analysis.duration.rawText) {
+      duration = extractDuration(analysis.duration.rawText);
+    }
+  }
   const durationPhrase = duration ? ` for the past ${duration}` : '';
 
   switch (category) {
@@ -130,3 +139,23 @@ export function generateComplaint(analysis) {
       };
   }
 }
+
+/**
+ * Generate a complete formal complaint letter including salutation and closing.
+ *
+ * @param {object} analysis - The structured analysis object.
+ * @returns {{ subject: string, salutation: string, body: string, closing: string, fullLetter: string }}
+ */
+export function generateFormalComplaintLetter(analysis) {
+  const { subject, description } = generateComplaint(analysis);
+  const salutation = 'Respected Sir/Madam,';
+  const closing = 'Thank you for your attention.\n\nSincerely,\nConcerned Citizen';
+  return {
+    subject,
+    salutation,
+    body: description,
+    closing,
+    fullLetter: `Subject: ${subject}\n\n${salutation}\n\n${description}\n\n${closing}`,
+  };
+}
+

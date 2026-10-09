@@ -19,7 +19,9 @@ const suites = [
   { name: 'Phase 4 (Authority Redressal)', file: 'tests/testPhase4.mjs' },
   { name: 'Phase 5 (Tracking Ledger)', file: 'tests/testPhase5.mjs' },
   { name: 'Phase 6 (Voice & Accessibility)', file: 'tests/testPhase6.mjs' },
+  { name: 'Gemini AI Integration (Phase 5 Engine)', file: 'tests/testGeminiAnalysis.mjs' },
 ];
+
 
 console.log('================================================================');
 console.log('  🏛️  NAGRIKSETU AI CIVIC ASSISTANCE — FULL TEST REGRESSION');

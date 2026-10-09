@@ -40,6 +40,26 @@ const translations = {
     resultPriority: 'Priority',
     resultEdit: 'Edit',
     resultContinue: 'Generate Complaint',
+    loadingUnderstanding: 'Understanding your complaint...',
+    loadingCategory: 'Identifying the problem category...',
+    loadingPreparing: 'Preparing your complaint...',
+    fallbackNotice:
+      'Basic complaint analysis is being used because AI assistance is temporarily unavailable.',
+    aiAssistedBadge: 'Powered by Gemini AI',
+    fallbackBadge: 'Rule-Based Fallback',
+    urgencyHigh: 'High Urgency',
+    urgencyNormal: 'Normal Urgency',
+    urgencyReasonLabel: 'Urgency Assessment',
+    durationLabel: 'Duration Reported',
+    missingInfoTitle: 'Suggested Missing Information',
+    missingInfoDesc:
+      'Providing these details will help authorities resolve your complaint faster:',
+    retryAnalysisBtn: 'Re-analyze with AI',
+    safetyNoticeTitle: 'Emergency & Hazard Advisory',
+    safetyNoticeText:
+      'NagrikSetu is an administrative grievance platform, not an emergency response service. For acute public safety hazards or life-threatening emergencies, please contact emergency helplines (e.g. 112).',
+    detectedLanguageLabel: 'Detected Language',
+    subcategoryLabel: 'Subcategory',
 
     // Complaint Preview (Phase 3)
     previewTitle: 'AI Generated Complaint',
@@ -184,6 +204,26 @@ const translations = {
     resultPriority: 'प्राथमिकता',
     resultEdit: 'संपादित करें',
     resultContinue: 'शिकायत जनरेट करें',
+    loadingUnderstanding: 'आपकी शिकायत समझी जा रही है...',
+    loadingCategory: 'समस्या की श्रेणी पहचानी जा रही है...',
+    loadingPreparing: 'शिकायत तैयार की जा रही है...',
+    fallbackNotice:
+      'बुनियादी शिकायत विश्लेषण का उपयोग किया जा रहा है क्योंकि AI सहायता अस्थायी रूप से अनुपलब्ध है।',
+    aiAssistedBadge: 'Gemini AI द्वारा संचालित',
+    fallbackBadge: 'नियम-आधारित बैकअप',
+    urgencyHigh: 'उच्च प्राथमिकता',
+    urgencyNormal: 'सामान्य प्राथमिकता',
+    urgencyReasonLabel: 'प्राथमिकता मूल्यांकन',
+    durationLabel: 'दर्ज अवधि',
+    missingInfoTitle: 'अपेक्षित अतिरिक्त जानकारी',
+    missingInfoDesc:
+      'यह विवरण प्रदान करने से प्रशासन को समस्या निवारण में आसानी होगी:',
+    retryAnalysisBtn: 'AI के साथ पुनः विश्लेषण करें',
+    safetyNoticeTitle: 'आपातकालीन व जोखिम सूचना',
+    safetyNoticeText:
+      'नागरिकसेतु एक प्रशासनिक शिकायत मंच है, आपातकालीन प्रतिक्रिया सेवा नहीं। गंभीर खतरे या आपात स्थिति के लिए कृपया तुरंत आपातकालीन हेल्पलाइन (जैसे 112) पर संपर्क करें।',
+    detectedLanguageLabel: 'पहचानी गई भाषा',
+    subcategoryLabel: 'उप-श्रेणी',
 
     // Complaint Preview (Phase 3)
     previewTitle: 'AI द्वारा जनरेट की गई शिकायत',

@@ -32,6 +32,7 @@ export default function ComplaintForm() {
   // Workflow states: 'input' | 'understanding' | 'preview' | 'authority'
   const [workflowStep, setWorkflowStep] = useState('input');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analyzingStage, setAnalyzingStage] = useState(1);
   const [error, setError] = useState(null);
 
   // Data states
@@ -113,29 +114,26 @@ export default function ComplaintForm() {
   };
 
   /**
-   * Step 1 -> Step 2: Citizen triggers analysis
+   * Core Complaint Analysis runner with progressive status indicators
    */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!text.trim()) return;
+  const executeAnalysis = async (targetText, targetLocation) => {
+    if (!targetText.trim()) return;
 
     if (isListening) stopListening();
 
     setError(null);
-    setAnalysisResult(null);
-    setGeneratedDraft(null);
-    setAuthorityRecommendation(null);
-    setConfirmedComplaint(null);
-
-    if (!location.trim()) {
-      setError('missing_location');
-      return;
-    }
-
     setIsAnalyzing(true);
+    setAnalyzingStage(1);
+
+    // Progressive loading indicator timers
+    const timer1 = setTimeout(() => setAnalyzingStage(2), 800);
+    const timer2 = setTimeout(() => setAnalyzingStage(3), 1600);
 
     try {
-      const result = await analyzeComplaint(text, location);
+      const result = await analyzeComplaint(targetText, targetLocation, { language });
+
+      clearTimeout(timer1);
+      clearTimeout(timer2);
 
       if (result.success) {
         setAnalysisResult(result.data);
@@ -148,18 +146,50 @@ export default function ComplaintForm() {
         setWorkflowStep('input');
       }
     } catch {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
       setError('analysis_failed');
       setAnalysisResult(null);
       setWorkflowStep('input');
     } finally {
       setIsAnalyzing(false);
+      setAnalyzingStage(1);
     }
+  };
+
+  /**
+   * Step 1 -> Step 2: Citizen triggers analysis
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!text.trim()) return;
+
+    setAnalysisResult(null);
+    setGeneratedDraft(null);
+    setAuthorityRecommendation(null);
+    setConfirmedComplaint(null);
+
+    if (!location.trim()) {
+      setError('missing_location');
+      return;
+    }
+
+    await executeAnalysis(text, location);
+  };
+
+  /**
+   * Re-run analysis with AI (Retry button)
+   */
+  const handleRetryAnalysis = async () => {
+    if (!text.trim()) return;
+    await executeAnalysis(text, location);
   };
 
   const handleEditUnderstanding = () => {
     setWorkflowStep('input');
     setError(null);
   };
+
 
   const handleContinueToGeneration = () => {
     if (!analysisResult) return;
@@ -496,14 +526,18 @@ export default function ComplaintForm() {
                   : 'bg-bharat-coral hover:bg-[#d84315] text-white active:scale-[0.99] hover:shadow-md'
               }`}
             >
-              {isAnalyzing && (
-                <svg className="h-4 w-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                </svg>
-              )}
               {isAnalyzing ? (
-                t('formAnalyzing')
+                <span className="inline-flex items-center gap-2 animate-pulse">
+                  <svg className="h-4 w-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                  </svg>
+                  <span>
+                    {analyzingStage === 1 && t('loadingUnderstanding')}
+                    {analyzingStage === 2 && t('loadingCategory')}
+                    {analyzingStage === 3 && t('loadingPreparing')}
+                  </span>
+                </span>
               ) : (
                 <>
                   <span>+ {t('formAnalyzeBtn')}</span>
@@ -530,8 +564,10 @@ export default function ComplaintForm() {
             result={analysisResult}
             onEdit={handleEditUnderstanding}
             onContinue={handleContinueToGeneration}
+            onRetry={handleRetryAnalysis}
           />
         )}
+
 
         {/* Step 3: AI Generated Complaint Preview Card */}
         {workflowStep === 'preview' && generatedDraft && (

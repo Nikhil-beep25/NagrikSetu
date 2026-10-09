@@ -1,0 +1,296 @@
+/**
+ * NagrikSetu - Gemini AI Complaint Analysis Service
+ *
+ * Implements server-side Google Gemini Gen AI integration using
+ * the official @google/genai SDK.
+ *
+ * Security & Integrity Guarantees:
+ * - Credentials reside exclusively on the server (never exposed to client).
+ * - Enforces schema-constrained JSON output.
+ * - Validates all response fields before dispatching.
+ * - Does not fabricate locations, dates, names, or authorities.
+ * - Provides graceful fallback triggers when unconfigured or failing.
+ */
+
+import { GoogleGenAI, Type } from '@google/genai';
+
+export const VALID_CATEGORIES = [
+  'Garbage',
+  'Road/Pothole',
+  'Streetlight',
+  'Water',
+  'Drainage',
+  'Unsupported',
+];
+
+
+/**
+ * Normalizes category variations into the 5 canonical NagrikSetu categories.
+ */
+export function normalizeCategory(categoryStr) {
+  if (!categoryStr) return 'Unsupported';
+  const clean = String(categoryStr).trim().toLowerCase();
+
+  if (clean.includes('garbage') || clean.includes('sanitation') || clean.includes('waste') || clean.includes('kachra') || clean.includes('kooda')) {
+    return 'Garbage';
+  }
+  if (clean.includes('road') || clean.includes('pothole') || clean.includes('sadak') || clean.includes('gaddha')) {
+    return 'Road/Pothole';
+  }
+  if (clean.includes('streetlight') || clean.includes('street light') || clean.includes('lamp') || clean.includes('bijli') || clean.includes('pole')) {
+    return 'Streetlight';
+  }
+  if (clean.includes('water') || clean.includes('paani') || clean.includes('pani') || clean.includes('jal') || clean.includes('pipeline')) {
+    return 'Water';
+  }
+  if (clean.includes('drain') || clean.includes('sewer') || clean.includes('gutter') || clean.includes('nali') || clean.includes('naali') || clean.includes('waterlog')) {
+    return 'Drainage';
+  }
+  if (clean.includes('unsupported')) {
+    return 'Unsupported';
+  }
+
+  return 'Unsupported';
+}
+
+/**
+ * Checks whether the Gemini API key is configured in the environment.
+ */
+export function isGeminiConfigured() {
+  const key = process.env.GEMINI_API_KEY;
+  return Boolean(key && key.trim().length > 0 && key !== 'your_gemini_api_key_here');
+}
+
+/**
+ * Response schema for Gemini structured output.
+ */
+const COMPLAINT_ANALYSIS_SCHEMA = {
+  type: Type.OBJECT,
+  properties: {
+    category: {
+      type: Type.STRING,
+      enum: ['Garbage', 'Road/Pothole', 'Streetlight', 'Water', 'Drainage', 'Unsupported'],
+      description: 'Primary civic category or Unsupported if not a municipal civic problem.',
+    },
+    subcategory: {
+      type: Type.STRING,
+      description: 'Specific subcategory, e.g., Uncollected Waste, Deep Pothole, Broken Lamp Post, etc.',
+    },
+    summary: {
+      type: Type.STRING,
+      description: 'Cleaned, objective factual summary of the citizen problem.',
+    },
+    location: {
+      type: Type.STRING,
+      description: 'Explicit location or landmark mentioned by citizen in their text, or null if omitted.',
+      nullable: true,
+    },
+    durationValue: {
+      type: Type.INTEGER,
+      description: 'Numeric duration count if mentioned (e.g. 5 for 5 days), or null.',
+      nullable: true,
+    },
+    durationUnit: {
+      type: Type.STRING,
+      description: 'Unit of duration (days, weeks, months, hours) if mentioned, or null.',
+      nullable: true,
+    },
+    durationRawText: {
+      type: Type.STRING,
+      description: 'Exact citizen text referring to duration (e.g. 5 din, 3 days, do hafte), or null.',
+      nullable: true,
+    },
+    urgency: {
+      type: Type.STRING,
+      enum: ['High', 'Normal'],
+      description: 'High only for acute safety hazards (exposed wires, open manholes, hazardous flooding), otherwise Normal.',
+    },
+    urgencyReason: {
+      type: Type.STRING,
+      description: 'Grounded rationale for why the urgency level was chosen.',
+    },
+    detectedLanguage: {
+      type: Type.STRING,
+      enum: ['English', 'Hindi', 'Hinglish', 'Mixed'],
+      description: 'Detected language of user input.',
+    },
+    missingInformation: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: 'List of essential details missing for civic action (e.g. exact landmark, ward name).',
+    },
+    suggestedAction: {
+      type: Type.STRING,
+      description: 'Professional next step recommended for the citizen or municipal officer.',
+    },
+    isCivicComplaint: {
+      type: Type.BOOLEAN,
+      description: 'True if this is a genuine municipal civic grievance, False if personal, passport, taxation, etc.',
+    },
+  },
+  required: [
+    'category',
+    'subcategory',
+    'summary',
+    'urgency',
+    'urgencyReason',
+    'detectedLanguage',
+    'missingInformation',
+    'suggestedAction',
+    'isCivicComplaint',
+  ],
+};
+
+/**
+ * Validates and normalizes Gemini's output before returning to frontend.
+ */
+export function validateAndNormalizeGeminiResponse(rawJson, originalText, userLocation = '') {
+  if (!rawJson || typeof rawJson !== 'object') {
+    throw new Error('Malformed AI response: expected JSON object.');
+  }
+
+  const rawCat = rawJson.category || '';
+  const normalizedCat = normalizeCategory(rawCat);
+  const isCivic = rawJson.isCivicComplaint !== false && normalizedCat !== 'Unsupported';
+
+  const category = isCivic ? normalizedCat : 'Unsupported';
+  const urgency = rawJson.urgency === 'High' ? 'High' : 'Normal';
+
+  // Construct structured duration if provided
+  let duration = null;
+  if (rawJson.durationRawText || rawJson.durationUnit || typeof rawJson.durationValue === 'number') {
+    duration = {
+      value: typeof rawJson.durationValue === 'number' ? rawJson.durationValue : null,
+      unit: rawJson.durationUnit || 'days',
+      rawText: rawJson.durationRawText || (rawJson.durationValue ? `${rawJson.durationValue} ${rawJson.durationUnit || 'days'}` : ''),
+    };
+  }
+
+  // Location resolution: prioritize explicit location passed by user, fallback to extracted location
+  const extractedLocation = typeof rawJson.location === 'string' && rawJson.location.trim().length > 0
+    ? rawJson.location.trim()
+    : null;
+  const effectiveLocation = userLocation?.trim() || extractedLocation || '';
+
+  // Missing information list
+  const missingInfo = Array.isArray(rawJson.missingInformation)
+    ? rawJson.missingInformation.filter(item => typeof item === 'string' && item.trim().length > 0)
+    : [];
+
+  // If location is not provided anywhere, make sure it is noted in missing information
+  if (!effectiveLocation && !missingInfo.some(m => /location|place|ward|address|जगह|इलाका/i.test(m))) {
+    missingInfo.unshift('Exact location or landmark of the issue');
+  }
+
+  return {
+    category,
+    subcategory: rawJson.subcategory || `${category} Issue`,
+    summary: rawJson.summary || originalText,
+    originalDescription: originalText,
+    location: effectiveLocation || null,
+    extractedLocation,
+    duration,
+    urgency,
+    urgencyReason: rawJson.urgencyReason || (urgency === 'High' ? 'Safety concern reported' : 'Routine civic maintenance request'),
+    detectedLanguage: rawJson.detectedLanguage || 'English',
+    missingInformation: missingInfo,
+    suggestedAction: rawJson.suggestedAction || 'Submit to municipal department for verification and action.',
+    isCivicComplaint: isCivic,
+    safetyNotice: urgency === 'High'
+      ? 'Potentially hazardous condition detected. NagrikSetu is an administrative grievance platform, not an emergency response dispatch. For acute life-threatening emergencies, please also contact official emergency helplines (e.g., 112).'
+      : null,
+  };
+}
+
+/**
+ * Analyzes a civic complaint using the Gemini API.
+ *
+ * @param {string} complaintText - Raw text in English, Hindi, or Hinglish.
+ * @param {string} [userLocation] - Optional user location.
+ * @param {string} [preferredLang] - Preferred output language ('en' | 'hi').
+ * @returns {Promise<{success: boolean, data?: object, error?: string, fallbackRequired?: boolean}>}
+ */
+export async function analyzeComplaintWithGemini(complaintText, userLocation = '', preferredLang = 'en') {
+  if (!isGeminiConfigured()) {
+    const error = new Error('GEMINI_API_KEY is not configured on the server.');
+    error.code = 'MISSING_API_KEY';
+    throw error;
+  }
+
+  const modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+  const systemPrompt = `You are the civic grievance intelligence engine for NagrikSetu, an AI assistance platform for Indian citizens.
+Citizens describe local civic problems in English, Hindi (Devanagari script), Hinglish (Romanized Hindi), or mixed code-switching.
+
+Supported Categories:
+1. Garbage (Sanitation, solid waste, uncollected dustbins, kachra, kooda, safai, gandagi)
+2. Road/Pothole (Damaged roads, craters, broken pavement, footpath, sadak, gaddha, toot)
+3. Streetlight (Non-working street lamps, broken poles, dark streets, streetlight band, bijli khamba)
+4. Water (Drinking water supply cut, pipe leakage, contamination, paani nahi aa raha, jal tanki)
+5. Drainage (Blocked drains, overflowing sewers, waterlogging, nali band, naala overflow, ganda paani)
+6. Unsupported (Any NON-CIVIC matter such as passport, visa, PAN/Aadhaar card, income tax, personal matrimonial or civil disputes, cyber crime, e-commerce refund).
+
+Strict Civic Integrity Rules:
+- DO NOT invent or hallucinate facts, dates, names, or official government departments.
+- Extract ONLY what the citizen states.
+- Urgency: Set to 'High' ONLY if the citizen reports an immediate physical danger or health hazard (e.g. exposed live electric wire, open deep manhole, toxic hospital waste, severe road crater causing crashes, acute flood into residences). Otherwise set to 'Normal'.
+- Duration: Extract numeric value, unit, and citizen's raw words if mentioned (e.g. '3 din', '5 days', 'do hafte'). If not mentioned, set to null.
+- Location: Extract any locality or landmark mentioned in text. If none, set to null.
+- Missing Information: Identify essential details required by municipal staff to take action (e.g., specific landmark, house number, ward).
+- Summary: Concise and professional problem description in ${preferredLang === 'hi' ? 'Hindi' : 'English'}.`;
+
+  const userPrompt = `Citizen Complaint:
+"""
+${complaintText}
+"""
+${userLocation ? `Citizen Stated Location: "${userLocation}"` : 'Citizen Stated Location: (None provided yet)'}`;
+
+  // Call Gemini with timeout
+  const timeoutMs = 12000;
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => {
+      const err = new Error(`Gemini API request timed out after ${timeoutMs}ms.`);
+      err.code = 'TIMEOUT';
+      reject(err);
+    }, timeoutMs);
+  });
+
+  const apiPromise = ai.models.generateContent({
+    model: modelName,
+    contents: [
+      { role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}` }] },
+    ],
+    config: {
+      responseMimeType: 'application/json',
+      responseSchema: COMPLAINT_ANALYSIS_SCHEMA,
+      temperature: 0.1,
+    },
+  });
+
+  const response = await Promise.race([apiPromise, timeoutPromise]);
+  const textOutput = response.text;
+
+  if (!textOutput) {
+    throw new Error('Gemini API returned an empty response.');
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(textOutput);
+  } catch (parseErr) {
+    throw new Error(`Failed to parse Gemini JSON output: ${parseErr.message}`);
+  }
+
+  const normalized = validateAndNormalizeGeminiResponse(parsed, complaintText, userLocation);
+
+  return {
+    success: true,
+    data: {
+      ...normalized,
+      modelUsed: modelName,
+      isAiAssisted: true,
+      isFallback: false,
+    },
+  };
+}

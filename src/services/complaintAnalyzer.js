@@ -1,10 +1,15 @@
 /**
  * AI Complaint Analyzer Service
  *
- * Clean abstraction over complaint analysis.
- * Currently uses a keyword-based mock implementation.
- * Can be swapped for a real AI API (e.g., Gemini, OpenAI) by
- * replacing the analyzeComplaint function body.
+ * Production-ready hybrid analyzer:
+ * 1. Primary: Gemini-powered AI complaint understanding via backend API (/api/analyze-complaint).
+ * 2. Fallback: Local rule-based keyword & NLP pattern analyzer for instant resilience.
+ *
+ * The existing rule-based analyzer is preserved in full and activates seamlessly whenever:
+ * - Gemini API is unconfigured / key missing
+ * - The backend is unreachable or returns an error
+ * - Request times out or encounters network limits
+ * - The response fails schema validation
  */
 
 const SUPPORTED_CATEGORIES = [
@@ -146,8 +151,28 @@ function detectPriority(normalizedText) {
 }
 
 /**
+ * Extract duration for the rule-based fallback.
+ */
+function extractFallbackDuration(normalizedText) {
+  const durationMatch = normalizedText.match(
+    /(\d+)\s*(din|day|days|week|weeks|hafte|month|months|mahine|mahina|दिन|हफ्ते|महीने)/i,
+  );
+  if (!durationMatch) return null;
+
+  const rawUnit = durationMatch[2].toLowerCase();
+  let unit = 'days';
+  if (/hafte|week|सप्ताह/i.test(rawUnit)) unit = 'weeks';
+  else if (/mahine|month|महीने/i.test(rawUnit)) unit = 'months';
+
+  return {
+    value: parseInt(durationMatch[1], 10),
+    unit,
+    rawText: durationMatch[0],
+  };
+}
+
+/**
  * Translate the complaint to a clean English problem statement.
- * This is a structured mock — a real AI would do translation.
  */
 function generateProblemStatement(normalizedText, category) {
   const templates = {
@@ -158,7 +183,6 @@ function generateProblemStatement(normalizedText, category) {
     Drainage: 'Drainage blockage or overflow issue reported',
   };
 
-  // Try to extract duration mentions for a richer statement (both Latin and Devanagari numbers/words)
   const durationMatch = normalizedText.match(
     /(\d+)\s*(din|day|days|week|weeks|hafte|month|months|mahine|mahina|दिन|हफ्ते|महीने)/i,
   );
@@ -173,24 +197,15 @@ function generateProblemStatement(normalizedText, category) {
 }
 
 /**
- * Main analysis function.
+ * Rule-based fallback analysis execution.
+ * Guaranteed to run locally without network dependencies.
  *
- * @param {string} complaintText - The raw complaint text from the user.
- * @param {string} userLocation - The location provided by the user (can be empty).
- * @returns {Promise<{success: boolean, data?: object, error?: string}>}
+ * @param {string} trimmed - Trimmed raw text.
+ * @param {string} userLocation - Location entered by user.
+ * @param {string} [fallbackReason] - Why fallback was used.
+ * @returns {{success: boolean, data?: object, error?: string}}
  */
-export async function analyzeComplaint(complaintText, userLocation) {
-  // Simulate network delay for realistic UX
-  await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 400));
-
-  const trimmed = complaintText.trim();
-  if (!trimmed) {
-    return {
-      success: false,
-      error: 'empty_complaint',
-    };
-  }
-
+export function ruleBasedAnalyzeComplaint(trimmed, userLocation, fallbackReason = 'AI assistance is temporarily unavailable.') {
   const normalized = normalize(trimmed);
   const category = detectCategory(normalized);
 
@@ -198,22 +213,146 @@ export async function analyzeComplaint(complaintText, userLocation) {
     return {
       success: false,
       error: 'unsupported_category',
+      isFallback: true,
+      fallbackReason,
     };
   }
 
   const priority = detectPriority(normalized);
   const problem = generateProblemStatement(normalized, category);
+  const duration = extractFallbackDuration(normalized);
 
   return {
     success: true,
     data: {
       problem,
       category,
+      subcategory: `${category} Service Request`,
       location: userLocation?.trim() || '',
       priority,
+      urgencyReason: priority === 'High' ? 'Flagged based on reported conditions or duration' : 'Standard priority civic maintenance',
+      duration,
+      missingInformation: userLocation?.trim() ? [] : ['Exact location or landmark'],
+      suggestedAction: 'Forward to local municipal department for inspection.',
+      detectedLanguage: 'Multilingual / Indic',
       originalText: trimmed,
+      isAiAssisted: false,
+      isFallback: true,
+      fallbackNotice: 'Basic complaint analysis is being used because AI assistance is temporarily unavailable.',
+      fallbackReason,
+      safetyNotice: priority === 'High'
+        ? 'Potentially hazardous condition noted. For acute emergencies, please contact official emergency services (e.g. 112).'
+        : null,
     },
   };
 }
 
-export { SUPPORTED_CATEGORIES };
+/**
+ * Main analysis entrypoint.
+ *
+ * Attempts Gemini AI analysis via backend API.
+ * Seamlessly activates rule-based fallback if backend is unreachable,
+ * unconfigured, or returns an error.
+ *
+ * @param {string} complaintText - The raw complaint text from the user.
+ * @param {string} [userLocation] - The location provided by the user.
+ * @param {object} [options] - Options (e.g., { language: 'en', forceFallback: false }).
+ * @returns {Promise<{success: boolean, data?: object, error?: string}>}
+ */
+export async function analyzeComplaint(complaintText, userLocation = '', options = {}) {
+  const trimmed = complaintText ? complaintText.trim() : '';
+  if (!trimmed) {
+    return {
+      success: false,
+      error: 'empty_complaint',
+    };
+  }
+
+  // Allow explicit fallback bypass (for testing or offline switches)
+  if (options.forceFallback) {
+    return ruleBasedAnalyzeComplaint(trimmed, userLocation, 'Explicitly requested offline analysis.');
+  }
+
+  // Construct API endpoint URL (handles both browser and Node.js testing environments)
+  let apiUrl = '/api/analyze-complaint';
+  if (typeof window === 'undefined') {
+    const port = process.env.PORT || 5001;
+    apiUrl = `http://localhost:${port}/api/analyze-complaint`;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 9000);
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        complaintText: trimmed,
+        location: userLocation,
+        language: options.language || 'en',
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        return {
+          success: true,
+          data: {
+            problem: result.data.summary || generateProblemStatement(normalize(trimmed), result.data.category),
+            category: result.data.category,
+            subcategory: result.data.subcategory || `${result.data.category} Issue`,
+            location: userLocation?.trim() || result.data.location || '',
+            priority: result.data.urgency || 'Normal',
+            urgencyReason: result.data.urgencyReason || '',
+            duration: result.data.duration || null,
+            missingInformation: result.data.missingInformation || [],
+            suggestedAction: result.data.suggestedAction || '',
+            detectedLanguage: result.data.detectedLanguage || 'English',
+            originalText: trimmed,
+            isAiAssisted: true,
+            isFallback: false,
+            fallbackNotice: null,
+            safetyNotice: result.data.safetyNotice || null,
+            modelUsed: result.data.modelUsed || 'gemini-2.5-flash',
+          },
+        };
+      }
+
+      // If backend explicitly marked category as unsupported
+      if (result.error === 'unsupported_category') {
+        return {
+          success: false,
+          error: 'unsupported_category',
+          data: result.data || null,
+        };
+      }
+
+      // If backend signaled fallback is required
+      if (result.fallbackRequired) {
+        return ruleBasedAnalyzeComplaint(trimmed, userLocation, result.message || 'Gemini processing bypassed by backend.');
+      }
+    }
+
+    // Non-200 response or non-success
+    return ruleBasedAnalyzeComplaint(trimmed, userLocation, `Backend response status: ${response.status}`);
+  } catch (err) {
+    // Network failure, timeout, ECONNREFUSED, or offline mode
+    const reason = err.name === 'AbortError'
+      ? 'AI request timed out after 9 seconds.'
+      : 'Backend API unreachable, using resilient local analyzer.';
+
+    return ruleBasedAnalyzeComplaint(trimmed, userLocation, reason);
+  }
+}
+
+export {
+  SUPPORTED_CATEGORIES,
+  CATEGORY_KEYWORDS,
+  HIGH_PRIORITY_KEYWORDS,
+};

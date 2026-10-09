@@ -45,49 +45,120 @@ const categoryIcons = {
   ),
 };
 
-export default function AnalysisResultCard({ result, onEdit, onContinue }) {
+export default function AnalysisResultCard({ result, onEdit, onContinue, onRetry }) {
   const { language, t } = useLanguage();
 
   if (!result) return null;
 
-  const { problem, category, location, priority } = result;
+  const {
+    problem,
+    category,
+    subcategory,
+    location,
+    priority,
+    urgencyReason,
+    duration,
+    missingInformation,
+    detectedLanguage,
+    isFallback,
+    fallbackNotice,
+
+    fallbackReason,
+    safetyNotice,
+    modelUsed,
+  } = result;
+
+  const durationText = duration?.rawText
+    || (duration?.value && duration?.unit ? `${duration.value} ${duration.unit}` : null);
 
   return (
     <div className="mt-6 rounded-2xl border border-border bg-white shadow-card overflow-hidden animate-fade-slide-up">
       {/* Symmetrical Diagnostic Header Bar */}
       <div className="flex items-center justify-between border-b border-border bg-surface-dim px-6 py-4 flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-chakra-600 text-white shadow-xs shrink-0">
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 11 12 14 22 4" />
-              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-            </svg>
+          <div className={`flex h-9 w-9 items-center justify-center rounded-lg text-white shadow-xs shrink-0 ${
+            isFallback ? 'bg-amber-600' : 'bg-chakra-600'
+          }`}>
+            {isFallback ? (
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            ) : (
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 11 12 14 22 4" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+              </svg>
+            )}
           </div>
           <div>
             <h3 className="text-sm sm:text-base font-bold text-chakra-900 tracking-tight flex items-center gap-1.5">
-              <span>🤖</span>
+              <span>{isFallback ? '⚡' : '🤖'}</span>
               <span>{language === 'hi' ? 'नागरिकसेतु AI समझ' : 'NAGRIKSETU AI UNDERSTANDING'}</span>
             </h3>
             <p className="text-[11px] text-text-muted">
-              {language === 'hi' ? 'नागरिकसेतु AI द्वारा स्वचालित वर्गीकरण' : 'Automated Triage by NagrikSetu Engine'}
+              {isFallback
+                ? (language === 'hi' ? 'बैकअप नियम-आधारित इंजन द्वारा विश्लेषित' : 'Rule-Based Resilient Engine')
+                : (language === 'hi' ? `Gemini AI (${modelUsed || '2.5-flash'}) द्वारा विश्लेषित` : `Automated Triage by Gemini AI (${modelUsed || '2.5-flash'})`)}
             </p>
           </div>
         </div>
 
-        {/* AI Confidence Pill Badge */}
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-harit-50 border border-harit-200 px-3 py-1 text-xs font-bold text-harit-700 shadow-2xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-harit-500 animate-pulse" />
-          AI Verified: 98% Match
-        </span>
+        {/* Engine Status Badge */}
+        {isFallback ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 border border-amber-300 px-3 py-1 text-xs font-bold text-amber-800 shadow-2xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+            {t('fallbackBadge')}
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-harit-50 border border-harit-200 px-3 py-1 text-xs font-bold text-harit-700 shadow-2xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-harit-500 animate-pulse" />
+            {t('aiAssistedBadge')}
+          </span>
+        )}
       </div>
 
       {/* Body */}
       <div className="p-6 space-y-4">
-        {/* Extracted Problem */}
+        {/* Transparent Fallback Notification Banner */}
+        {isFallback && (
+          <div className="rounded-xl border border-amber-200 bg-amber-50/90 p-3.5 flex items-start gap-3 text-xs text-amber-900 animate-fade-slide-up">
+            <span className="text-base shrink-0 mt-0.5">ℹ️</span>
+            <div>
+              <p className="font-bold">{fallbackNotice || t('fallbackNotice')}</p>
+              {fallbackReason && (
+                <p className="text-[11px] text-amber-700/90 mt-0.5">{fallbackReason}</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* High-Urgency Safety Notice Banner */}
+        {priority === 'High' && (
+          <div className="rounded-xl border border-red-200 bg-red-50/90 p-3.5 flex items-start gap-3 text-xs text-red-900 animate-fade-slide-up">
+            <span className="text-base shrink-0 mt-0.5">🚨</span>
+            <div>
+              <p className="font-bold text-red-800">{t('safetyNoticeTitle')}</p>
+              <p className="text-[11px] text-red-700 mt-0.5 leading-relaxed">
+                {safetyNotice || t('safetyNoticeText')}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Extracted Problem Statement */}
         <div>
-          <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5">
-            {t('resultProblem')}
-          </p>
+          <div className="flex items-center justify-between mb-1.5">
+            <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider">
+              {t('resultProblem')}
+            </p>
+            {detectedLanguage && (
+              <span className="text-[11px] font-semibold text-chakra-700 bg-chakra-50 border border-chakra-200 rounded-md px-2 py-0.5">
+                {t('detectedLanguageLabel')}: {detectedLanguage}
+              </span>
+            )}
+          </div>
           <div className="rounded-xl border border-border bg-surface-dim/70 p-4 text-sm font-medium text-text-primary leading-relaxed">
             {problem}
           </div>
@@ -97,9 +168,16 @@ export default function AnalysisResultCard({ result, onEdit, onContinue }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Category Chip */}
           <div className="rounded-xl border border-border bg-surface-dim/40 p-3.5">
-            <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5">
-              {t('resultCategory')}
-            </p>
+            <div className="flex items-center justify-between mb-1.5">
+              <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider">
+                {t('resultCategory')}
+              </p>
+              {subcategory && (
+                <span className="text-[10px] text-text-muted font-medium truncate max-w-[150px]">
+                  {subcategory}
+                </span>
+              )}
+            </div>
             <div className="flex items-center h-8">
               <div className="inline-flex items-center gap-2 rounded-full border border-chakra-200 bg-chakra-50 px-3 py-1">
                 <span className="text-chakra-700">
@@ -110,12 +188,12 @@ export default function AnalysisResultCard({ result, onEdit, onContinue }) {
             </div>
           </div>
 
-          {/* Priority Pill */}
+          {/* Priority Pill & Rationale */}
           <div className="rounded-xl border border-border bg-surface-dim/40 p-3.5">
             <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5">
               {t('resultPriority')}
             </p>
-            <div className="flex items-center h-8">
+            <div className="flex items-center justify-between h-8">
               <span
                 className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold ${
                   priority === 'High'
@@ -128,38 +206,98 @@ export default function AnalysisResultCard({ result, onEdit, onContinue }) {
                     <path d="M12 2L1 21h22L12 2zm0 4l7.53 13H4.47L12 6zm-1 5v4h2v-4h-2zm0 6v2h2v-2h-2z" />
                   </svg>
                 )}
-                {priority} Priority
+                {priority === 'High' ? t('urgencyHigh') : t('urgencyNormal')}
               </span>
+            </div>
+            {urgencyReason && (
+              <p className="text-[11px] text-text-muted mt-1 leading-snug">
+                <span className="font-semibold text-text-secondary">{t('urgencyReasonLabel')}:</span> {urgencyReason}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Duration & Location Symmetrical Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Location */}
+          <div className="rounded-xl border border-border bg-surface-dim/40 p-3.5">
+            <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5">
+              {t('resultLocation')}
+            </p>
+            <div className="flex items-center gap-2 text-xs font-semibold text-text-secondary bg-surface-dim rounded-lg p-2 border border-border">
+              <svg className="h-4 w-4 text-chakra-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span className="truncate">{location || (language === 'hi' ? 'स्थान दर्ज नहीं है' : 'Location not specified')}</span>
+            </div>
+          </div>
+
+          {/* Extracted Duration */}
+          <div className="rounded-xl border border-border bg-surface-dim/40 p-3.5">
+            <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5">
+              {t('durationLabel')}
+            </p>
+            <div className="flex items-center gap-2 text-xs font-semibold text-text-secondary bg-surface-dim rounded-lg p-2 border border-border">
+              <svg className="h-4 w-4 text-kesari-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span className="truncate">{durationText || (language === 'hi' ? 'अवधि दर्ज नहीं है' : 'No duration specified')}</span>
             </div>
           </div>
         </div>
 
-        {/* Geotagged Location */}
-        <div>
-          <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5">
-            {t('resultLocation')}
-          </p>
-          <div className="flex items-center gap-2.5 text-xs font-semibold text-text-secondary bg-surface-dim rounded-xl p-3.5 border border-border">
-            <svg className="h-4 w-4 text-chakra-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <span className="truncate">{location}</span>
+        {/* Missing Information Prompt Card */}
+        {missingInformation && missingInformation.length > 0 && (
+          <div className="rounded-xl border border-blue-200 bg-blue-50/70 p-4">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-sm">💡</span>
+              <p className="text-xs font-bold text-blue-900">
+                {t('missingInfoTitle')}
+              </p>
+            </div>
+            <p className="text-[11px] text-blue-800 mb-2 leading-relaxed">
+              {t('missingInfoDesc')}
+            </p>
+            <ul className="space-y-1">
+              {missingInformation.map((info, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-xs text-blue-950 font-medium">
+                  <span className="text-blue-500 font-bold">•</span>
+                  <span>{info}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Symmetrical Action Buttons with matching h-11 */}
+      {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-3 border-t border-border bg-surface-dim px-6 py-4">
-        {/* Outlined Secondary Button */}
+        {/* Outlined Edit Button */}
         <button
+          type="button"
           onClick={onEdit}
           className="flex-1 h-11 flex items-center justify-center rounded-lg border border-border-input bg-white px-4 text-sm font-semibold text-chakra-800 hover:bg-chakra-50 hover:border-chakra-300 transition-all duration-150 text-center"
         >
           {t('resultEdit')}
         </button>
+
+        {/* Re-analyze with AI button (if onRetry supplied or in fallback mode) */}
+        {onRetry && (
+          <button
+            type="button"
+            onClick={onRetry}
+            className="flex-1 h-11 flex items-center justify-center gap-1.5 rounded-lg border border-chakra-300 bg-chakra-50 px-4 text-sm font-bold text-chakra-800 hover:bg-chakra-100 transition-all duration-150 text-center"
+          >
+            <span>🔄</span>
+            <span>{t('retryAnalysisBtn')}</span>
+          </button>
+        )}
+
         {/* Primary Action Button */}
         <button
+          type="button"
           onClick={onContinue}
           className="flex-1 h-11 flex items-center justify-center gap-2 rounded-lg bg-bharat-coral hover:bg-[#d84315] px-4 text-sm font-bold text-white active:scale-[0.99] transition-all duration-150 shadow-sm text-center"
         >

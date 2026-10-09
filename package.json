@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node server/index.js",
     "build": "vite build",
     "lint": "oxlint",
     "test": "node tests/runAllTests.mjs",
+    "test:live": "node tests/testLiveGeminiIntegration.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
