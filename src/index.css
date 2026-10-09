@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors - Stitch "Nagrik Civic Platform" Design System */
+  --color-chakra-900: #001c38;
+  --color-chakra-800: #002546;
+  --color-chakra-700: #0a2b4c;
+  --color-chakra-600: #0d3b66;
+  --color-chakra-500: #204874;
+  --color-chakra-400: #3a608d;
+  --color-chakra-300: #81a6d7;
+  --color-chakra-200: #a4c9fc;
+  --color-chakra-100: #d3e4ff;
+  --color-chakra-50: #ecf4fe;
+
+  /* Backward compatible alias with existing civic tokens */
+  --color-civic-50: #ecf4fe;
+  --color-civic-100: #d3e4ff;
+  --color-civic-200: #a4c9fc;
+  --color-civic-300: #81a6d7;
+  --color-civic-400: #3a608d;
+  --color-civic-500: #204874;
+  --color-civic-600: #0d3b66;
+  --color-civic-700: #0a2b4c;
+  --color-civic-800: #002546;
+  --color-civic-900: #001c38;
+
+  /* Saffron / Kesari Flame */
+  --color-kesari-700: #b8330a;
+  --color-kesari-600: #d84315;
+  --color-kesari-500: #e65100;
+  --color-kesari-400: #f46036;
+  --color-kesari-300: #ff671f;
+  --color-kesari-200: #ffb5a0;
+  --color-kesari-100: #ffe0b2;
+  --color-kesari-50: #fff3e0;
+
+  /* Emerald / Harit */
+  --color-harit-700: #003e1e;
+  --color-harit-600: #046a38;
+  --color-harit-500: #0e7c3a;
+  --color-harit-400: #10b981;
+  --color-harit-300: #7adb8d;
+  --color-harit-200: #a7f3d0;
+  --color-harit-100: #c8e6c9;
+  --color-harit-50: #e8f5e9;
+
+  /* Surfaces */
+  --color-surface-canvas: #f8fafc;
+  --color-surface-dim: #f6f9ff;
+  --color-surface: #ffffff;
+  --color-surface-card: #ffffff;
+  --color-surface-container: #e7eff8;
+  --color-surface-high: #e1e9f3;
+
+  /* Modern Civic Portal Material Design Tokens */
+  --color-gov-navy: #081a3e;
+  --color-gov-blue: #0b2154;
+  --color-bharat-coral: #ea5438;
+  --color-bharat-cream: #fbf7f4;
+  --color-bharat-creamborder: #ebdcd0;
+  --color-whatsapp: #25d366;
+
+  /* Text */
+  --color-text-primary: #141c23;
+  --color-text-secondary: #42474f;
+  --color-text-muted: #737780;
+
+  /* Borders */
+  --color-border: #e2e6e9;
+  --color-border-input: #d3d9de;
+  --color-border-hover: #cbd5e1;
+  --color-border-focus: #0d3b66;
+
+  /* System States */
+  --color-success: #0e7c3a;
+  --color-warning: #f46036;
+  --color-error: #ba1a1a;
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+
+  /* Elevation Shadows from Stitch Design System */
+  --shadow-level-0: none;
+  --shadow-card: 0px 1px 3px rgba(13, 59, 102, 0.04), 0px 4px 12px rgba(13, 59, 102, 0.02);
+  --shadow-card-hover: 0px 4px 16px rgba(13, 59, 102, 0.08), 0px 1px 4px rgba(13, 59, 102, 0.04);
+  --shadow-elevated: 0px 8px 24px -4px rgba(13, 71, 161, 0.08);
+  --shadow-modal: 0px 12px 32px rgba(13, 59, 102, 0.12), 0px 2px 8px rgba(13, 59, 102, 0.06);
+  --shadow-nav: 0 1px 4px rgba(13, 59, 102, 0.04);
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-dim);
+}
+
+/* Tabular numerals for civic numbers, IDs, and metrics */
+.tabular-nums {
+  font-feature-settings: "tnum";
+}
+
+/* Focus ring per Stitch specification: 2px ring with subtle outer glow */
+*:focus-visible {
+  outline: 2px solid var(--color-kesari-400);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Tricolor micro-gradient ribbons and accents from Stitch */
+.tricolor-ribbon {
+  background: linear-gradient(90deg, #ff671f 0%, #ffffff 50%, #046a38 100%);
+  height: 2px;
+}
+
+.tricolor-ribbon-3px {
+  background: linear-gradient(90deg, #ff671f 0%, #ffffff 50%, #046a38 100%);
+  height: 3px;
+}
+
+.tricolor-top-border {
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, #ff671f 0%, #ffffff 50%, #046a38 100%) 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c3c6d0;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #737780;
+}
+
+/* Entrance animation */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

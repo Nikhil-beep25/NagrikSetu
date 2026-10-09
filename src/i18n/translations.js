@@ -1,0 +1,292 @@
+const translations = {
+  en: {
+    // Navbar
+    navHome: 'Home',
+    navComplaints: 'My Complaints',
+    navHow: 'How It Works',
+
+    // Hero
+    heroBadge: 'AI-Powered Civic Assistant',
+    heroHeading: 'Tell us your civic problem.',
+    heroSubheading:
+      'Describe your problem in your own words. AI helps you understand the complaint and find the right next step.',
+
+    // Complaint form
+    formLabel: 'What problem are you facing?',
+    formPlaceholder:
+      'Example: Garbage has not been collected in my area for 3 days...',
+    formLocationPlaceholder: 'Your area or locality',
+    formUploadLabel: 'Attach photo (optional)',
+    formAnalyzeBtn: 'Analyze Complaint',
+    formAnalyzing: 'Analyzing...',
+    formNote:
+      'You can describe your problem in English, Hindi, or Hinglish.',
+    formMicTooltip: 'Click to speak your problem',
+    formImageSelected: 'Image selected',
+
+    // Voice Input (Phase 6)
+    voiceSpeakBtn: 'Speak your problem',
+    voiceListening: 'Listening... speak now',
+    voiceStopBtn: 'Stop listening',
+    voiceNotSupported: 'Voice input is not supported in this browser.',
+    voicePermissionError:
+      'Microphone access denied. Please allow microphone permission in your browser.',
+
+    // Analysis result
+    resultTitle: 'Complaint Understanding',
+    resultProblem: 'Problem',
+    resultCategory: 'Category',
+    resultLocation: 'Location',
+    resultPriority: 'Priority',
+    resultEdit: 'Edit',
+    resultContinue: 'Generate Complaint',
+
+    // Complaint Preview (Phase 3)
+    previewTitle: 'AI Generated Complaint',
+    previewSubtitle:
+      'Review and edit the formal complaint generated for submission.',
+    previewSubject: 'Subject',
+    previewSubjectPlaceholder: 'Enter complaint subject...',
+    previewDescription: 'Description',
+    previewDescriptionPlaceholder: 'Enter complaint description...',
+    previewEditBtn: 'Edit Complaint',
+    previewConfirmBtn: 'Confirm Complaint',
+    previewConfirmedBadge: 'Saved in Application State',
+    previewConfirmedTitle: 'Complaint Confirmed',
+    previewConfirmedDesc:
+      'Your formal complaint has been saved in the application state. See the recommended authority and official channel below.',
+    previewViewComplaints: 'View in My Complaints',
+    previewCreateNew: 'File Another Complaint',
+
+    // Authority Recommendation (Phase 4)
+    authorityTitle: 'Recommended Authority',
+    authoritySubtitle:
+      'Identified civic department and next official submission channel',
+    authorityLabel: 'Authority',
+    authorityComplaintType: 'Complaint Type',
+    authorityLocation: 'Location',
+    authorityReasonLabel: 'Reason',
+    authorityReasonText:
+      'This complaint appears to relate to a local civic service.',
+    authorityDisclaimer:
+      'AI recommendation. Please verify the authority before submitting.',
+    channelTitle: 'Official Complaint Channel',
+    channelOpenBtn: 'Open Official Portal',
+    channelNotConfigured: 'Official portal link not configured yet.',
+    channelCitizenResponsibility:
+      'Please submit through the official portal above. You can copy your complaint details to paste into the form.',
+    copyComplaintBtn: 'Copy Complaint Text',
+    copiedFeedback: 'Copied to clipboard!',
+
+    // Tracking (Phase 5)
+    trackingDisclaimer:
+      'Prototype tracking — live government status integration is not connected.',
+    trackingNoticeHeader: 'Prototype Tracking Notice',
+    prototypeTimelineHeader: 'Prototype Timeline',
+    currentPrototypeStatus: 'Current prototype status',
+    timelineStepCreated: 'Complaint Created',
+    timelineStepPrepared: 'Complaint Prepared',
+    timelineStepChannel: 'Official Channel Selected',
+    timelineStepUnderReview: 'Under Review',
+    timelineStepResolved: 'Resolved',
+    trackComplaintBtn: 'Track Complaint',
+    backToComplaints: 'Back to My Complaints',
+    complaintNotFound: 'Complaint Not Found',
+    simulateStatus: 'Simulate Prototype Status:',
+
+    // Statuses
+    statusCreated: 'Created',
+    statusPrepared: 'Prepared',
+    statusUnderReview: 'Under Review',
+    statusResolved: 'Resolved',
+
+    // Errors
+    errorMissingLocation:
+      'Please provide your location so we can identify the relevant civic authority.',
+    errorUnsupportedCategory:
+      'We currently support garbage, roads, streetlights, water, and drainage complaints.',
+    errorEmptyComplaint: 'Please describe your civic problem.',
+    errorAnalysisFailed:
+      'Something went wrong while analyzing your complaint. Please try again.',
+    errorEmptySubject: 'Subject cannot be empty.',
+    errorEmptyDescription: 'Description cannot be empty.',
+
+    // Continue confirmation
+    continueMessage:
+      'Your complaint has been reviewed. Proceeding to complaint generation.',
+
+    // How it works
+    howTitle: 'How It Works',
+    howStep1Title: 'Describe your problem',
+    howStep1Desc:
+      'Write about your civic issue in plain language — English, Hindi, or Hinglish.',
+    howStep2Title: 'AI understands it',
+    howStep2Desc:
+      'Our AI reads your complaint, identifies the category, and extracts key details.',
+    howStep3Title: 'Find the right authority',
+    howStep3Desc:
+      'Get matched to the correct government department or official for your issue.',
+    howStep4Title: 'Track your complaint',
+    howStep4Desc:
+      'Stay updated on the status of your complaint and any responses.',
+
+    // My Complaints (Phase 5)
+    complaintsTitle: 'My Complaints',
+    complaintsEmpty: "You haven't created any complaints yet.",
+    complaintsCreate: 'Create Complaint',
+    complaintsEmptySubtitle: 'View and track your submitted civic complaints',
+    complaintsRecordedNotice: 'recorded in current session',
+    complaintStatusConfirmed: 'Confirmed — Authority Identified',
+    complaintsSavedCount: 'Saved Complaints',
+
+    // Footer
+    footerTagline: 'Making civic access simple with AI.',
+    footerRights: '© 2026 AI Civic Access. All rights reserved.',
+  },
+  hi: {
+    // Navbar
+    navHome: 'होम',
+    navComplaints: 'मेरी शिकायतें',
+    navHow: 'कैसे काम करता है',
+
+    // Hero
+    heroBadge: 'AI-संचालित नागरिक सहायक',
+    heroHeading: 'अपनी नागरिक समस्या बताएं।',
+    heroSubheading:
+      'अपनी समस्या अपने शब्दों में बताएं। AI आपकी शिकायत समझने और सही अगला कदम खोजने में मदद करता है।',
+
+    // Complaint form
+    formLabel: 'आपको कौन सी समस्या हो रही है?',
+    formPlaceholder:
+      'उदाहरण: मेरे इलाके में 3 दिन से कचरा नहीं उठाया गया है...',
+    formLocationPlaceholder: 'आपका क्षेत्र या इलाका',
+    formUploadLabel: 'फोटो अटैच करें (वैकल्पिक)',
+    formAnalyzeBtn: 'शिकायत का विश्लेषण करें',
+    formAnalyzing: 'विश्लेषण हो रहा है...',
+    formNote:
+      'आप अपनी समस्या अंग्रेजी, हिंदी या हिंग्लिश में बता सकते हैं।',
+    formMicTooltip: 'अपनी समस्या बोलने के लिए क्लिक करें',
+    formImageSelected: 'तस्वीर चुनी गई',
+
+    // Voice Input (Phase 6)
+    voiceSpeakBtn: 'अपनी समस्या बोलें',
+    voiceListening: 'सुन रहे हैं... कृपया बोलिए',
+    voiceStopBtn: 'सुनना बंद करें',
+    voiceNotSupported: 'इस ब्राउज़र में वॉइस इनपुट समर्थित नहीं है।',
+    voicePermissionError:
+      'माइक्रोफ़ोन एक्सेस अस्वीकृत। कृपया अपने ब्राउज़र में माइक्रोफ़ोन की अनुमति दें।',
+
+    // Analysis result
+    resultTitle: 'शिकायत की समझ',
+    resultProblem: 'समस्या',
+    resultCategory: 'श्रेणी',
+    resultLocation: 'स्थान',
+    resultPriority: 'प्राथमिकता',
+    resultEdit: 'संपादित करें',
+    resultContinue: 'शिकायत जनरेट करें',
+
+    // Complaint Preview (Phase 3)
+    previewTitle: 'AI द्वारा जनरेट की गई शिकायत',
+    previewSubtitle:
+      'प्रस्तुत करने के लिए जनरेट की गई औपचारिक शिकायत की समीक्षा और संपादन करें।',
+    previewSubject: 'विषय',
+    previewSubjectPlaceholder: 'शिकायत का विषय दर्ज करें...',
+    previewDescription: 'विवरण',
+    previewDescriptionPlaceholder: 'शिकायत का विवरण दर्ज करें...',
+    previewEditBtn: 'शिकायत संपादित करें',
+    previewConfirmBtn: 'शिकायत की पुष्टि करें',
+    previewConfirmedBadge: 'एप्लिकेशन स्थिति में सहेजा गया',
+    previewConfirmedTitle: 'शिकायत की पुष्टि हो गई',
+    previewConfirmedDesc:
+      'आपकी औपचारिक शिकायत एप्लिकेशन स्थिति में सहेज ली गई है। नीचे अनुशंसित प्राधिकरण और आधिकारिक चैनल देखें।',
+    previewViewComplaints: 'मेरी शिकायतों में देखें',
+    previewCreateNew: 'एक और शिकायत दर्ज करें',
+
+    // Authority Recommendation (Phase 4)
+    authorityTitle: 'अनुशंसित प्राधिकरण',
+    authoritySubtitle:
+      'पहचाना गया नागरिक विभाग और अगला आधिकारिक प्रस्तुति चैनल',
+    authorityLabel: 'प्राधिकरण',
+    authorityComplaintType: 'शिकायत का प्रकार',
+    authorityLocation: 'स्थान',
+    authorityReasonLabel: 'कारण',
+    authorityReasonText:
+      'यह शिकायत एक स्थानीय नागरिक सेवा से संबंधित प्रतीत होती है।',
+    authorityDisclaimer:
+      'AI अनुशंसा। सबमिट करने से पहले कृपया प्राधिकरण की पुष्टि करें।',
+    channelTitle: 'आधिकारिक शिकायत चैनल',
+    channelOpenBtn: 'आधिकारिक पोर्टल खोलें',
+    channelNotConfigured: 'आधिकारिक पोर्टल लिंक अभी कॉन्फ़िगर नहीं किया गया है।',
+    channelCitizenResponsibility:
+      'कृपया ऊपर दिए गए आधिकारिक पोर्टल के माध्यम से सबमिट करें। आप फॉर्म में पेस्ट करने के लिए विवरण कॉपी कर सकते हैं।',
+    copyComplaintBtn: 'शिकायत विवरण कॉपी करें',
+    copiedFeedback: 'क्लिपबोर्ड पर कॉपी हो गया!',
+
+    // Tracking (Phase 5)
+    trackingDisclaimer:
+      'प्रोटोटाइप ट्रैकिंग — लाइव सरकारी स्थिति एकीकरण जुड़ा हुआ नहीं है।',
+    trackingNoticeHeader: 'प्रोटोटाइप ट्रैकिंग सूचना',
+    prototypeTimelineHeader: 'प्रोटोटाइप समयरेखा',
+    currentPrototypeStatus: 'वर्तमान प्रोटोटाइप स्थिति',
+    timelineStepCreated: 'शिकायत बनाई गई',
+    timelineStepPrepared: 'शिकायत तैयार की गई',
+    timelineStepChannel: 'आधिकारिक चैनल चुना गया',
+    timelineStepUnderReview: 'समीक्षाधीन',
+    timelineStepResolved: 'समाधान हो गया',
+    trackComplaintBtn: 'शिकायत ट्रैक करें',
+    backToComplaints: 'मेरी शिकायतों पर वापस जाएं',
+    complaintNotFound: 'शिकायत नहीं मिली',
+    simulateStatus: 'प्रोटोटाइप स्थिति का अनुकरण करें:',
+
+    // Statuses
+    statusCreated: 'निर्मित',
+    statusPrepared: 'तैयार',
+    statusUnderReview: 'समीक्षाधीन',
+    statusResolved: 'समाधानित',
+
+    // Errors
+    errorMissingLocation:
+      'कृपया अपना स्थान बताएं ताकि हम सही नागरिक प्राधिकरण की पहचान कर सकें।',
+    errorUnsupportedCategory:
+      'हम वर्तमान में कचरा, सड़क, स्ट्रीटलाइट, पानी और नाली की शिकायतों का समर्थन करते हैं।',
+    errorEmptyComplaint: 'कृपया अपनी नागरिक समस्या का वर्णन करें।',
+    errorAnalysisFailed:
+      'शिकायत का विश्लेषण करते समय कुछ गलत हुआ। कृपया पुनः प्रयास करें।',
+    errorEmptySubject: 'विषय खाली नहीं हो सकता।',
+    errorEmptyDescription: 'विवरण खाली नहीं हो सकता।',
+
+    // Continue confirmation
+    continueMessage:
+      'आपकी शिकायत की समीक्षा हो गई है। शिकायत निर्माण की ओर बढ़ रहे हैं।',
+
+    // How it works
+    howTitle: 'यह कैसे काम करता है',
+    howStep1Title: 'अपनी समस्या बताएं',
+    howStep1Desc:
+      'अपनी नागरिक समस्या सामान्य भाषा में लिखें — अंग्रेजी, हिंदी, या हिंग्लिश।',
+    howStep2Title: 'AI इसे समझता है',
+    howStep2Desc:
+      'हमारा AI आपकी शिकायत पढ़ता है, श्रेणी पहचानता है, और मुख्य विवरण निकालता है।',
+    howStep3Title: 'सही प्राधिकरण खोजें',
+    howStep3Desc:
+      'आपकी समस्या के लिए सही सरकारी विभाग या अधिकारी से मिलान किया जाता है।',
+    howStep4Title: 'अपनी शिकायत ट्रैक करें',
+    howStep4Desc:
+      'अपनी शिकायत की स्थिति और किसी भी प्रतिक्रिया पर अपडेट रहें।',
+
+    // My Complaints (Phase 5)
+    complaintsTitle: 'मेरी शिकायतें',
+    complaintsEmpty: 'आपने अभी तक कोई शिकायत नहीं बनाई है।',
+    complaintsCreate: 'शिकायत दर्ज करें',
+    complaintsEmptySubtitle: 'अपनी दर्ज नागरिक शिकायतें देखें और ट्रैक करें',
+    complaintsRecordedNotice: 'वर्तमान सत्र में दर्ज शिकायतें',
+    complaintStatusConfirmed: 'पुष्ट — प्राधिकरण पहचाना गया',
+    complaintsSavedCount: 'सहेजी गई शिकायतें',
+
+    // Footer
+    footerTagline: 'AI के साथ नागरिक पहुंच को सरल बनाना।',
+    footerRights: '© 2026 AI Civic Access. सर्वाधिकार सुरक्षित।',
+  },
+};
+
+export default translations;
