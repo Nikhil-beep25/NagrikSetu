@@ -20,6 +20,10 @@ export default function ScrollToTop() {
     }
     // Default: auto scroll to upper side (top)
     window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [pathname, hash]);
 
   return null;

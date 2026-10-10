@@ -69,7 +69,8 @@ export default function AssistantPage() {
   const [messages, setMessages] = useState(getInitialMessages);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const isFirstMount = useRef(true);
 
   // Sync with sessionStorage
   useEffect(() => {
@@ -80,9 +81,24 @@ export default function AssistantPage() {
     }
   }, [messages]);
 
-  // Scroll to bottom on new message
+  // Keep window at the top on navigation, and scroll ONLY the inner chat box
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+      return;
+    }
+
+    // Scroll inner chat container only — never scroll the window down
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }, [messages, loading]);
 
   const handleSendMessage = async (customText = null) => {
@@ -266,7 +282,10 @@ export default function AssistantPage() {
         {/* =========================================================================
             CHAT MESSAGE THREAD
             ========================================================================= */}
-        <div className="flex-1 bg-white rounded-2xl border border-border p-4 sm:p-6 shadow-sm overflow-y-auto space-y-4 max-h-[60vh] min-h-[380px]">
+        <div
+          ref={chatContainerRef}
+          className="flex-1 bg-white rounded-2xl border border-border p-4 sm:p-6 shadow-sm overflow-y-auto space-y-4 max-h-[60vh] min-h-[380px]"
+        >
           {messages.map((msg) => (
             <div
               key={msg.id}
@@ -376,8 +395,6 @@ export default function AssistantPage() {
               </div>
             </div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
 
         {/* =========================================================================
