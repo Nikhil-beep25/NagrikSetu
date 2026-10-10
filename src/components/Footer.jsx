@@ -68,6 +68,16 @@ export default function Footer() {
                   My Complaints
                 </Link>
               </li>
+              <li>
+                <Link to="/services" className="hover:text-white transition-colors">
+                  Gov Services
+                </Link>
+              </li>
+              <li>
+                <Link to="/future-vision" className="hover:text-white transition-colors flex items-center gap-1 text-kesari-300 font-semibold">
+                  <span>🚀</span> Future Vision <span className="text-[10px] bg-kesari-500/20 text-kesari-300 px-1.5 py-0.2 rounded font-bold border border-kesari-500/30">Soon</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

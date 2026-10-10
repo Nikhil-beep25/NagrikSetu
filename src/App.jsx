@@ -13,6 +13,7 @@ import SignUpPage from './pages/SignUpPage';
 import ServicesPage from './pages/ServicesPage';
 import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import AssistantPage from './pages/AssistantPage';
+import FutureVisionPage from './pages/FutureVisionPage';
 import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/services/:serviceId" element={<ServiceDetailsPage />} />
               <Route path="/assistant" element={<AssistantPage />} />
+              <Route path="/future-vision" element={<FutureVisionPage />} />
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignUpPage />} />
             </Route>

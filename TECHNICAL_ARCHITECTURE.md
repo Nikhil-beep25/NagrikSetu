@@ -175,3 +175,42 @@ The backend is a lightweight, secure **Node.js + Express** service (`server/inde
 1. **Mock Authentication:** The citizen login and DigiLocker SSO are demonstration prototypes; they are not connected to production OAuth servers or UIDAI biometric authentication.
 2. **Prototype Ledger:** Confirmed grievances are assigned local reference numbers (`NS-1024`) for tracking demonstration; they are not submitted directly into government NIC databases or municipal ERPs.
 3. **Official Portals:** For formal statutory certification (Income, Caste, Domicile, Passport), NagrikSetu acts as an educational and procedural navigator; citizens must submit final verified forms on the official `.gov.in` portals provided.
+
+---
+
+## 10. Future Agentic Automation Architecture & Security Guardrails
+
+### 10.1 Automation Pipeline Architecture (Future Vision)
+The planned agentic layer is designed to bridge the digital literacy divide through a secure, multi-stage pipeline:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Citizen as Citizen (Voice / Text)
+    participant NLU as Conversational NLU
+    participant Router as Gov Authority Router
+    participant FormEngine as Assisted Form Mapper
+    participant ConsentGate as Human-in-Control Gateway
+    participant GovPortal as Official Portal / API (.gov.in)
+
+    Citizen->>NLU: "Mere gaon ki sadak par gaddha hai."
+    NLU->>Router: Structured problem, category & location
+    Router->>FormEngine: Target authority (e.g. PWD / Nagar Nigam) & schema
+    FormEngine->>FormEngine: Prepares supported form fields using citizen details
+    FormEngine->>ConsentGate: Presents completed preview for citizen review
+    Note over Citizen,ConsentGate: Citizen inspects every field & explicitly authorizes
+    Citizen->>ConsentGate: Explicit Citizen Authorization
+    ConsentGate->>GovPortal: Submits where official rules/APIs permit
+    GovPortal-->>ConsentGate: Authentic official confirmation
+    ConsentGate-->>Citizen: Verified tracking number & status
+```
+
+### 10.2 Security & Ethical Automation Rules
+Future automation will strictly enforce:
+1. **Explicit Citizen Authorization:** Every form fill and submission requires affirmative citizen approval. No autonomous submissions.
+2. **Zero CAPTCHA / OTP Bypass:** Human citizens must personally solve CAPTCHA challenges and enter SMS OTP credentials. NagrikSetu will never automate or circumvent security barriers.
+3. **No Impersonation:** The system acts strictly as an authorized digital scribe on behalf of the citizen with logged user consent.
+4. **Data Minimization & Local Privacy:** Personal details are processed in client-side secure memory; no third-party database harvesting.
+5. **Verified Confirmation Integrity:** The platform displays official confirmation codes only when the government portal actually confirms successful submission.
+6. **Graceful Manual Fallback:** Citizens can download standard pre-filled grievance representations at any stage for manual or offline submission.
+7. **Transparent Attribution:** Clear disclaimer that NagrikSetu is an independent civic assistance technology and never claims official government affiliation.

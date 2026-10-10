@@ -285,6 +285,17 @@ export default function Navbar() {
               <span>🏛️</span>
               <span>{language === 'hi' ? 'सरकारी सेवाएं' : 'Gov Services'}</span>
             </Link>
+            <Link
+              to="/future-vision"
+              className={`text-xs md:text-sm tracking-normal transition-all duration-150 py-2 border-b-2 flex items-center whitespace-nowrap gap-1.5 ${
+                location.pathname.startsWith('/future-vision')
+                  ? 'text-kesari-600 border-kesari-500 font-bold'
+                  : 'text-slate-800 hover:text-kesari-600 font-semibold border-transparent hover:border-slate-300'
+              }`}
+            >
+              <span>🚀</span>
+              <span>{language === 'hi' ? 'भविष्य दृष्टि' : 'Future Vision'}</span>
+            </Link>
             {/* Hidden link preserved for screen-reader & test suite contract compatibility */}
             <Link to="/assistant" className="sr-only" tabIndex={-1} aria-hidden="true">
               AI Assistant (AI सहायक)
@@ -433,6 +444,20 @@ export default function Navbar() {
                 <span className="flex items-center gap-2">
                   <span>🏛️</span>
                   <span>{language === 'hi' ? 'सरकारी सेवाएं' : 'Gov Services'}</span>
+                </span>
+              </Link>
+              <Link
+                to="/future-vision"
+                onClick={() => setMobileOpen(false)}
+                className={`block rounded-lg px-4 py-3 text-sm transition-colors ${
+                  location.pathname.startsWith('/future-vision')
+                    ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold'
+                    : 'text-slate-800 hover:bg-surface-dim hover:text-kesari-600 font-bold'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span>🚀</span>
+                  <span>{language === 'hi' ? 'भविष्य दृष्टि (AI Automation)' : 'Future Vision (AI Automation)'}</span>
                 </span>
               </Link>
               <button

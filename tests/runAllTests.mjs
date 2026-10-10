@@ -24,6 +24,7 @@ const suites = [
   { name: 'Authority Detection (Phase 6 Engine)', file: 'tests/testAuthorityDetection.mjs' },
   { name: 'Government Service Navigator (Phase 7 Engine)', file: 'tests/testGovernmentServices.mjs' },
   { name: 'Unified AI Citizen Assistant (Phase 8 Engine)', file: 'tests/testUnifiedAssistant.mjs' },
+  { name: 'Phase 13 (Future Vision & AI Automation)', file: 'tests/testPhase13FutureVision.mjs' },
 ];
 
 

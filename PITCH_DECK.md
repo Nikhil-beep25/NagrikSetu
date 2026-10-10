@@ -110,26 +110,36 @@
 
 ---
 
-## 🖥️ Slide 9: Future Roadmap
-* **Slide Title:** **Path from Hackathon MVP to Public Deployment**
-* **Visual Concept:** Milestone timeline spanning 2026–2027.
-* **Milestones:**
-  * **Q3 2026 — Omnichannel Access:** Launch WhatsApp and Telegram conversational bots using Meta Cloud API for zero-app reporting.
-  * **Q4 2026 — Institutional Pilot:** Pilot with an Urban Local Body (ULB) such as Agra Nagar Nigam for direct webhook API ingestion.
-  * **2027 — Regional Expansion:** Expand authority directory to 10 additional Tier-2 cities in UP and MP with 5 regional language models (Bhojpuri, Awadhi, Marathi, Punjabi, Gujarati).
+## 🖥️ Slide 9: Future Vision & 4-Stage Strategic Roadmap
+* **Slide Title:** **The Future of NagrikSetu: Citizen-Authorized AI Automation**
+* **Visual Concept:** 4-stage progressive roadmap showing progression from AI assistance to agentic workflow completion.
+* **Core Vision Statement:**  
+  *"An AI-powered citizen automation platform where people can describe their problems in natural language, and AI helps complete the complex government service workflow."*
+* **Roadmap Stages:**
+  * **Stage 1 (Current MVP):** AI Guidance & Complaint Preparation — Multilingual understanding, structured petition drafting, authority routing, and service navigation.
+  * **Stage 2 (Planned):** AI-Assisted Government Portal Navigation — Direct deep-linking and visual procedural overlays on official state portals.
+  * **Stage 3 (Planned, Subject to Portal Permissions):** Citizen-Approved Form Automation — Pre-filling supported fields using citizen-approved details under strict human-in-the-loop authorization.
+  * **Stage 4 (Long-Term Vision):** Authorized Submission & Status Tracking — Secure submission via authenticated citizen sessions and real-time status retrieval where official government portal APIs support it.
+* **Ethics & Security Guardrails:** Explicit consent, zero CAPTCHA/OTP bypass, no impersonation, zero sensitive document storage, and authentic status verification only.
 * **Presenter Cue:**  
-  *"Our architecture is completely modular. Expanding to a new city requires adding a single verified configuration record without touching core code."*
+  *"Our ultimate vision is not just helping citizens write letters, but enabling citizens of any digital literacy level to complete complex public administration workflows with a simple conversation."*
 
 ---
 
-## 🖥️ Slide 10: Closing & Vision
-* **Slide Title:** **Building the Bridge for 1.4 Billion Citizens**
-* **Visual Concept:** Symmetrical closing frame with NagrikSetu logo and contact links.
+## 🖥️ Slide 10: What Makes NagrikSetu Different & Closing
+* **Slide Title:** **The 6 Pillars of NagrikSetu & Hackathon Closing**
+* **Visual Concept:** Hexagonal or 6-pillar grid surrounding the NagrikSetu emblem.
+* **The 6 Differentiators (USP):**
+  1. **Conversation-First Interface:** Natural spoken/typed description eliminates complex dropdowns and department codes.
+  2. **Multilingual Accessibility:** Voice-first Hindi & English support designed specifically for non-technical and rural citizens.
+  3. **AI-Powered Complaint Preparation:** Transforms colloquial grievances into formal administrative representations.
+  4. **Intelligent Government Navigation:** Accurate jurisdiction matching across municipal, state, and central tiers.
+  5. **Future Agentic Automation:** Aims to automate supported public workflows with explicit citizen authorization.
+  6. **Human-in-Control Design:** Citizens always review, approve, and authorize every single action.
 * **Summary Takeaways:**
-  * A fully functional, working GovTech platform backed by 11 passing test suites.
-  * Strict ethical standards: No sensitive document collection, verified `.gov.in` sources, and transparent disclaimers.
-  * A vision to make governance accessible, accountable, and dignified for every Indian citizen.
+  * A working, robust GovTech platform backed by 11 passing automated test suites and 4/4 verified demo scenarios.
+  * Zero false government claims; verified `.gov.in` routing only.
 * **Closing Quote:**  
-  *"Good governance begins when citizen voices can cross the administrative bridge with dignity and clarity. NagrikSetu is that bridge."*
+  *"Good governance begins when any citizen, regardless of digital literacy, can describe a problem in everyday words and see it resolved. NagrikSetu is that bridge."*
 * **Presenter Cue:**  
   *"Thank you, respected judges. We welcome your questions!"*

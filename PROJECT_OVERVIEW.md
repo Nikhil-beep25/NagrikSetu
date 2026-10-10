@@ -89,3 +89,58 @@ NagrikSetu introduces a unified, citizen-centric intelligence layer between resi
 3. **Saving Lives in Emergencies:** Diverts acute physical dangers away from administrative queues to first responders within seconds.
 4. **Transparency & Fraud Reduction:** Directs citizens to official government portals (`edistrict.up.gov.in`, `mcdonline.nic.in`), eliminating dependence on unauthorized touts and middlemen.
 5. **Civic Participation:** Cultivates trust between citizens and local urban local bodies (ULBs) by giving citizens a structured tracking ledger and clear SLA expectations.
+
+---
+
+## 11. Current MVP vs. Future Vision
+
+NagrikSetu maintains a transparent distinction between current operational capabilities and long-term agentic goals:
+
+| Aspect | Current Operational MVP | Future Long-Term Vision |
+| :--- | :--- | :--- |
+| **Citizen Interface** | Natural language voice & text input (English, Hindi, Hinglish) | Voice-first conversational AI supporting all major regional languages |
+| **Grievance Drafting** | AI structures complaints & generates formal administrative representations | AI prepares pre-filled petition drafts aligned with specific state portal schemas |
+| **Authority Routing** | Location-aware authority recommendations (e.g., Agra Nagar Nigam, Jal Sansthan) | Automated discovery & deep-linking of verified official submission endpoints |
+| **Service Guidance** | Interactive requirements, document checklists & official portal links | Citizen-authorized agentic navigation of supported government workflows |
+| **Submission Model** | Citizen reviews draft and files manually on official government portals | Citizen explicitly authorizes AI to assist with supported form fields where permitted |
+| **Tracking Model** | Local client-side tracking prototype | Official status verification through government portal APIs where supported |
+
+---
+
+## 12. Strategic Product Roadmap
+
+### Stage 1: AI Guidance and Complaint Preparation (Current MVP)
+- Multilingual natural language triage (English, Hindi, Hinglish).
+- AI grievance analysis & formal letter generation.
+- Emergency pre-flight hazard interception (112, 1912).
+- Authority recommendation engine for Agra, UP, and Delhi.
+- Government Service Navigator with localized document checklists.
+
+### Stage 2: AI-Assisted Government Portal Navigation (Planned)
+- Direct deep-linking to verified state and central submission endpoints.
+- Visual step-by-step guidance overlays for complex municipal portals.
+- Dynamic form requirements extraction from public portal schemas.
+
+### Stage 3: Citizen-Approved Form Automation (Planned, Subject to Portal Permissions)
+- Pre-filling supported form fields using citizen-approved details.
+- Human-in-the-loop review screens before any state interaction.
+- Strict compliance with official portal terms of service and security standards.
+
+### Stage 4: Authorized Submission and Status Tracking (Long-Term Vision)
+- Authorized submission via authenticated citizen sessions where official APIs permit.
+- Real-time status retrieval directly from official public portal endpoints.
+- Multi-tier escalation assistance when statutory SLAs are breached.
+
+---
+
+## 13. Security, Ethics & Citizen Control Guardrails
+
+Future automation and agentic features operate under strict non-negotiable ethical rules:
+1. **Explicit Citizen Consent:** No action, form fill, or submission occurs without affirmative user authorization.
+2. **Respect Official Portal Rules:** Zero automated bypasses of terms of service; operate strictly within permitted API and interface parameters.
+3. **No CAPTCHA or OTP Bypass:** Human citizens must personally solve CAPTCHAs and enter two-factor OTP credentials.
+4. **No Unauthorized Impersonation:** The platform never impersonates a citizen without direct, active oversight.
+5. **Data Minimization:** No storage of unencrypted sensitive identity documents (Aadhaar, PAN). Checklists are tracked locally.
+6. **Authentic Tracking Verification:** Official tracking IDs and confirmations are displayed only after the government portal actually confirms successful submission.
+7. **Manual Fallback Always Available:** Citizens can always download their draft and submit via traditional offline or web channels.
+8. **No False Government Affiliation:** Transparently disclaims status as an independent civic assistance platform, never claiming to be an official government entity.

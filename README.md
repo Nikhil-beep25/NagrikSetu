@@ -25,6 +25,8 @@
 ## 📖 Table of Contents
 - [Executive Summary](#-executive-summary)
 - [The Problem We Solve](#-the-problem-we-solve)
+- [Future Vision: AI Automation Platform](#-future-vision-ai-automation-platform)
+- [What Makes NagrikSetu Different (USP)](#-what-makes-nagriksetu-different-usp)
 - [Key Features](#-key-features)
 - [System Architecture](#-system-architecture)
 - [Tech Stack](#-tech-stack)
@@ -41,12 +43,47 @@
 
 **NagrikSetu (नागरिकसेतु)** is an AI-powered citizen assistance platform designed to eliminate friction in Indian civic grievance reporting and public service navigation.
 
+The central vision is:
+> **"An AI-powered citizen automation platform where people can describe their problems in natural language, and AI helps complete the complex government service workflow."**
+
 In India's complex urban landscape, citizens frequently face jurisdictional confusion, language barriers, and procedural opacity. NagrikSetu introduces a citizen-first digital layer between residents and public administrative bodies:
 - Translates informal, colloquial descriptions (in English, Hindi, or Hinglish) into structured, professional citizen-charter grievance letters.
 - Intelligently maps issues to the exact responsible government department (e.g., Agra Nagar Nigam, Jal Sansthan, DVVNL, MCD, PWD) based on location and road classification.
 - Pre-emptively intercepts life-threatening emergencies (e.g., exposed sparking electrical wires, deep open manholes) with immediate 112/1912 safety guidance before paperwork.
 - Provides interactive, state-specific document checklists and verified links to official government portals (`.gov.in` / `.nic.in`) for essential certificates and passport services.
 - Employs a **Dual-Engine Architecture**: Powered by Google Gemini AI with resilient local deterministic NLP fallbacks for 100% operational uptime.
+- Features an interactive **Future Vision & AI Automation Roadmap** (`/future-vision`) simulating citizen-authorized agentic workflow completion.
+
+---
+
+## 🚀 Future Vision: AI Automation Platform
+
+NagrikSetu clearly distinguishes between the **Current Operational MVP** and the **Long-Term Agentic Vision**:
+
+| Aspect | Current Operational MVP | Future Long-Term Vision |
+| :--- | :--- | :--- |
+| **Citizen Expression** | Voice/Text in English, Hindi, Hinglish | Voice-first conversational AI across Indian regional languages |
+| **Triage & Drafting** | AI categorizes, assesses urgency & drafts formal letters | Form field generation matching official government portal schemas |
+| **Authority Routing** | Location-aware authority recommendation (Agra, UP, Delhi) | Automated discovery & deep-linking of verified state submission endpoints |
+| **Workflow Completion**| Citizen manually submits on verified `.gov.in` portals | Citizen explicitly authorizes AI to assist with supported form fields |
+| **Status Verification**| Local client session ledger | Direct status retrieval through official government APIs |
+
+### 4-Stage Product Roadmap
+1. **Stage 1: AI Guidance and Complaint Preparation (Current MVP)** — Operational today with 11/11 passing test suites.
+2. **Stage 2: AI-Assisted Government Portal Navigation (Planned)** — Procedural overlays & deep-linking to state endpoints.
+3. **Stage 3: Citizen-Approved Form Automation (Planned)** — Pre-filling supported fields using citizen-approved details under explicit human consent.
+4. **Stage 4: Authorized Submission and Status Tracking (Long-Term)** — Authenticated citizen submission & live status tracking where supported by government APIs.
+
+---
+
+## 🌟 What Makes NagrikSetu Different (USP)
+
+1. **Conversation-First Interface:** Citizens describe problems in everyday language without needing to know government terminology.
+2. **Multilingual Accessibility:** Tailored for Hindi, Hinglish, and English speakers, bridging the digital literacy divide.
+3. **AI-Powered Complaint Preparation:** Transforms ordinary descriptions into structured, respectful, and legally sound complaints.
+4. **Intelligent Government Navigation:** Accurate jurisdiction matching across municipal, state, and central authorities.
+5. **Future Agentic Automation:** Aims to automate supported public workflows with explicit citizen authorization.
+6. **Human-in-Control Design:** Citizens always review, approve, and authorize every single action before any state interaction.
 
 ---
 

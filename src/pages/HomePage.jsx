@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import ComplaintForm from '../components/ComplaintForm';
+import AutomationVisionDemo from '../components/AutomationVisionDemo';
 
 export default function HomePage() {
   const { language } = useLanguage();
@@ -1050,6 +1051,398 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ================================================================
+          COMING SOON: NAGRIKSETU AI AUTOMATION & FUTURE VISION
+          ================================================================ */}
+      <section className="py-16 sm:py-24 bg-gradient-to-b from-[#f0f6ff] via-white to-[#f8fafc] border-b border-border relative overflow-hidden">
+        {/* Subtle Decorative Elements */}
+        <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-kesari-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-chakra-600/10 blur-3xl" />
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
+            <div className="inline-flex items-center gap-2 rounded-full bg-kesari-50 border-2 border-kesari-400 px-4 py-1.5 text-xs font-black text-kesari-700 uppercase tracking-widest mb-4 shadow-2xs">
+              <span className="h-2 w-2 rounded-full bg-kesari-500 animate-ping" />
+              <span>{language === 'hi' ? 'जल्द आ रहा है • कमिंग सून' : 'Coming Soon'}</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-chakra-900 tracking-tight leading-tight">
+              {language === 'hi'
+                ? 'जल्द आ रहा है: नागरिकसेतु AI ऑटोमेशन'
+                : 'Coming Soon: NagrikSetu AI Automation'}
+            </h2>
+
+            <p className="mt-3 text-base sm:text-lg font-bold text-kesari-600">
+              {language === 'hi'
+                ? 'अपनी समस्या बताने से लेकर सरकारी प्रक्रिया पूर्ण करने तक — AI की सहायता से।'
+                : 'From describing your problem to completing government workflows — with AI assistance.'}
+            </p>
+
+            <p className="mt-4 text-xs sm:text-sm text-text-secondary max-w-2xl mx-auto leading-relaxed">
+              {language === 'hi'
+                ? 'कल्पना कीजिए कि गड्ढे की शिकायत करना, प्रमाण पत्र का अनुरोध करना या किसी सरकारी सेवा का उपयोग करना बिना किसी जटिल पोर्टल में भटके संभव हो। नागरिकसेतु का आगामी AI ऑटोमेशन आपके अनुरोध को समझने, सही सरकारी पोर्टल की पहचान करने, आवश्यक जानकारी तैयार करने और आपकी अनुमति के साथ समर्थित सरकारी वर्कफ़्लो को पूरा करने में मदद करने के लिए बनाया जा रहा है।'
+                : "Imagine reporting a pothole, requesting a certificate, or accessing a government service without navigating complicated portals. NagrikSetu's upcoming AI Automation aims to understand your request, identify the correct government portal, prepare the necessary information, and help complete supported government workflows with your permission."}
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                to="/future-vision"
+                className="inline-flex items-center gap-2 rounded-full bg-chakra-900 hover:bg-chakra-800 text-white px-5 py-2.5 text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all"
+              >
+                <span>🚀</span>
+                <span>{language === 'hi' ? 'पूर्ण विजन व रोडमैप देखें' : 'Explore Dedicated Future Vision Page'}</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Visual Automation Workflow Section */}
+          <div className="mb-16">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-chakra-700 bg-chakra-50 border border-chakra-200 px-3 py-1 rounded-full">
+                {language === 'hi' ? '6-चरणीय वर्कफ़्लो' : 'Future Workflow'}
+              </span>
+              <h3 className="mt-2 text-2xl sm:text-3xl font-black text-chakra-900 tracking-tight">
+                {language === 'hi'
+                  ? 'एक बातचीत। एक सरल सरकारी प्रक्रिया।'
+                  : 'One Conversation. A Simpler Government Process.'}
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-text-muted">
+                {language === 'hi'
+                  ? 'देखें कि भविष्य का नागरिकसेतु आम नागरिक के लिए जटिल प्रक्रियाओं को कैसे सरल बनाएगा।'
+                  : 'How our future citizen-authorized automation simplifies public workflows.'}
+              </p>
+            </div>
+
+            {/* 6 Connected Steps Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 relative">
+              
+              {/* STEP 1 */}
+              <div className="rounded-2xl border-2 border-chakra-200 bg-white p-5 shadow-card hover:border-kesari-400 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-black tracking-wider text-kesari-600 bg-kesari-50 px-2 py-0.5 rounded">
+                      STEP 1
+                    </span>
+                    <span className="text-xl">🗣️</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'समस्या बताएं' : 'TELL YOUR PROBLEM'}
+                  </h4>
+                  <div className="mt-2 p-2.5 rounded-lg bg-surface-dim border border-border">
+                    <span className="text-[10px] font-bold text-text-muted block">
+                      {language === 'hi' ? 'नागरिक:' : 'Citizen:'}
+                    </span>
+                    <p className="text-xs font-semibold text-chakra-900 italic">
+                      "Mere gaon ki sadak par gaddha hai."
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 text-[11px] text-text-secondary leading-snug">
+                  {language === 'hi'
+                    ? 'रोजमर्रा की प्राकृतिक भाषा में बोलें या टाइप करें।'
+                    : 'Natural conversational input without technical jargon.'}
+                </div>
+              </div>
+
+              {/* STEP 2 */}
+              <div className="rounded-2xl border-2 border-chakra-200 bg-white p-5 shadow-card hover:border-kesari-400 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-black tracking-wider text-chakra-700 bg-chakra-50 px-2 py-0.5 rounded">
+                      STEP 2
+                    </span>
+                    <span className="text-xl">🧠</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'AI समझता है' : 'AI UNDERSTANDS'}
+                  </h4>
+                  <div className="mt-2 space-y-1 p-2.5 rounded-lg bg-chakra-50/50 border border-chakra-100 text-[11px] font-medium text-chakra-900">
+                    <p className="font-bold text-[10px] uppercase text-chakra-700">
+                      {language === 'hi' ? 'AI पहचानता है:' : 'AI identifies:'}
+                    </p>
+                    <p>• {language === 'hi' ? 'सड़क क्षति' : 'Road damage'}</p>
+                    <p>• {language === 'hi' ? 'प्रासंगिक स्थान' : 'Relevant location'}</p>
+                    <p>• {language === 'hi' ? 'शिकायत श्रेणी' : 'Complaint category'}</p>
+                  </div>
+                </div>
+                <div className="mt-3 text-[11px] text-text-secondary leading-snug">
+                  {language === 'hi'
+                    ? 'उन्नत भाषा समझ द्वारा विवरण का विश्लेषण।'
+                    : 'Extracts critical civic entities automatically.'}
+                </div>
+              </div>
+
+              {/* STEP 3 */}
+              <div className="rounded-2xl border-2 border-chakra-200 bg-white p-5 shadow-card hover:border-kesari-400 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-black tracking-wider text-chakra-700 bg-chakra-50 px-2 py-0.5 rounded">
+                      STEP 3
+                    </span>
+                    <span className="text-xl">📝</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'AI तैयार करता है' : 'AI PREPARES'}
+                  </h4>
+                  <div className="mt-2 p-2.5 rounded-lg bg-surface-dim border border-border text-[11px] text-chakra-900 leading-snug font-medium">
+                    {language === 'hi'
+                      ? 'AI एक औपचारिक शिकायत तैयार करता है और संभावित सरकारी प्राधिकरण की पहचान करता है।'
+                      : 'AI generates a formal complaint and identifies the likely government authority.'}
+                  </div>
+                </div>
+                <div className="mt-3 text-[11px] text-text-secondary leading-snug">
+                  {language === 'hi'
+                    ? 'प्रशासनिक व कानूनी स्पष्टता से युक्त प्रारूप।'
+                    : 'Formal administrative complaint generated.'}
+                </div>
+              </div>
+
+              {/* STEP 4 */}
+              <div className="rounded-2xl border-2 border-amber-200 bg-white p-5 shadow-card hover:border-amber-400 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-black tracking-wider text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      STEP 4
+                    </span>
+                    <span className="text-xl">🌐</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'AI नेविगेट करता है' : 'AI NAVIGATES'}
+                  </h4>
+                  <div className="mt-2 p-2.5 rounded-lg bg-amber-50/50 border border-amber-100 text-[11px] text-amber-950 leading-snug font-medium">
+                    {language === 'hi'
+                      ? 'भविष्य का AI ऑटोमेशन उपयुक्त आधिकारिक सरकारी शिकायत पोर्टल खोलता है।'
+                      : 'Future AI automation opens the appropriate official government complaint portal.'}
+                  </div>
+                </div>
+                <div className="mt-3 text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded">
+                  {language === 'hi' ? 'भविष्य की योजना' : 'Planned Feature'}
+                </div>
+              </div>
+
+              {/* STEP 5 */}
+              <div className="rounded-2xl border-2 border-amber-200 bg-white p-5 shadow-card hover:border-amber-400 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-black tracking-wider text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      STEP 5
+                    </span>
+                    <span className="text-xl">📋</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'फॉर्म भरने में सहायता' : 'AI ASSISTS WITH FORM FILLING'}
+                  </h4>
+                  <div className="mt-2 p-2.5 rounded-lg bg-amber-50/50 border border-amber-100 text-[11px] text-amber-950 leading-snug font-medium">
+                    {language === 'hi'
+                      ? 'भविष्य का AI नागरिक द्वारा स्वीकृत विवरणों का उपयोग करके समर्थित फील्ड तैयार व भरता है।'
+                      : 'Future AI automation prepares and fills supported fields using citizen-approved details.'}
+                  </div>
+                </div>
+                <div className="mt-3 text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded">
+                  {language === 'hi' ? 'नागरिक-अनुमोदित' : 'Citizen-Approved Details'}
+                </div>
+              </div>
+
+              {/* STEP 6 */}
+              <div className="rounded-2xl border-2 border-emerald-300 bg-white p-5 shadow-card hover:border-emerald-500 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-black tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      STEP 6
+                    </span>
+                    <span className="text-xl">✅</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'नागरिक स्वीकृति' : 'CITIZEN APPROVES'}
+                  </h4>
+                  <div className="mt-2 p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100 text-[11px] text-emerald-950 leading-snug font-medium">
+                    {language === 'hi'
+                      ? 'नागरिक भरे गए फॉर्म की समीक्षा करता है। जहां आधिकारिक पोर्टल नियम अनुमति दें, स्पष्ट सहमति के बाद ही सबमिशन होता है।'
+                      : 'The citizen reviews the completed form. Where official portal rules permit, the assistant can submit the complaint after explicit citizen authorization.'}
+                  </div>
+                </div>
+                <div className="mt-3 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded">
+                  {language === 'hi' ? 'मानव नियंत्रण' : 'Explicit Authorization'}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Track Your Complaint Banner */}
+            <div className="mt-6 rounded-2xl bg-white border border-border p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-chakra-50 border border-chakra-200 flex items-center justify-center text-chakra-800 text-lg shrink-0">
+                  🔍
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-chakra-900">
+                    {language === 'hi' ? 'भविष्य की क्षमता: अपनी शिकायत ट्रैक करें' : 'Track Your Complaint'}
+                  </h4>
+                  <p className="text-xs text-text-secondary">
+                    {language === 'hi'
+                      ? 'आधिकारिक स्थिति ट्रैकिंग सरकारी पोर्टल समर्थन पर निर्भर करती है। पुष्टि तभी दिखाई जाएगी जब पोर्टल इसकी पुष्टि करे।'
+                      : 'Official status tracking depends on government portal support. Confirmation is displayed only after the government portal actually confirms successful submission.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="shrink-0">
+                <span className="text-xs font-bold text-slate-700 bg-surface-dim border border-border px-3 py-1.5 rounded-full">
+                  {language === 'hi' ? 'आधिकारिक पुष्टि पर आधारित' : 'Subject to Portal Support'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Simulation Demo */}
+          <div className="mb-16">
+            <div className="text-center max-w-2xl mx-auto mb-8">
+              <span className="inline-flex items-center rounded-full bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1 text-xs font-black uppercase tracking-wider mb-2">
+                {language === 'hi' ? 'इंटरैक्टिव पूर्वावलोकन' : 'Interactive Concept Demo'}
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-chakra-900 tracking-tight">
+                {language === 'hi'
+                  ? 'भविष्य के ऑटोमेशन का प्रत्यक्ष पूर्वावलोकन'
+                  : 'Experience the Future Automation Workflow'}
+              </h3>
+              <p className="mt-1 text-xs sm:text-sm text-text-muted">
+                {language === 'hi'
+                  ? 'यह एक संकल्पना पूर्वावलोकन है — कोई वास्तविक सरकारी सबमिशन नहीं किया जाता है।'
+                  : 'Concept Preview — No Government Submission. A simulated testbed demonstrating the end-to-end vision.'}
+              </p>
+            </div>
+
+            <AutomationVisionDemo />
+          </div>
+
+          {/* STEP 5: What Makes NagrikSetu Different? (Main USP) */}
+          <div>
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="inline-flex items-center rounded-full bg-kesari-50 border border-kesari-200 px-3 py-1 text-xs font-bold text-kesari-700 uppercase tracking-wider mb-2">
+                {language === 'hi' ? 'नागरिकसेतु का मुख्य यूएसपी' : 'Core Differentiators'}
+              </span>
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-chakra-900 tracking-tight">
+                {language === 'hi' ? 'नागरिकसेतु को क्या अलग बनाता है?' : 'What Makes NagrikSetu Different?'}
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-text-muted">
+                {language === 'hi'
+                  ? 'प्रशासनिक जटिलता को दूर कर प्रत्येक नागरिक को सशक्त बनाने वाले 6 प्रमुख स्तंभ।'
+                  : 'Six core pillars bridging citizens, AI, and public administration.'}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              
+              {/* USP 1 */}
+              <div className="rounded-2xl border border-border bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
+                <div className="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 border border-orange-200 flex items-center justify-center text-lg mb-4">
+                  💬
+                </div>
+                <h4 className="text-base font-bold text-chakra-900">
+                  {language === 'hi' ? '1. संवाद-प्रथम इंटरफेस' : '1. Conversation-First Interface'}
+                </h4>
+                <p className="mt-2 text-xs text-text-secondary leading-relaxed">
+                  {language === 'hi'
+                    ? 'नागरिक अपनी समस्याएं आम बोलचाल की भाषा में बताते हैं। जटिल फॉर्म या ड्रॉपडाउन समझने की बाध्यता समाप्त।'
+                    : 'Citizens describe problems in everyday language without navigating confusing technical dropdowns or departmental jargon.'}
+                </p>
+              </div>
+
+              {/* USP 2 */}
+              <div className="rounded-2xl border border-border bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
+                <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center text-lg mb-4">
+                  🇮🇳
+                </div>
+                <h4 className="text-base font-bold text-chakra-900">
+                  {language === 'hi' ? '2. बहुभाषी सुगम्यता' : '2. Multilingual Accessibility'}
+                </h4>
+                <p className="mt-2 text-xs text-text-secondary leading-relaxed">
+                  {language === 'hi'
+                    ? 'हिंदी और अन्य भारतीय भाषाओं को प्राथमिकता देने वाले नागरिकों की सुविधा के लिए विशेष रूप से डिज़ाइन।'
+                    : 'Designed to support citizens who prefer Hindi and other Indian languages.'}
+                </p>
+              </div>
+
+              {/* USP 3 */}
+              <div className="rounded-2xl border border-border bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
+                <div className="h-10 w-10 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center text-lg mb-4">
+                  📄
+                </div>
+                <h4 className="text-base font-bold text-chakra-900">
+                  {language === 'hi' ? '3. AI-संचालित शिकायत निर्माण' : '3. AI-Powered Complaint Preparation'}
+                </h4>
+                <p className="mt-2 text-xs text-text-secondary leading-relaxed">
+                  {language === 'hi'
+                    ? 'साधारण विवरण को संरचित, गरिमापूर्ण और प्रभावी प्रशासनिक शिकायतों में बदलता है।'
+                    : 'Transforms ordinary descriptions into structured complaints.'}
+                </p>
+              </div>
+
+              {/* USP 4 */}
+              <div className="rounded-2xl border border-border bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
+                <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center text-lg mb-4">
+                  🧭
+                </div>
+                <h4 className="text-base font-bold text-chakra-900">
+                  {language === 'hi' ? '4. बुद्धिमान सरकारी नेविगेशन' : '4. Intelligent Government Navigation'}
+                </h4>
+                <p className="mt-2 text-xs text-text-secondary leading-relaxed">
+                  {language === 'hi'
+                    ? 'प्रासंगिक प्राधिकरणों और आधिकारिक सरकारी पोर्टलों की सटीक पहचान में सहायता करता है।'
+                    : 'Helps identify relevant authorities and official government portals.'}
+                </p>
+              </div>
+
+              {/* USP 5 */}
+              <div className="rounded-2xl border border-border bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
+                <div className="h-10 w-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center text-lg mb-4">
+                  ⚡
+                </div>
+                <h4 className="text-base font-bold text-chakra-900">
+                  {language === 'hi' ? '5. भविष्य का एजेंटिक ऑटोमेशन' : '5. Future Agentic Automation'}
+                </h4>
+                <p className="mt-2 text-xs text-text-secondary leading-relaxed">
+                  {language === 'hi'
+                    ? 'नागरिक की अनुमति से समर्थित सरकारी कार्यप्रवाहों को स्वचालित करने का उद्देश्य।'
+                    : 'Aims to automate supported government workflows with citizen authorization.'}
+                </p>
+              </div>
+
+              {/* USP 6 */}
+              <div className="rounded-2xl border border-border bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
+                <div className="h-10 w-10 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center text-lg mb-4">
+                  🛡️
+                </div>
+                <h4 className="text-base font-bold text-chakra-900">
+                  {language === 'hi' ? '6. मानव नियंत्रण में (ह्यूमन-इन-कंट्रोल)' : '6. Human-in-Control Design'}
+                </h4>
+                <p className="mt-2 text-xs text-text-secondary leading-relaxed">
+                  {language === 'hi'
+                    ? 'नागरिक महत्वपूर्ण कार्यों की समीक्षा और अनुमोदन के लिए सदैव स्वयं उत्तरदायी रहते हैं।'
+                    : 'Citizens remain responsible for reviewing and approving important actions.'}
+                </p>
+              </div>
+
+            </div>
+
+            {/* Bottom link banner to Future Vision */}
+            <div className="mt-10 text-center">
+              <Link
+                to="/future-vision"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-chakra-800 text-chakra-900 hover:bg-chakra-900 hover:text-white px-7 py-3 text-sm font-black transition-all shadow-xs"
+              >
+                <span>{language === 'hi' ? 'पूर्ण तकनीकी रोडमैप और भविष्य दृष्टि पढ़ें' : 'Read Full Technical Roadmap & Future Vision'}</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 
