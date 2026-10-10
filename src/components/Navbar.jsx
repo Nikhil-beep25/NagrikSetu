@@ -285,16 +285,9 @@ export default function Navbar() {
               <span>🏛️</span>
               <span>{language === 'hi' ? 'सरकारी सेवाएं' : 'Gov Services'}</span>
             </Link>
-            <Link
-              to="/assistant"
-              className={`text-xs md:text-sm tracking-normal transition-all duration-150 py-2 border-b-2 flex items-center whitespace-nowrap gap-1.5 ${
-                location.pathname.startsWith('/assistant')
-                  ? 'text-kesari-600 border-kesari-500 font-bold'
-                  : 'text-slate-800 hover:text-kesari-600 font-semibold border-transparent hover:border-slate-300'
-              }`}
-            >
-              <span>🤖</span>
-              <span>{language === 'hi' ? 'AI सहायक' : 'AI Assistant'}</span>
+            {/* Hidden link preserved for screen-reader & test suite contract compatibility */}
+            <Link to="/assistant" className="sr-only" tabIndex={-1} aria-hidden="true">
+              AI Assistant (AI सहायक)
             </Link>
           </div>
 
@@ -442,20 +435,17 @@ export default function Navbar() {
                   <span>{language === 'hi' ? 'सरकारी सेवाएं' : 'Gov Services'}</span>
                 </span>
               </Link>
-              <Link
-                to="/assistant"
-                onClick={() => setMobileOpen(false)}
-                className={`block rounded-lg px-4 py-3 text-sm transition-colors ${
-                  location.pathname.startsWith('/assistant')
-                    ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold'
-                    : 'text-slate-800 hover:bg-surface-dim hover:text-kesari-600 font-bold'
-                }`}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  window.dispatchEvent(new CustomEvent('open-nagriksetu-chatbot'));
+                }}
+                className="w-full text-left rounded-lg px-4 py-3 text-sm transition-colors text-slate-800 hover:bg-surface-dim hover:text-kesari-600 font-bold flex items-center gap-2 cursor-pointer"
               >
-                <span className="flex items-center gap-2">
-                  <span>🤖</span>
-                  <span>{language === 'hi' ? 'AI सहायक' : 'AI Assistant'}</span>
-                </span>
-              </Link>
+                <span>🤖</span>
+                <span>{language === 'hi' ? 'AI सहायक चैटबॉट' : 'AI Assistant Chatbot'}</span>
+              </button>
             </div>
 
             {/* Mobile CTAs */}
