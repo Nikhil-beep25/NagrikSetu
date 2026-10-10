@@ -268,42 +268,60 @@ export default function FutureVisionPage() {
   ];
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <div className="bg-[#FFF9F1] min-h-screen text-[#1D2939] relative overflow-hidden">
+      {/* Subtle Digital Nodes Watermark Background */}
+      <div
+        className="absolute inset-0 bg-watermark-nodes opacity-[0.03] pointer-events-none"
+        aria-hidden="true"
+      />
+
       {/* =========================================================================
-          HERO: THE FUTURE OF NAGRIKSETU
+          HERO: THE FUTURE OF NAGRIKSETU (Phase 15 Bharat Identity)
           ========================================================================= */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#001c38] to-[#002D56] text-white py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-[#0B1F50] text-white py-16 sm:py-24">
         {/* Tricolor top accent */}
-        <div className="tricolor-ribbon absolute top-0 left-0 w-full" aria-hidden="true" />
-        <div className="pointer-events-none absolute -top-24 -left-24 h-80 w-80 rounded-full bg-kesari-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute top-0 left-0 right-0 h-1 flex">
+          <div className="w-1/3 bg-[#F47721]" />
+          <div className="w-1/3 bg-white" />
+          <div className="w-1/3 bg-[#13865B]" />
+        </div>
+
+        {/* Ashoka radial watermark */}
+        <div
+          className="absolute inset-0 bg-watermark-mandala opacity-[0.08] pointer-events-none"
+          aria-hidden="true"
+        />
 
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full bg-kesari-500/20 border border-kesari-400/40 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-kesari-300">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1 text-xs font-black uppercase tracking-wider text-[#F47721] backdrop-blur-md">
             <span>🚀</span>
             <span>{isHindi ? 'नागरिकसेतु विजन' : 'Product Vision & Roadmap'}</span>
             <span className="text-white/60">•</span>
-            <span className="text-emerald-300">Coming Soon</span>
+            <span className="text-emerald-300">COMING SOON</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
-            {isHindi ? 'नागरिकसेतु का भविष्य' : 'The Future of NagrikSetu'}
+            {isHindi ? 'नागरिक सेवाओं का भविष्य संवादात्मक है।' : 'The Future of Citizen Services Is Conversational.'}
           </h1>
 
-          <p className="text-base sm:text-xl text-slate-200 max-w-3xl mx-auto font-normal leading-relaxed">
-            {isHindi
-              ? 'एक ऐसा AI-संचालित नागरिक ऑटोमेशन मंच, जहाँ लोग अपनी भाषा में समस्या बता सकें और AI जटिल सरकारी प्रक्रिया को पूरा करने में सहायता करे।'
-              : 'An AI-powered citizen automation platform where people describe their problems in natural language, and AI helps complete the complex government service workflow.'}
+          <p className="text-lg sm:text-2xl font-black text-[#F47721] tracking-wide">
+            {isHindi ? 'एक बातचीत। सरल सरकारी कार्यप्रवाह।' : 'One Conversation. Simpler Government Workflows.'}
           </p>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-300">
-            <span className="bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
+          <p className="text-base sm:text-lg text-slate-200 max-w-3xl mx-auto font-medium leading-relaxed">
+            {isHindi
+              ? 'एक ऐसा AI-संचालित नागरिक ऑटोमेशन मंच, जहाँ लोग अपनी भाषा में समस्या बता सकें और AI जटिल सरकारी प्रक्रिया को पूरा करने में सहायता करे।'
+              : 'An AI-powered citizen automation platform where people describe their problems in natural language, and AI helps complete the complex government service workflow with citizen authorization.'}
+          </p>
+
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs font-bold text-slate-200">
+            <span className="bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
               {isHindi ? '✓ ग्रामीण साक्षरता के अनुकूल' : '✓ Built for Low Digital Literacy'}
             </span>
-            <span className="bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
+            <span className="bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
               {isHindi ? '✓ हिंदी व बोलचाल की भाषा' : '✓ Hindi & Vernacular First'}
             </span>
-            <span className="bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
+            <span className="bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
               {isHindi ? '✓ मानव नियंत्रण में' : '✓ 100% Human-in-Control'}
             </span>
           </div>

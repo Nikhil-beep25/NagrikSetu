@@ -257,7 +257,7 @@ export default function ChatbotWidget() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 select-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none print:hidden">
       {/* =========================================================================
           1. CHAT WINDOW (POPUP PANEL)
           ========================================================================= */}
@@ -265,7 +265,8 @@ export default function ChatbotWidget() {
         <div
           role="dialog"
           aria-label="NagrikSetu AI Chatbot"
-          className="fixed bottom-20 right-4 sm:right-6 w-[360px] sm:w-[410px] max-w-[calc(100vw-32px)] h-[560px] max-h-[calc(100vh-100px)] bg-white rounded-2xl shadow-2xl border border-border flex flex-col overflow-hidden animate-fade-slide-up z-50"
+          aria-modal="true"
+          className="fixed bottom-16 sm:bottom-20 right-3 sm:right-6 w-[340px] sm:w-[410px] max-w-[calc(100vw-24px)] h-[520px] sm:h-[560px] max-h-[calc(100vh-90px)] bg-white rounded-2xl shadow-2xl border border-border flex flex-col overflow-hidden animate-fade-slide-up z-50"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-chakra-900 to-chakra-800 text-white p-3.5 flex items-center justify-between shadow-xs">
@@ -505,8 +506,10 @@ export default function ChatbotWidget() {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        aria-label="Toggle AI Citizen Assistant Chatbot"
-        className="group relative flex items-center gap-2 px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
+        aria-label={isOpen ? "Close AI Citizen Assistant" : "Open AI Citizen Assistant"}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        className="group relative flex items-center gap-2 p-3 sm:px-4 sm:py-3.5 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20 focus:outline-hidden focus:ring-4 focus:ring-kesari-300"
       >
         <span className="text-xl sm:text-2xl leading-none">🤖</span>
         <span className="font-extrabold text-xs sm:text-sm tracking-wide hidden sm:inline">

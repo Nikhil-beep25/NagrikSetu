@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="100%" height="100%" fill="none" opacity="0.05">
+  <defs>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1F50"/>
+      <stop offset="50%" stop-color="#244A85"/>
+      <stop offset="100%" stop-color="#F47721"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Network Interconnections -->
+  <g stroke="url(#nodeGrad)" stroke-width="1.2">
+    <!-- Row 1 -->
+    <line x1="100" y1="100" x2="300" y2="150"/>
+    <line x1="300" y1="150" x2="500" y2="80"/>
+    <line x1="500" y1="80" x2="700" y2="160"/>
+    <line x1="700" y1="160" x2="900" y2="100"/>
+
+    <!-- Cross connections -->
+    <line x1="100" y1="100" x2="200" y2="300"/>
+    <line x1="300" y1="150" x2="400" y2="320"/>
+    <line x1="500" y1="80" x2="500" y2="280"/>
+    <line x1="700" y1="160" x2="600" y2="350"/>
+    <line x1="700" y1="160" x2="800" y2="320"/>
+    <line x1="900" y1="100" x2="800" y2="320"/>
+
+    <!-- Row 2 -->
+    <line x1="200" y1="300" x2="400" y2="320"/>
+    <line x1="400" y1="320" x2="500" y2="280"/>
+    <line x1="500" y1="280" x2="600" y2="350"/>
+    <line x1="600" y1="350" x2="800" y2="320"/>
+
+    <!-- Bottom Connections -->
+    <line x1="200" y1="300" x2="250" y2="500"/>
+    <line x1="400" y1="320" x2="450" y2="480"/>
+    <line x1="600" y1="350" x2="550" y2="520"/>
+    <line x1="800" y1="320" x2="750" y2="500"/>
+
+    <line x1="250" y1="500" x2="450" y2="480"/>
+    <line x1="450" y1="480" x2="550" y2="520"/>
+    <line x1="550" y1="520" x2="750" y2="500"/>
+  </g>
+
+  <!-- Glowing Nodes with Circles -->
+  <g fill="#0B1F50">
+    <circle cx="100" cy="100" r="6"/>
+    <circle cx="500" cy="80" r="8"/>
+    <circle cx="900" cy="100" r="6"/>
+    <circle cx="400" cy="320" r="7"/>
+    <circle cx="600" cy="350" r="7"/>
+    <circle cx="250" cy="500" r="6"/>
+    <circle cx="750" cy="500" r="6"/>
+  </g>
+
+  <g fill="#F47721">
+    <circle cx="300" cy="150" r="7"/>
+    <circle cx="700" cy="160" r="8"/>
+    <circle cx="200" cy="300" r="6"/>
+    <circle cx="800" cy="320" r="7"/>
+    <circle cx="550" cy="520" r="8"/>
+  </g>
+
+  <g fill="#13865B">
+    <circle cx="500" cy="280" r="9"/>
+    <circle cx="450" cy="480" r="7"/>
+  </g>
+
+  <!-- Concentric Rings around central hub -->
+  <circle cx="500" cy="280" r="24" stroke="#13865B" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <circle cx="500" cy="280" r="44" stroke="#0B1F50" stroke-width="1" stroke-dasharray="6 6"/>
+  <circle cx="700" cy="160" r="20" stroke="#F47721" stroke-width="1" stroke-dasharray="4 4"/>
+  <circle cx="300" cy="150" r="18" stroke="#F47721" stroke-width="1" stroke-dasharray="3 3"/>
+</svg>

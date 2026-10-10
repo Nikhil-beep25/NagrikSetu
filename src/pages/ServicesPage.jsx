@@ -82,28 +82,52 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 sm:py-12">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="relative min-h-screen bg-[#FFF9F1] py-8 sm:py-12 overflow-hidden text-[#1D2939]">
+      {/* Subtle Civic Infrastructure Watermark Background */}
+      <div
+        className="absolute inset-0 bg-watermark-infra opacity-[0.04] pointer-events-none"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
+        
         {/* =========================================================================
-            HEADER & HERO SECTION
+            HEADER & HERO SECTION (Bharat Identity)
             ========================================================================= */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-kesari-50 border border-kesari-200 text-kesari-700 text-xs sm:text-sm font-bold shadow-2xs">
-            <span>🏛️</span>
-            <span>{language === 'hi' ? 'सत्यापित सरकारी सेवा मार्गदर्शिका' : 'Verified GovTech Service Navigator'}</span>
+        <div className="relative rounded-3xl bg-[#0B1F50] text-white p-6 sm:p-10 shadow-xl overflow-hidden">
+          {/* Top Tricolor Ribbon */}
+          <div className="absolute top-0 left-0 right-0 h-1 flex">
+            <div className="w-1/3 bg-[#F47721]" />
+            <div className="w-1/3 bg-white" />
+            <div className="w-1/3 bg-[#13865B]" />
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-chakra-900 tracking-tight">
-            {t('servicesTitle')}
-          </h1>
-          <p className="text-sm sm:text-base text-text-secondary leading-relaxed">
-            {t('servicesSubtitle')}
-          </p>
+
+          {/* Ashoka radial watermark within banner */}
+          <div
+            className="absolute inset-0 bg-watermark-mandala opacity-[0.08] pointer-events-none"
+            aria-hidden="true"
+          />
+
+          <div className="relative z-10 max-w-3xl mx-auto text-center space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-[#F47721] text-xs font-black uppercase tracking-wider backdrop-blur-md">
+              <span>🏛️</span>
+              <span>{language === 'hi' ? 'सत्यापित सरकारी सेवा नेविगेटर' : 'Verified GovTech Service Navigator'}</span>
+            </div>
+
+            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              {t('servicesTitle')}
+            </h1>
+
+            <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
+              {t('servicesSubtitle')}
+            </p>
+          </div>
         </div>
 
         {/* =========================================================================
             SEARCH & AI QUERY BAR
             ========================================================================= */}
-        <div className="bg-white rounded-2xl border border-border p-4 sm:p-6 shadow-sm space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E3E8EF] p-4 sm:p-6 shadow-md space-y-4">
           <form onSubmit={handleAiSearch} className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -118,14 +142,14 @@ export default function ServicesPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('servicesSearchPlaceholder')}
-                className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl border border-border-input bg-surface-dim hover:bg-white focus:bg-white focus:border-chakra-500 focus:ring-2 focus:ring-chakra-200 focus:outline-hidden transition-all text-text-primary"
+                className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl border border-[#E3E8EF] bg-[#EEF4FF]/50 hover:bg-white focus:bg-white focus:border-[#F47721] focus:ring-2 focus:ring-[#F47721]/20 focus:outline-hidden transition-all text-[#1D2939]"
               />
             </div>
             <button
               id="ai-search-button"
               type="submit"
               disabled={aiLoading || !searchQuery.trim()}
-              className="px-5 py-3 rounded-xl bg-chakra-800 hover:bg-chakra-900 disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer whitespace-nowrap"
+              className="px-6 py-3 rounded-xl bg-[#0B1F50] hover:bg-[#18367d] disabled:opacity-50 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
             >
               {aiLoading ? (
                 <>
@@ -153,15 +177,15 @@ export default function ServicesPage() {
               {aiResult.intent === 'civic_complaint' && (
                 <div
                   id="civic-redirect-banner"
-                  className="p-4 rounded-xl bg-amber-50 border border-amber-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                  className="p-4 rounded-xl bg-[#FFF9F1] border-2 border-[#F47721] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-xl">⚠️</span>
+                    <span className="text-2xl">⚠️</span>
                     <div>
-                      <h4 className="text-sm font-bold text-amber-900">
+                      <h4 className="text-sm font-black text-[#F47721]">
                         {language === 'hi' ? 'नागरिक शिकायत का पता चला' : 'Civic Grievance Detected'}
                       </h4>
-                      <p className="text-xs text-amber-800 mt-0.5">
+                      <p className="text-xs text-[#1D2939] mt-0.5 font-medium">
                         {language === 'hi'
                           ? aiResult.hiMessage || t('servicesCivicRedirectNotice')
                           : aiResult.message || t('servicesCivicRedirectNotice')}
@@ -170,7 +194,7 @@ export default function ServicesPage() {
                   </div>
                   <Link
                     to="/report"
-                    className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shrink-0 transition-colors shadow-2xs"
+                    className="px-4 py-2 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white text-xs font-black shrink-0 transition-colors shadow-sm"
                   >
                     {t('servicesCivicRedirectBtn')} →
                   </Link>
@@ -181,13 +205,13 @@ export default function ServicesPage() {
               {aiResult.requiresState && (
                 <div
                   id="state-prompt-banner"
-                  className="p-4 rounded-xl bg-blue-50 border border-blue-200 space-y-3"
+                  className="p-4 rounded-xl bg-[#EEF4FF] border border-[#244A85]/30 space-y-3 shadow-xs"
                 >
                   <div className="flex items-start gap-2.5">
                     <span className="text-xl">📍</span>
                     <div>
-                      <h4 className="text-sm font-bold text-blue-950">{t('servicesStatePromptTitle')}</h4>
-                      <p className="text-xs text-blue-800 mt-0.5">
+                      <h4 className="text-sm font-black text-[#0B1F50]">{t('servicesStatePromptTitle')}</h4>
+                      <p className="text-xs text-[#596579] mt-0.5">
                         {language === 'hi'
                           ? aiResult.hiMessage || t('servicesStatePromptDesc')
                           : aiResult.message || t('servicesStatePromptDesc')}
@@ -198,7 +222,7 @@ export default function ServicesPage() {
                     <button
                       type="button"
                       onClick={() => handleStateSelectFromPrompt('Delhi')}
-                      className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-2xs cursor-pointer flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-xl bg-[#0B1F50] hover:bg-[#18367d] text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                     >
                       <span>🏛️</span>
                       <span>Delhi (e-District Delhi)</span>
@@ -206,7 +230,7 @@ export default function ServicesPage() {
                     <button
                       type="button"
                       onClick={() => handleStateSelectFromPrompt('Uttar Pradesh')}
-                      className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-2xs cursor-pointer flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                     >
                       <span>🏛️</span>
                       <span>Uttar Pradesh / Agra (eDistrict UP)</span>
@@ -219,22 +243,22 @@ export default function ServicesPage() {
               {aiResult.serviceId && !aiResult.requiresState && (
                 <div
                   id="ai-matched-service-banner"
-                  className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                  className="p-4 rounded-xl bg-[#EDF9F3] border border-[#13865B]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-xl">🎯</span>
+                    <span className="text-2xl">🎯</span>
                     <div>
-                      <h4 className="text-sm font-bold text-emerald-950">
+                      <h4 className="text-sm font-black text-[#13865B]">
                         {language === 'hi' ? 'सत्यापित सेवा मिलान' : 'Verified Service Match Found'}
                       </h4>
-                      <p className="text-xs text-emerald-800 mt-0.5">
+                      <p className="text-xs text-[#1D2939] mt-0.5 font-medium">
                         {language === 'hi' ? aiResult.hiMessage || aiResult.message : aiResult.message}
                       </p>
                     </div>
                   </div>
                   <Link
                     to={`/services/${aiResult.serviceId}`}
-                    className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shrink-0 transition-colors shadow-2xs"
+                    className="px-4 py-2 rounded-xl bg-[#13865B] hover:bg-[#0f6b49] text-white text-xs font-black shrink-0 transition-colors shadow-sm"
                   >
                     {language === 'hi' ? 'विवरण और चेकलिस्ट देखें' : 'View Requirements & Checklist'} →
                   </Link>
@@ -263,10 +287,10 @@ export default function ServicesPage() {
           {/* =========================================================================
               FILTERS ROW (Category & State)
               ========================================================================= */}
-          <div className="pt-2 border-t border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="pt-2 border-t border-[#E3E8EF] flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Category Filter Chips */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-              <span className="text-xs font-bold text-text-secondary whitespace-nowrap">
+              <span className="text-xs font-bold text-[#596579] whitespace-nowrap">
                 {t('servicesCategoryFilter')}:
               </span>
               {[
@@ -280,8 +304,8 @@ export default function ServicesPage() {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                     selectedCategory === cat.id
-                      ? 'bg-chakra-800 text-white shadow-2xs'
-                      : 'bg-surface-dim hover:bg-slate-200 text-slate-700'
+                      ? 'bg-[#0B1F50] text-white shadow-xs'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                   }`}
                 >
                   {language === 'hi' ? cat.hi : cat.en}
@@ -291,7 +315,7 @@ export default function ServicesPage() {
 
             {/* State Filter Chips */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-              <span className="text-xs font-bold text-text-secondary whitespace-nowrap">
+              <span className="text-xs font-bold text-[#596579] whitespace-nowrap">
                 {t('servicesStateFilter')}:
               </span>
               {[
@@ -306,8 +330,8 @@ export default function ServicesPage() {
                   onClick={() => setSelectedState(st.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                     selectedState === st.id
-                      ? 'bg-kesari-600 text-white shadow-2xs'
-                      : 'bg-surface-dim hover:bg-slate-200 text-slate-700'
+                      ? 'bg-[#F47721] text-white shadow-xs'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                   }`}
                 >
                   {language === 'hi' ? st.hi : st.en}
@@ -320,15 +344,15 @@ export default function ServicesPage() {
         {/* =========================================================================
             RESULTS COUNT & ACTIVE FILTER BADGES
             ========================================================================= */}
-        <div className="flex items-center justify-between text-xs sm:text-sm text-text-secondary">
+        <div className="flex items-center justify-between text-xs sm:text-sm text-[#596579]">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-chakra-900">{filteredServices.length}</span>
+            <span className="font-bold text-[#0B1F50]">{filteredServices.length}</span>
             <span>{t('servicesFoundCount')}</span>
             {(searchQuery || selectedCategory !== 'All' || selectedState !== 'All') && (
               <button
                 type="button"
                 onClick={handleClearFilters}
-                className="text-xs font-bold text-kesari-600 hover:text-kesari-700 underline ml-2 cursor-pointer"
+                className="text-xs font-bold text-[#F47721] hover:text-[#d96617] underline ml-2 cursor-pointer"
               >
                 {t('servicesClearFilters')}
               </button>
@@ -344,24 +368,24 @@ export default function ServicesPage() {
             {filteredServices.map((service) => (
               <div
                 key={service.id}
-                className="bg-white rounded-2xl border border-border p-5 sm:p-6 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between group"
+                className="bg-white rounded-2xl border border-[#E3E8EF] p-5 sm:p-6 shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-3">
                   {/* Card Header: Badges */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span
-                      className={`px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
+                      className={`px-2.5 py-0.5 rounded-full text-[11px] font-black ${
                         service.state === 'Delhi'
-                          ? 'bg-blue-100 text-blue-800'
+                          ? 'bg-[#EEF4FF] text-[#0B1F50] border border-[#244A85]/20'
                           : service.state === 'Uttar Pradesh'
-                          ? 'bg-amber-100 text-amber-900'
-                          : 'bg-purple-100 text-purple-900'
+                          ? 'bg-[#FFF9F1] text-[#F47721] border border-[#F47721]/30'
+                          : 'bg-[#F5F0FF] text-[#7C3AED] border border-[#7C3AED]/30'
                       }`}
                     >
                       📍 {service.state}
                     </span>
 
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EDF9F3] text-[#13865B] border border-[#13865B]/20 flex items-center gap-1">
                       <span>✓</span>
                       <span>{service.verificationStatus}</span>
                     </span>
@@ -369,30 +393,30 @@ export default function ServicesPage() {
 
                   {/* Service Title */}
                   <div>
-                    <h3 className="text-lg font-bold text-chakra-900 group-hover:text-kesari-600 transition-colors">
+                    <h3 className="text-lg font-black text-[#0B1F50] group-hover:text-[#F47721] transition-colors">
                       <Link to={`/services/${service.id}`}>
                         {language === 'hi' ? service.hiName : service.name}
                       </Link>
                     </h3>
-                    <p className="text-[11px] font-semibold text-text-muted mt-0.5">
+                    <p className="text-[11px] font-semibold text-[#596579] mt-0.5">
                       {service.department}
                     </p>
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs text-text-secondary line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-[#596579] line-clamp-3 leading-relaxed">
                     {language === 'hi' ? service.hiDescription : service.description}
                   </p>
 
                   {/* Appointment info pill */}
                   <div className="pt-2">
                     {service.appointmentRequired ? (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-1 rounded-md border border-amber-200">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-800 bg-amber-50 px-2 py-1 rounded-md border border-amber-200">
                         <span>📅</span>
                         <span>{t('serviceAppointmentRequiredBadge')}</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#13865B] bg-[#EDF9F3] px-2 py-1 rounded-md border border-[#13865B]/20">
                         <span>⚡</span>
                         <span>{t('serviceAppointmentNotRequiredBadge')}</span>
                       </span>
@@ -401,12 +425,12 @@ export default function ServicesPage() {
                 </div>
 
                 {/* Card Actions */}
-                <div className="pt-5 mt-4 border-t border-border flex items-center justify-between gap-2">
+                <div className="pt-5 mt-4 border-t border-[#E3E8EF] flex items-center justify-between gap-2">
                   <a
                     href={service.officialPortal}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-bold text-chakra-700 hover:text-chakra-900 hover:underline flex items-center gap-1"
+                    className="text-xs font-bold text-[#0B1F50] hover:text-[#F47721] hover:underline flex items-center gap-1"
                     title={service.officialPortal}
                   >
                     <span>🌐 {language === 'hi' ? 'पोर्टल' : 'Official Portal'}</span>
@@ -419,7 +443,7 @@ export default function ServicesPage() {
 
                   <Link
                     to={`/services/${service.id}`}
-                    className="px-3.5 py-1.5 rounded-lg bg-kesari-500 hover:bg-kesari-600 text-white text-xs font-bold shadow-2xs transition-all flex items-center gap-1"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white text-xs font-black shadow-xs transition-all flex items-center gap-1 active:scale-[0.98]"
                   >
                     <span>{language === 'hi' ? 'दस्तावेज व प्रक्रिया' : 'View Checklist'}</span>
                     <span>→</span>
@@ -429,10 +453,10 @@ export default function ServicesPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-border p-12 text-center space-y-4">
+          <div className="bg-white rounded-2xl border border-[#E3E8EF] p-12 text-center space-y-4">
             <span className="text-4xl">🔍</span>
-            <h3 className="text-base font-bold text-chakra-900">{t('servicesNoResults')}</h3>
-            <p className="text-xs text-text-secondary max-w-md mx-auto">
+            <h3 className="text-base font-bold text-[#0B1F50]">{t('servicesNoResults')}</h3>
+            <p className="text-xs text-[#596579] max-w-md mx-auto">
               {language === 'hi'
                 ? 'कृपया अपने खोज शब्द बदलें अथवा फ़िल्टर रीसेट करें।'
                 : 'Try adjusting your search query, or clear your state and category filters.'}
@@ -440,7 +464,7 @@ export default function ServicesPage() {
             <button
               type="button"
               onClick={handleClearFilters}
-              className="px-4 py-2 rounded-lg bg-chakra-800 text-white text-xs font-bold hover:bg-chakra-900 transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#0B1F50] text-white text-xs font-black hover:bg-[#18367d] transition-colors cursor-pointer"
             >
               {t('servicesClearFilters')}
             </button>
@@ -450,11 +474,11 @@ export default function ServicesPage() {
         {/* =========================================================================
             TRUST, SAFETY & NON-AFFILIATION DISCLAIMER
             ========================================================================= */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-border-card text-xs text-text-muted space-y-2">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E3E8EF] text-xs text-[#596579] space-y-2">
           <div className="flex items-start gap-2.5">
             <span className="text-lg">🛡️</span>
             <div>
-              <p className="font-bold text-chakra-900">
+              <p className="font-bold text-[#0B1F50]">
                 {language === 'hi' ? 'नागरिक सुरक्षा एवं सूचना सत्यता' : 'Citizen Trust & Verified Advisory'}
               </p>
               <p className="mt-0.5 leading-relaxed">

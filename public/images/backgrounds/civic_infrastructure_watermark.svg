@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" width="100%" height="100%" fill="none" opacity="0.05">
+  <defs>
+    <linearGradient id="infraGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B1F50"/>
+      <stop offset="50%" stop-color="#13865B"/>
+      <stop offset="100%" stop-color="#F47721"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Line / Village & Urban Horizon -->
+  <path d="M0 280 L1440 280" stroke="url(#infraGrad)" stroke-width="2"/>
+
+  <!-- Left: Rural Panchayat, Cottages, Solar Trees -->
+  <path d="M40 280 L40 240 L70 215 L100 240 L100 280" stroke="#0B1F50" stroke-width="1.5"/>
+  <path d="M60 280 L60 255 L80 255 L80 280" stroke="#0B1F50" stroke-width="1"/>
+  <!-- Cottage 2 -->
+  <path d="M120 280 L120 250 L155 225 L190 250 L190 280" stroke="#F47721" stroke-width="1.5"/>
+  <!-- Solar Lamp Post -->
+  <line x1="220" y1="280" x2="220" y2="180" stroke="#0B1F50" stroke-width="1.5"/>
+  <line x1="210" y1="180" x2="230" y2="180" stroke="#0B1F50" stroke-width="2"/>
+  <polygon points="210,180 230,180 225,170 215,170" fill="#13865B" stroke="#13865B" stroke-width="1"/>
+  <!-- Neem Tree Silhouette -->
+  <path d="M260 280 L260 220 C240 210 240 170 260 160 C250 140 280 130 290 150 C310 130 330 160 320 180 C340 200 320 230 290 220 L290 280" stroke="#13865B" stroke-width="1.5"/>
+
+  <!-- Center-Left: Smart Water Tower & Civic Pumping Station -->
+  <path d="M380 280 L395 190 L425 190 L440 280" stroke="#0B1F50" stroke-width="1.5"/>
+  <ellipse cx="410" cy="190" rx="30" ry="12" stroke="#0B1F50" stroke-width="1.5"/>
+  <ellipse cx="410" cy="160" rx="30" ry="12" stroke="#0B1F50" stroke-width="1.5"/>
+  <line x1="380" y1="160" x2="380" y2="190" stroke="#0B1F50" stroke-width="1.5"/>
+  <line x1="440" y1="160" x2="440" y2="190" stroke="#0B1F50" stroke-width="1.5"/>
+
+  <!-- Center: Metro Viaduct / Bharat Highway Bridge -->
+  <path d="M490 280 L490 210 L750 210 L750 280" stroke="#244A85" stroke-width="2"/>
+  <line x1="560" y1="210" x2="560" y2="280" stroke="#244A85" stroke-width="1.5"/>
+  <line x1="630" y1="210" x2="630" y2="280" stroke="#244A85" stroke-width="1.5"/>
+  <line x1="700" y1="210" x2="700" y2="280" stroke="#244A85" stroke-width="1.5"/>
+  <!-- Curved Cable Arches -->
+  <path d="M490 210 Q 560 150 630 210 Q 700 150 750 210" stroke="#F47721" stroke-width="1.5"/>
+
+  <!-- Center-Right: Modern Digital Municipal Center & Hospital -->
+  <path d="M800 280 L800 140 L880 140 L880 280" stroke="#0B1F50" stroke-width="1.5"/>
+  <!-- Hospital Red Cross symbol in subtle stroke -->
+  <path d="M835 160 H 845 V 150 H 855 V 160 H 865 V 170 H 855 V 180 H 845 V 170 H 835 Z" stroke="#13865B" stroke-width="1"/>
+  <!-- Windows Grid -->
+  <line x1="815" y1="200" x2="865" y2="200" stroke="#0B1F50" stroke-width="1" stroke-dasharray="6 6"/>
+  <line x1="815" y1="220" x2="865" y2="220" stroke="#0B1F50" stroke-width="1" stroke-dasharray="6 6"/>
+  <line x1="815" y1="240" x2="865" y2="240" stroke="#0B1F50" stroke-width="1" stroke-dasharray="6 6"/>
+
+  <!-- Right: Smart Tech Towers & Transmission Grid -->
+  <path d="M920 280 L920 110 L990 110 L990 280" stroke="#0B1F50" stroke-width="1.5"/>
+  <path d="M1020 280 L1050 80 L1080 280" stroke="#F47721" stroke-width="1.5"/>
+  <line x1="1030" y1="180" x2="1070" y2="180" stroke="#F47721" stroke-width="1.5"/>
+  <line x1="1040" y1="130" x2="1060" y2="130" stroke="#F47721" stroke-width="1.5"/>
+
+  <!-- Digital Wave / Connecting Network -->
+  <path d="M0 250 C 300 230, 600 260, 900 230 C 1200 200, 1350 240, 1440 220" stroke="url(#infraGrad)" stroke-width="1" stroke-dasharray="8 8"/>
+  <circle cx="300" cy="240" r="4" fill="#F47721"/>
+  <circle cx="630" cy="210" r="4" fill="#0B1F50"/>
+  <circle cx="955" cy="110" r="4" fill="#13865B"/>
+  <circle cx="1250" cy="210" r="4" fill="#F47721"/>
+</svg>

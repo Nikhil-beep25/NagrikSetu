@@ -88,17 +88,20 @@ export default function FutureVisionPopup() {
       aria-describedby="vision-popup-desc"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-slide-up"
     >
-      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border-2 border-kesari-300 overflow-hidden flex flex-col my-auto max-h-[90vh]">
+      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border-2 border-amber-400 animate-pulse-glow overflow-hidden flex flex-col my-auto max-h-[90vh]">
         {/* Tricolor Ribbon */}
         <div className="tricolor-ribbon w-full shrink-0" aria-hidden="true" />
 
         {/* Header Bar */}
-        <div className="bg-gradient-to-r from-[#001c38] to-[#002D56] text-white p-5 sm:p-6 shrink-0 relative">
-          <div className="flex items-start justify-between gap-3">
+        <div className="bg-gradient-to-r from-[#001c38] via-[#0a2b4c] to-[#002D56] text-white p-5 sm:p-6 shrink-0 relative overflow-hidden">
+          {/* Subtle background ambient glow */}
+          <div className="absolute -top-12 -right-12 w-40 h-40 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
+
+          <div className="flex items-start justify-between gap-3 relative z-10">
             <div className="space-y-1.5 pr-6">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-kesari-500/20 border border-kesari-400/40 px-2.5 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-kesari-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-kesari-400 animate-ping" />
-                <span>{isHindi ? 'भविष्य दृष्टि • कमिंग सून' : 'Coming Soon • Future Vision'}</span>
+              <div className="animate-shine inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-kesari-500 text-chakra-900 border border-amber-300 px-3 py-1 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-white animate-ping" />
+                <span>✨ {isHindi ? 'कमिंग सून • भविष्य दृष्टि' : 'Upcoming Soon • Future Vision'}</span>
               </div>
               <h2
                 id="vision-popup-title"
@@ -207,9 +210,9 @@ export default function FutureVisionPopup() {
           <button
             type="button"
             onClick={handleExploreVision}
-            className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-kesari-500 hover:bg-kesari-600 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
+            className="animate-shine w-full sm:w-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-kesari-500 to-amber-500 hover:from-kesari-600 hover:to-amber-600 text-white text-xs sm:text-sm font-black shadow-md hover:shadow-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
           >
-            <span>{isHindi ? 'भविष्य दृष्टि पेज देखें' : 'Explore Future Vision & Roadmap'}</span>
+            <span>✨ {isHindi ? 'भविष्य दृष्टि पेज देखें' : 'Explore Future Vision & Roadmap'}</span>
             <span>→</span>
           </button>
         </div>

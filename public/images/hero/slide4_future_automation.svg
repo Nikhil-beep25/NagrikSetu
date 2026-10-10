@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgFuture" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071330"/>
+      <stop offset="45%" stop-color="#0B1F50"/>
+      <stop offset="85%" stop-color="#14346E"/>
+      <stop offset="100%" stop-color="#1E284A"/>
+    </linearGradient>
+
+    <linearGradient id="saffronBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F47721" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#F47721" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FFB57A" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="greenBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#13865B" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#13865B" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#5CD6A4" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Deep Navy Cinematic Background -->
+  <rect width="1920" height="1080" fill="url(#bgFuture)"/>
+
+  <!-- Radial Ambient Spotlights -->
+  <circle cx="1400" cy="500" r="450" fill="#244A85" opacity="0.35" filter="url(#glow)"/>
+  <circle cx="1600" cy="300" r="300" fill="#F47721" opacity="0.2" filter="url(#glow)"/>
+  <circle cx="1200" cy="800" r="350" fill="#13865B" opacity="0.2" filter="url(#glow)"/>
+
+  <!-- Cybernetic Grid Floor (Perspective) -->
+  <g stroke="#3A608D" stroke-width="1" opacity="0.15">
+    <line x1="0" y1="900" x2="1920" y2="900"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+    <line x1="0" y1="1020" x2="1920" y2="1020"/>
+    <!-- Perspective lines -->
+    <line x1="960" y1="700" x2="0" y2="1080"/>
+    <line x1="960" y1="700" x2="400" y2="1080"/>
+    <line x1="960" y1="700" x2="800" y2="1080"/>
+    <line x1="960" y1="700" x2="1120" y2="1080"/>
+    <line x1="960" y1="700" x2="1520" y2="1080"/>
+    <line x1="960" y1="700" x2="1920" y2="1080"/>
+  </g>
+
+  <!-- Background Ashoka Mandala Aura -->
+  <g transform="translate(1450, 480)" opacity="0.12">
+    <circle r="400" stroke="#F47721" stroke-width="2" stroke-dasharray="10 10"/>
+    <circle r="340" stroke="#FFFFFF" stroke-width="1.5"/>
+    <circle r="260" stroke="#13865B" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle r="180" stroke="#FFFFFF" stroke-width="1.5"/>
+    <!-- 24 Spokes -->
+    <g stroke="#FFFFFF" stroke-width="1.5">
+      <line x1="0" y1="-260" x2="0" y2="260"/>
+      <line x1="-260" y1="0" x2="260" y2="0"/>
+      <line x1="-184" y1="-184" x2="184" y2="184"/>
+      <line x1="-184" y1="184" x2="184" y2="-184"/>
+      <line x1="0" y1="-260" x2="0" y2="260" transform="rotate(30)"/>
+      <line x1="0" y1="-260" x2="0" y2="260" transform="rotate(60)"/>
+      <line x1="0" y1="-260" x2="0" y2="260" transform="rotate(120)"/>
+      <line x1="0" y1="-260" x2="0" y2="260" transform="rotate(150)"/>
+    </g>
+  </g>
+
+  <!-- Holographic Connected Workflow Pipeline Nodes -->
+  <!-- Step 1: Citizen Natural Voice Input -->
+  <g transform="translate(1080, 260)" filter="url(#softGlow)">
+    <rect width="240" height="110" rx="20" fill="url(#cardGrad)" stroke="#F47721" stroke-width="2"/>
+    <circle cx="45" cy="55" r="22" fill="#F47721" opacity="0.2"/>
+    <text x="45" y="62" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" text-anchor="middle" fill="#FFA566">🗣️</text>
+    <text x="85" y="48" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">1. Citizen Speaks</text>
+    <text x="85" y="70" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" fill="#D3E4FF">Natural Hindi/English</text>
+  </g>
+
+  <!-- Connection Line 1 to 2 -->
+  <path d="M1320 315 L1440 315" stroke="url(#saffronBeam)" stroke-width="3" stroke-dasharray="6 4"/>
+  <circle cx="1380" cy="315" r="4" fill="#F47721" filter="url(#softGlow)"/>
+
+  <!-- Step 2: AI Understands & Triages -->
+  <g transform="translate(1440, 260)" filter="url(#softGlow)">
+    <rect width="250" height="110" rx="20" fill="url(#cardGrad)" stroke="#3A608D" stroke-width="2"/>
+    <circle cx="45" cy="55" r="22" fill="#244A85" opacity="0.3"/>
+    <text x="45" y="62" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" text-anchor="middle" fill="#81A6D7">🤖</text>
+    <text x="85" y="48" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">2. AI Prepares Form</text>
+    <text x="85" y="70" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" fill="#D3E4FF">Extracts Department</text>
+  </g>
+
+  <!-- Connection Line 2 to 3 -->
+  <path d="M1565 370 L1565 470" stroke="#81A6D7" stroke-width="2" stroke-dasharray="6 4"/>
+
+  <!-- Step 3: Verified Portal Identification (.gov.in) -->
+  <g transform="translate(1440, 470)" filter="url(#softGlow)">
+    <rect width="250" height="110" rx="20" fill="url(#cardGrad)" stroke="#13865B" stroke-width="2"/>
+    <circle cx="45" cy="55" r="22" fill="#13865B" opacity="0.25"/>
+    <text x="45" y="62" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" text-anchor="middle" fill="#7ADB8D">🏛️</text>
+    <text x="85" y="48" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">3. Portal Matched</text>
+    <text x="85" y="70" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" fill="#A7F3D0">Verified .gov.in System</text>
+  </g>
+
+  <!-- Connection Line 3 to 4 -->
+  <path d="M1440 525 L1320 525" stroke="url(#greenBeam)" stroke-width="3" stroke-dasharray="6 4"/>
+
+  <!-- Step 4: Citizen Explicit Consent & Tracking -->
+  <g transform="translate(1080, 470)" filter="url(#softGlow)">
+    <rect width="240" height="110" rx="20" fill="url(#cardGrad)" stroke="#FFA566" stroke-width="2"/>
+    <circle cx="45" cy="55" r="22" fill="#F47721" opacity="0.25"/>
+    <text x="45" y="62" font-family="'Plus Jakarta Sans', sans-serif" font-size="20" text-anchor="middle" fill="#FFD2B2">🛡️</text>
+    <text x="85" y="48" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="14" fill="#FFFFFF">4. Citizen Approves</text>
+    <text x="85" y="70" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" fill="#FFE0B2">Human in Full Control</text>
+  </g>
+
+  <!-- Big Central Floating Badge: "AUTONOMOUS GOVTECH VISION" -->
+  <g transform="translate(1200, 640)" filter="url(#softGlow)">
+    <rect width="360" height="70" rx="35" fill="#0B1F50" stroke="#F47721" stroke-width="2.5"/>
+    <circle cx="40" cy="35" r="10" fill="#13865B"/>
+    <circle cx="40" cy="35" r="5" fill="#FFFFFF"/>
+    <text x="70" y="43" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="14" fill="#FFFFFF" letter-spacing="1.5">COMING SOON: AI AUTOMATION</text>
+  </g>
+
+  <!-- Left: Stylized Silhouette of Indian Tech-Empowered Citizen with Smartphone -->
+  <g transform="translate(480, 280)" opacity="0.95">
+    <!-- Aura halo around citizen -->
+    <ellipse cx="200" cy="400" rx="280" ry="340" fill="#13865B" opacity="0.12" filter="url(#glow)"/>
+    <ellipse cx="200" cy="350" rx="200" ry="250" fill="#F47721" opacity="0.08" filter="url(#glow)"/>
+
+    <!-- Citizen Head Silhouette -->
+    <circle cx="220" cy="190" r="70" fill="#1D2939"/>
+    <!-- Head hair/turban outline -->
+    <path d="M150 180 C 150 100, 290 100, 290 180 Z" fill="#244A85"/>
+
+    <!-- Citizen Torso Silhouette -->
+    <path d="M120 450 L140 280 Q 220 250 300 280 L320 450 Z" fill="#0B1F50"/>
+    <path d="M140 280 Q 220 250 300 280 L340 500 L100 500 Z" fill="#0E2D60" opacity="0.8"/>
+
+    <!-- Hand holding glowing futuristic device -->
+    <rect x="250" y="320" width="80" height="140" rx="14" fill="#071330" stroke="#F47721" stroke-width="3" filter="url(#softGlow)"/>
+    <!-- Glowing screen -->
+    <rect x="258" y="332" width="64" height="116" rx="8" fill="#D3E4FF" opacity="0.9"/>
+    <!-- UI elements on screen -->
+    <rect x="265" y="345" width="50" height="8" rx="4" fill="#0B1F50"/>
+    <rect x="265" y="360" width="35" height="6" rx="3" fill="#F47721"/>
+    <circle cx="290" cy="400" r="16" fill="#13865B"/>
+    <path d="M285 400 L289 404 L296 396" stroke="#FFFFFF" stroke-width="2.5" fill="none"/>
+
+    <!-- Light beam from smartphone to workflow nodes -->
+    <path d="M290 320 Q 600 180 1080 315" stroke="url(#saffronBeam)" stroke-width="3" fill="none" opacity="0.8" stroke-dasharray="8 6"/>
+  </g>
+
+  <!-- Cinematic Saffron & Emerald Accent Streamers -->
+  <path d="M0 100 Q 500 250 1000 80 T 1920 180" stroke="#F47721" stroke-width="3" fill="none" opacity="0.3" filter="url(#softGlow)"/>
+  <path d="M0 150 Q 600 50 1100 200 T 1920 120" stroke="#13865B" stroke-width="2" fill="none" opacity="0.25" filter="url(#softGlow)"/>
+</svg>

@@ -61,6 +61,16 @@
   --color-bharat-creamborder: #ebdcd0;
   --color-whatsapp: #25d366;
 
+  /* Digital Bharat — Phase 15 Design System */
+  --color-bharat-navy: #0B1F50;
+  --color-bharat-saffron: #F47721;
+  --color-bharat-green: #13865B;
+  --color-bharat-ivory: #FFF9F1;
+  --color-bharat-softblue: #EEF4FF;
+  --color-bharat-text: #1D2939;
+  --color-bharat-muted: #596579;
+  --color-bharat-border: #E3E8EF;
+
   /* Text */
   --color-text-primary: #141c23;
   --color-text-secondary: #42474f;
@@ -161,3 +171,76 @@ body {
 .animate-fade-slide-up {
   animation: fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Shining and Shimmer effects for Future Vision & Upcoming badges */
+@keyframes shineSweep {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+  }
+  30%, 100% {
+    transform: translateX(250%) skewX(-25deg);
+  }
+}
+
+.animate-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 70%
+  );
+  animation: shineSweep 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(230, 81, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.7), 0 0 45px rgba(230, 81, 0, 0.4);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+/* Digital Bharat Phase 15 Utility Classes */
+.bg-bharat-gradient {
+  background: linear-gradient(110deg, #0B1F50 0%, #244A85 45%, #F47721 100%);
+}
+
+.bg-watermark-mandala {
+  background-image: url('/images/backgrounds/ashoka_mandala_watermark.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 700px auto;
+}
+
+.bg-watermark-infra {
+  background-image: url('/images/backgrounds/civic_infrastructure_watermark.svg');
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  background-size: 1440px auto;
+}
+
+.bg-watermark-nodes {
+  background-image: url('/images/backgrounds/digital_nodes_watermark.svg');
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: contain;
+}
+
+

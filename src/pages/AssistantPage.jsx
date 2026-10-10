@@ -37,28 +37,28 @@ export default function AssistantPage() {
         role: 'assistant',
         content:
           language === 'hi'
-            ? 'नमस्ते! मैं नागरिकसेतु हूँ। बताइए, आपको किस काम में सहायता चाहिए?'
-            : "Namaste! I'm NagrikSetu, your AI citizen assistant. Tell me what you need help with.",
+            ? 'नमस्ते! मैं नागरिकसेतु हूँ। बताइए, आज मैं आपकी किस समस्या या सरकारी सेवा में सहायता कर सकता हूँ?'
+            : "Namaste! How Can NagrikSetu Help You Today? Describe any civic issue or government service in your own words.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         suggestedActions: [
           {
             type: 'quick_prompt',
-            label: language === 'hi' ? 'नागरिक समस्या दर्ज करें' : 'Report a Civic Problem',
+            label: language === 'hi' ? 'सड़क पर गड्ढा' : 'Report a pothole',
             query: language === 'hi' ? 'सड़क पर गड्ढा है कैसे शिकायत करें?' : 'How do I report a pothole?',
           },
           {
             type: 'quick_prompt',
-            label: language === 'hi' ? 'आय प्रमाण पत्र' : 'Income Certificate',
+            label: language === 'hi' ? 'आय प्रमाण पत्र' : 'Find an income certificate',
             query: language === 'hi' ? 'मुझे आय प्रमाण पत्र बनवाना है' : 'Mujhe income certificate banwana hai',
           },
           {
             type: 'quick_prompt',
-            label: language === 'hi' ? 'आवश्यक दस्तावेज' : 'Required Documents',
-            query: language === 'hi' ? 'मूल निवास प्रमाण पत्र के लिए दस्तावेज क्या हैं?' : 'What documents do I need for a domicile certificate?',
+            label: language === 'hi' ? 'जल आपूर्ति शिकायत' : 'Help with water supply complaint',
+            query: language === 'hi' ? 'मेरे इलाके में पानी की आपूर्ति नहीं हो रही है' : 'Mere area mein 3 din se pani nahi aa raha.',
           },
           {
             type: 'quick_prompt',
-            label: language === 'hi' ? 'पासपोर्ट अपॉइंटमेंट' : 'Passport Guidance',
+            label: language === 'hi' ? 'सरकारी सेवाएं खोजें' : 'Find government services',
             query: language === 'hi' ? 'पासपोर्ट अपॉइंटमेंट कैसे बुक करें?' : 'Passport appointment kaise book kare?',
           },
         ],
@@ -228,19 +228,29 @@ export default function AssistantPage() {
         role: 'assistant',
         content:
           language === 'hi'
-            ? 'बातचीत रीसेट कर दी गई है। मैं आपकी किस प्रकार सहायता कर सकता हूँ?'
-            : "Conversation cleared. Tell me what you'd like help with.",
+            ? 'बातचीत रीसेट कर दी गई है। बताइए, मैं आपकी किस प्रकार सहायता कर सकता हूँ?'
+            : "Namaste! How Can NagrikSetu Help You Today?",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         suggestedActions: [
           {
             type: 'quick_prompt',
-            label: language === 'hi' ? 'नागरिक समस्या दर्ज करें' : 'Report a Civic Problem',
+            label: language === 'hi' ? 'सड़क पर गड्ढा' : 'Report a pothole',
             query: language === 'hi' ? 'सड़क पर गड्ढा है कैसे शिकायत करें?' : 'How do I report a pothole?',
           },
           {
             type: 'quick_prompt',
-            label: language === 'hi' ? 'आय प्रमाण पत्र' : 'Income Certificate',
+            label: language === 'hi' ? 'आय प्रमाण पत्र' : 'Find an income certificate',
             query: language === 'hi' ? 'मुझे आय प्रमाण पत्र बनवाना है' : 'Mujhe income certificate banwana hai',
+          },
+          {
+            type: 'quick_prompt',
+            label: language === 'hi' ? 'जल आपूर्ति सहायता' : 'Help with water supply complaint',
+            query: language === 'hi' ? 'मेरे इलाके में पानी की आपूर्ति नहीं हो रही है' : 'Mere area mein 3 din se pani nahi aa raha.',
+          },
+          {
+            type: 'quick_prompt',
+            label: language === 'hi' ? 'सरकारी सेवाएं खोजें' : 'Find government services',
+            query: language === 'hi' ? 'पासपोर्ट अपॉइंटमेंट कैसे बुक करें?' : 'Passport appointment kaise book kare?',
           },
         ],
       },
@@ -248,21 +258,32 @@ export default function AssistantPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-140px)] bg-slate-50 py-6 sm:py-8 flex flex-col justify-between">
-      <div className="mx-auto max-w-4xl w-full px-4 sm:px-6 lg:px-8 space-y-4 flex-1 flex flex-col">
+    <div className="relative min-h-[calc(100vh-140px)] bg-[#FFF9F1] py-6 sm:py-8 flex flex-col justify-between overflow-hidden text-[#1D2939]">
+      {/* Subtle Ashoka radial watermark */}
+      <div
+        className="absolute inset-0 bg-watermark-mandala opacity-[0.04] pointer-events-none"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-4xl w-full px-4 sm:px-6 lg:px-8 space-y-4 flex-1 flex flex-col">
         {/* =========================================================================
-            HEADER & ACTIONS
+            HEADER & ACTIONS (Bharat Identity)
             ========================================================================= */}
-        <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
+        <div className="flex items-center justify-between gap-4 border-b border-[#E3E8EF] pb-4">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-kesari-500 text-white flex items-center justify-center font-bold text-lg shadow-2xs">
+            <div className="h-11 w-11 rounded-2xl bg-[#0B1F50] text-white flex items-center justify-center font-bold text-xl shadow-md border border-[#F47721]/30">
               🤖
             </div>
             <div>
-              <h1 className="text-lg sm:text-xl font-extrabold text-chakra-900 tracking-tight">
-                {t('assistantTitle')}
-              </h1>
-              <p className="text-[11px] sm:text-xs text-text-muted">
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg sm:text-xl font-black text-[#0B1F50] tracking-tight">
+                  {t('assistantTitle')}
+                </h1>
+                <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-black bg-[#13865B]/15 text-[#13865B]">
+                  Live AI Active
+                </span>
+              </div>
+              <p className="text-[11px] sm:text-xs text-[#596579]">
                 {t('assistantSubtitle')}
               </p>
             </div>
@@ -271,7 +292,7 @@ export default function AssistantPage() {
           <button
             type="button"
             onClick={handleClearChat}
-            className="px-3 py-1.5 rounded-lg border border-border-input hover:border-slate-400 bg-white hover:bg-surface-dim text-xs font-bold text-slate-700 transition-colors shadow-2xs cursor-pointer flex items-center gap-1.5"
+            className="px-3.5 py-1.5 rounded-xl border border-[#E3E8EF] hover:border-slate-400 bg-white hover:bg-slate-50 text-xs font-black text-[#0B1F50] transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
             title="Reset conversation"
           >
             <span>🗑️</span>
@@ -284,7 +305,7 @@ export default function AssistantPage() {
             ========================================================================= */}
         <div
           ref={chatContainerRef}
-          className="flex-1 bg-white rounded-2xl border border-border p-4 sm:p-6 shadow-sm overflow-y-auto space-y-4 max-h-[60vh] min-h-[380px]"
+          className="flex-1 bg-white rounded-2xl border border-[#E3E8EF] p-4 sm:p-6 shadow-md overflow-y-auto space-y-4 max-h-[60vh] min-h-[380px]"
         >
           {messages.map((msg) => (
             <div
@@ -292,7 +313,7 @@ export default function AssistantPage() {
               className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.role === 'assistant' && (
-                <div className="h-8 w-8 rounded-full bg-chakra-800 text-white flex items-center justify-center text-sm font-bold shrink-0 mt-1 shadow-2xs">
+                <div className="h-8 w-8 rounded-full bg-[#0B1F50] text-white flex items-center justify-center text-sm font-bold shrink-0 mt-1 shadow-xs">
                   🏛️
                 </div>
               )}
@@ -300,10 +321,10 @@ export default function AssistantPage() {
               <div
                 className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 space-y-2.5 ${
                   msg.role === 'user'
-                    ? 'bg-chakra-800 text-white rounded-br-none shadow-xs'
+                    ? 'bg-[#0B1F50] text-white rounded-br-none shadow-sm'
                     : msg.isEmergency
                     ? 'bg-red-50 border border-red-300 text-red-950 rounded-bl-none shadow-xs'
-                    : 'bg-surface-dim border border-border-card text-slate-900 rounded-bl-none shadow-2xs'
+                    : 'bg-[#FFF9F1] border border-[#F47721]/20 text-[#1D2939] rounded-bl-none shadow-xs'
                 }`}
               >
                 {/* Emergency Header if applicable */}
@@ -315,13 +336,13 @@ export default function AssistantPage() {
                 )}
 
                 {/* Message Body */}
-                <div className="text-xs sm:text-sm whitespace-pre-line leading-relaxed">
+                <div className="text-xs sm:text-sm whitespace-pre-line leading-relaxed font-medium">
                   {msg.content}
                 </div>
 
                 {/* Fallback Transparent Notice */}
                 {msg.fallbackNotice && (
-                  <div className="p-2 rounded-lg bg-amber-50 border border-amber-200 text-[10px] text-amber-900 font-semibold flex items-center gap-1">
+                  <div className="p-2 rounded-lg bg-amber-50 border border-amber-200 text-[10px] text-amber-900 font-bold flex items-center gap-1">
                     <span>ℹ️</span>
                     <span>{msg.fallbackNotice}</span>
                   </div>
@@ -329,22 +350,22 @@ export default function AssistantPage() {
 
                 {/* Suggested Action Cards inside Assistant Bubble */}
                 {msg.suggestedActions && msg.suggestedActions.length > 0 && (
-                  <div className="pt-2 border-t border-border/40 flex flex-wrap gap-2">
+                  <div className="pt-2 border-t border-[#E3E8EF]/60 flex flex-wrap gap-2">
                     {msg.suggestedActions.map((act, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => handleActionClick(act)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
                           act.type === 'call_emergency'
                             ? 'bg-red-600 hover:bg-red-700 text-white'
                             : act.type === 'navigate_report'
-                            ? 'bg-kesari-500 hover:bg-kesari-600 text-white'
+                            ? 'bg-[#F47721] hover:bg-[#d96617] text-white'
                             : act.type === 'navigate_service' || act.type === 'navigate_checklist'
-                            ? 'bg-chakra-800 hover:bg-chakra-900 text-white'
+                            ? 'bg-[#0B1F50] hover:bg-[#18367d] text-white'
                             : act.type === 'clarify_state'
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                            : 'bg-white hover:bg-slate-100 text-slate-800 border border-border'
+                            ? 'bg-[#244A85] hover:bg-[#18367d] text-white'
+                            : 'bg-white hover:bg-slate-50 text-[#0B1F50] border border-[#E3E8EF]'
                         }`}
                       >
                         {act.type === 'call_emergency' && <span>📞</span>}
@@ -372,7 +393,7 @@ export default function AssistantPage() {
               </div>
 
               {msg.role === 'user' && (
-                <div className="h-8 w-8 rounded-full bg-kesari-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-1 shadow-2xs">
+                <div className="h-8 w-8 rounded-full bg-[#F47721] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-1 shadow-xs">
                   👤
                 </div>
               )}
@@ -381,17 +402,17 @@ export default function AssistantPage() {
 
           {/* Typing Indicator */}
           {loading && (
-            <div className="flex gap-3 justify-start items-center text-xs text-text-muted">
-              <div className="h-8 w-8 rounded-full bg-chakra-800 text-white flex items-center justify-center text-sm font-bold shrink-0">
+            <div className="flex gap-3 justify-start items-center text-xs text-[#596579]">
+              <div className="h-8 w-8 rounded-full bg-[#0B1F50] text-white flex items-center justify-center text-sm font-bold shrink-0">
                 🏛️
               </div>
-              <div className="bg-surface-dim border border-border-card rounded-2xl rounded-bl-none p-3 flex items-center gap-2">
+              <div className="bg-[#FFF9F1] border border-[#F47721]/30 rounded-2xl rounded-bl-none p-3 flex items-center gap-2">
                 <span className="flex gap-1">
-                  <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce" />
-                  <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0.2s]" />
-                  <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0.4s]" />
+                  <span className="h-2 w-2 rounded-full bg-[#F47721] animate-bounce" />
+                  <span className="h-2 w-2 rounded-full bg-[#F47721] animate-bounce [animation-delay:0.2s]" />
+                  <span className="h-2 w-2 rounded-full bg-[#F47721] animate-bounce [animation-delay:0.4s]" />
                 </span>
-                <span className="text-[11px] font-semibold">{t('assistantThinking')}</span>
+                <span className="text-[11px] font-bold text-[#0B1F50]">{t('assistantThinking')}</span>
               </div>
             </div>
           )}
@@ -400,7 +421,7 @@ export default function AssistantPage() {
         {/* =========================================================================
             INPUT FIELD & SEND CONTROLS
             ========================================================================= */}
-        <div className="bg-white rounded-2xl border border-border p-3 sm:p-4 shadow-sm space-y-2">
+        <div className="bg-white rounded-2xl border border-[#E3E8EF] p-3 sm:p-4 shadow-md space-y-2">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -415,13 +436,13 @@ export default function AssistantPage() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder={t('assistantInputPlaceholder')}
               disabled={loading}
-              className="flex-1 px-4 py-3 text-xs sm:text-sm rounded-xl border border-border-input bg-surface-dim hover:bg-white focus:bg-white focus:border-chakra-500 focus:ring-2 focus:ring-chakra-200 focus:outline-hidden transition-all text-text-primary"
+              className="flex-1 px-4 py-3 text-xs sm:text-sm rounded-xl border border-[#E3E8EF] bg-[#EEF4FF]/40 hover:bg-white focus:bg-white focus:border-[#F47721] focus:ring-2 focus:ring-[#F47721]/20 focus:outline-hidden transition-all text-[#1D2939]"
             />
             <button
               id="assistant-send-button"
               type="submit"
               disabled={loading || !inputText.trim()}
-              className="px-5 py-3 rounded-xl bg-kesari-500 hover:bg-kesari-600 disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-xs transition-all cursor-pointer whitespace-nowrap"
+              className="px-6 py-3 rounded-xl bg-[#F47721] hover:bg-[#d96617] disabled:opacity-50 text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
             >
               <span>{t('assistantSendBtn')}</span>
               <span>→</span>
@@ -430,34 +451,34 @@ export default function AssistantPage() {
 
           {/* Quick Action Suggestion Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto pt-1 pb-1">
-            <span className="text-[10px] font-bold text-text-muted whitespace-nowrap">
+            <span className="text-[10px] font-black uppercase text-[#596579] whitespace-nowrap">
               {t('assistantSuggestedHeading')}:
             </span>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'सड़क पर गड्ढा है' : 'How do I report a pothole?')}
-              className="px-2.5 py-1 rounded-md bg-surface-dim hover:bg-slate-200 text-slate-700 text-[11px] font-semibold whitespace-nowrap transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EEF4FF] hover:bg-[#dce9ff] text-[#0B1F50] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionCivic')}
             </button>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'मुझे आय प्रमाण पत्र बनवाना है' : 'Mujhe income certificate banwana hai')}
-              className="px-2.5 py-1 rounded-md bg-surface-dim hover:bg-slate-200 text-slate-700 text-[11px] font-semibold whitespace-nowrap transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#FFF9F1] hover:bg-[#ffeecf] text-[#F47721] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionServices')}
             </button>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'मूल निवास प्रमाण पत्र के दस्तावेज क्या हैं?' : 'What documents do I need for a domicile certificate?')}
-              className="px-2.5 py-1 rounded-md bg-surface-dim hover:bg-slate-200 text-slate-700 text-[11px] font-semibold whitespace-nowrap transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#EDF9F3] hover:bg-[#d5f5e3] text-[#13865B] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionDocs')}
             </button>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'पासपोर्ट अपॉइंटमेंट कैसे बुक करें?' : 'Passport appointment kaise book kare?')}
-              className="px-2.5 py-1 rounded-md bg-surface-dim hover:bg-slate-200 text-slate-700 text-[11px] font-semibold whitespace-nowrap transition-colors cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-[#F5F0FF] hover:bg-[#ebdcfc] text-[#7C3AED] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionAppointment')}
             </button>
@@ -467,7 +488,7 @@ export default function AssistantPage() {
         {/* =========================================================================
             DISCLAIMER & TRUST FOOTER
             ========================================================================= */}
-        <div className="text-center text-[11px] text-text-muted px-2">
+        <div className="text-center text-[11px] text-[#596579] px-2 font-medium">
           <span>🛡️ {t('serviceDisclaimerNotice')}</span>
         </div>
       </div>
