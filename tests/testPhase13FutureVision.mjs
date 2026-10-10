@@ -86,6 +86,19 @@ try {
   assert(visionContent.includes('Accessibility Vision'), 'FutureVisionPage must have accessibility vision');
   console.log('✅ FutureVisionPage.jsx all 9 comprehensive sections verified.');
 
+  // 7. Verify FutureVisionPopup.jsx and Layout.jsx integration
+  const popupPath = resolve(rootDir, 'src/components/FutureVisionPopup.jsx');
+  const popupContent = readFileSync(popupPath, 'utf8');
+  assert(popupContent.includes('FIVE_MINUTES_MS') || popupContent.includes('5 * 60 * 1000'), 'Popup must have 5 minute timer threshold');
+  assert(popupContent.includes('sessionStorage'), 'Popup must track session time and dismissal');
+  assert(popupContent.includes('role="dialog"'), 'Popup must be an accessible dialog modal');
+  assert(popupContent.includes('/future-vision'), 'Popup must link to /future-vision');
+
+  const layoutPath = resolve(rootDir, 'src/layouts/Layout.jsx');
+  const layoutContent = readFileSync(layoutPath, 'utf8');
+  assert(layoutContent.includes('FutureVisionPopup'), 'Layout.jsx must mount FutureVisionPopup');
+  console.log('✅ FutureVisionPopup.jsx 5-minute timed notification and Layout integration verified.');
+
   console.log('----------------------------------------------------------------');
   console.log('🎉 PHASE 13 FUTURE VISION VERIFICATION PASSED (100%)');
   console.log('================================================================');

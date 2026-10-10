@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ChatbotWidget from '../components/ChatbotWidget';
+import FutureVisionPopup from '../components/FutureVisionPopup';
 
 export default function Layout() {
   return (
@@ -12,6 +13,7 @@ export default function Layout() {
       </main>
       <Footer />
       <ChatbotWidget />
+      <FutureVisionPopup />
     </div>
   );
 }
