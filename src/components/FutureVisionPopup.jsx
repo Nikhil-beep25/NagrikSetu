@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 
@@ -11,33 +11,28 @@ export default function FutureVisionPopup() {
   const isHindi = language === 'hi';
 
   const [isVisible, setIsVisible] = useState(false);
+  const locationRef = useRef(location.pathname);
+  locationRef.current = location.pathname;
 
   useEffect(() => {
-    // 1. Check if user already dismissed this notification in the current session
-    const isDismissed = sessionStorage.getItem('nagriksetu_vision_popup_dismissed');
-    if (isDismissed === 'true') {
-      return;
-    }
-
-    // 2. Track cumulative session start time
-    let startTime = sessionStorage.getItem('nagriksetu_session_start_time');
-    if (!startTime) {
-      startTime = Date.now().toString();
-      sessionStorage.setItem('nagriksetu_session_start_time', startTime);
-    }
-
-    const elapsed = Date.now() - parseInt(startTime, 10);
-    const delay = Math.max(0, FIVE_MINUTES_MS - elapsed);
-
-    // 3. Set timer for the remaining time until 5 minutes
-    const timer = setTimeout(() => {
-      // Re-check dismissal before displaying
-      if (sessionStorage.getItem('nagriksetu_vision_popup_dismissed') !== 'true') {
+    // 1. Initial Opening: Show the notification popup when opening the site (smooth 800ms entrance)
+    const initialTimer = setTimeout(() => {
+      if (locationRef.current !== '/future-vision') {
         setIsVisible(true);
+        sessionStorage.setItem('nagriksetu_session_start_time', Date.now().toString());
+        sessionStorage.setItem('nagriksetu_vision_popup_last_shown', Date.now().toString());
       }
-    }, delay);
+    }, 800);
 
-    // 4. Custom event listener for instant demonstration / testing
+    // 2. 5-Minute Looping: Re-trigger notification popup every 5 minutes in a continuous loop
+    const loopInterval = setInterval(() => {
+      if (locationRef.current !== '/future-vision') {
+        setIsVisible(true);
+        sessionStorage.setItem('nagriksetu_vision_popup_last_shown', Date.now().toString());
+      }
+    }, FIVE_MINUTES_MS);
+
+    // 3. Custom event listener for manual trigger / evaluation
     const handleOpenPopup = () => {
       setIsVisible(true);
     };
@@ -47,14 +42,17 @@ export default function FutureVisionPopup() {
     window.showFutureVisionPopup = handleOpenPopup;
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(initialTimer);
+      clearInterval(loopInterval);
       window.removeEventListener('open-future-vision-popup', handleOpenPopup);
       delete window.showFutureVisionPopup;
     };
   }, []);
 
   const handleDismiss = () => {
-    sessionStorage.setItem('nagriksetu_vision_popup_dismissed', 'true');
+    // Track dismissal timestamp in sessionStorage and close current view; looping timer will re-open in 5 min
+    sessionStorage.setItem('nagriksetu_vision_popup_dismissed_at', Date.now().toString());
+    sessionStorage.setItem('nagriksetu_vision_popup_dismissed', 'false');
     setIsVisible(false);
   };
 

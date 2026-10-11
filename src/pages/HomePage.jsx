@@ -4,6 +4,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 import ComplaintForm from '../components/ComplaintForm';
 import AutomationVisionDemo from '../components/AutomationVisionDemo';
 import HeroSlider from '../components/HeroSlider';
+import BuiltForBharatSection from '../components/BuiltForBharatSection';
 
 export default function HomePage() {
   const { language } = useLanguage();
@@ -1219,6 +1220,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Built for Bharat — Social Impact and Accessibility Mission Section */}
+      <BuiltForBharatSection />
 
     </div>
   );

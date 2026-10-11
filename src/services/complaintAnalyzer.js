@@ -344,7 +344,10 @@ export async function analyzeComplaint(complaintText, userLocation = '', options
 
     clearTimeout(timeoutId);
 
-    if (response.ok) {
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+
+    if (response.ok && isJson) {
       const result = await response.json();
 
       if (result.success && result.data) {
@@ -377,7 +380,6 @@ export async function analyzeComplaint(complaintText, userLocation = '', options
         };
       }
 
-
       // If backend explicitly marked category as unsupported
       if (result.error === 'unsupported_category') {
         return {
@@ -393,12 +395,21 @@ export async function analyzeComplaint(complaintText, userLocation = '', options
       }
     }
 
-    // Non-200 response or non-success
-    return ruleBasedAnalyzeComplaint(trimmed, userLocation, `Backend response status: ${response.status}`);
+    // Specific HTTP status handling
+    let statusReason = `Backend response status: ${response.status}`;
+    if (response.status === 429) {
+      statusReason = 'AI Assistant is currently busy. Basic guidance active.';
+    } else if (response.status >= 500) {
+      statusReason = 'AI service temporarily unavailable. Resilient basic guidance active.';
+    } else if (!isJson && contentType.includes('text/html')) {
+      statusReason = 'AI endpoint returned HTML (backend connection pending).';
+    }
+
+    return ruleBasedAnalyzeComplaint(trimmed, userLocation, statusReason);
   } catch (err) {
     // Network failure, timeout, ECONNREFUSED, or offline mode
     const reason = err.name === 'AbortError'
-      ? 'AI request timed out after 9 seconds.'
+      ? 'AI request timed out after 9 seconds. Basic guidance active.'
       : 'Backend API unreachable, using resilient local analyzer.';
 
     return ruleBasedAnalyzeComplaint(trimmed, userLocation, reason);

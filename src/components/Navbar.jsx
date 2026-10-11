@@ -59,8 +59,14 @@ export default function Navbar() {
     setMobileOpen(false);
   }
 
-  // Handle escape key and click outside for mobile menu
+  // Handle escape key, click outside, and body scroll lock for mobile menu
   useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
     const handleClickOutside = (event) => {
       if (
         menuRef.current &&
@@ -69,11 +75,13 @@ export default function Navbar() {
         !hamburgerRef.current.contains(event.target)
       ) {
         setMobileOpen(false);
+        hamburgerRef.current?.focus();
       }
     };
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         setMobileOpen(false);
+        hamburgerRef.current?.focus();
       }
     };
 
@@ -82,6 +90,7 @@ export default function Navbar() {
       document.addEventListener('keydown', handleKeyDown);
     }
     return () => {
+      document.body.style.overflow = '';
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
@@ -151,7 +160,7 @@ export default function Navbar() {
               </span>
               <span className="text-white/20 hidden sm:inline">|</span>
               <span className="hidden sm:inline text-white/60 text-[11px] truncate">
-                {language === 'hi' ? 'AI-सहायित मार्गदर्शन' : 'AI-assisted civic guidance'}
+                {language === 'hi' ? 'AI-सहायित शिकायत मार्गदर्शन' : 'AI-assisted civic complaint guidance'}
               </span>
               <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-semibold text-amber-300/90 bg-amber-300/10 px-2 py-0.5 rounded-full border border-amber-300/20 ml-1 shrink-0">
                 <span>📍</span>
@@ -184,11 +193,11 @@ export default function Navbar() {
                 type="button"
                 onClick={toggleLanguage}
                 className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                title="Change Language / भाषा बदलें"
-                aria-label="Toggle language between English and Hindi"
+                title="Change Language / हिन्दी या English भाषा बदलें"
+                aria-label="Toggle language between English and हिन्दी"
               >
                 <span className={language === 'hi' ? 'font-bold text-amber-300' : 'text-white/50'}>
-                  हिं
+                  हिन्दी
                 </span>
                 <span className="text-white/25">|</span>
                 <span className={language === 'en' ? 'font-bold text-amber-300' : 'text-white/50'}>
@@ -287,14 +296,26 @@ export default function Navbar() {
                       className="h-5 w-5 rounded-full object-cover border border-chakra-300"
                     />
                     <span className="truncate max-w-[80px]">{currentUser.name}</span>
+                    {currentUser.mode === 'demo' && (
+                      <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.5 rounded-full border border-amber-300 shrink-0">
+                        DEMO 🛡️
+                      </span>
+                    )}
                     <svg className="h-3 w-3 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
                   </button>
                   {userMenuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-52 rounded-xl border border-border bg-white p-2 shadow-card z-50">
+                    <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-white p-2 shadow-card z-50">
                       <div className="px-2 py-1.5 border-b border-border mb-1">
-                        <p className="text-xs font-bold text-chakra-900 truncate">{currentUser.name}</p>
+                        <div className="flex items-center justify-between gap-1">
+                          <p className="text-xs font-bold text-chakra-900 truncate">{currentUser.name}</p>
+                          {currentUser.mode === 'demo' && (
+                            <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-amber-300">
+                              Demo Mode
+                            </span>
+                          )}
+                        </div>
                         <p className="text-[10px] text-text-muted truncate">{currentUser.ward || 'Agra Municipal Ward'}</p>
                       </div>
                       <Link
@@ -469,7 +490,14 @@ export default function Navbar() {
                       className="h-8 w-8 rounded-full object-cover border border-chakra-300 shrink-0"
                     />
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-chakra-900 truncate max-w-[130px]">{currentUser.name}</p>
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-xs font-bold text-chakra-900 truncate max-w-[110px]">{currentUser.name}</p>
+                        {currentUser.mode === 'demo' && (
+                          <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-amber-300 shrink-0">
+                            Demo Mode 🛡️
+                          </span>
+                        )}
+                      </div>
                       <p className="text-[10px] text-text-muted truncate max-w-[130px]">{currentUser.ward || 'Agra Municipal Ward'}</p>
                     </div>
                   </div>

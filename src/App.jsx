@@ -14,6 +14,7 @@ import ServicesPage from './pages/ServicesPage';
 import ServiceDetailsPage from './pages/ServiceDetailsPage';
 import AssistantPage from './pages/AssistantPage';
 import FutureVisionPage from './pages/FutureVisionPage';
+import LegalInfoPage from './pages/LegalInfoPage';
 import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
@@ -34,6 +35,10 @@ export default function App() {
               <Route path="/services/:serviceId" element={<ServiceDetailsPage />} />
               <Route path="/assistant" element={<AssistantPage />} />
               <Route path="/future-vision" element={<FutureVisionPage />} />
+              <Route path="/privacy" element={<LegalInfoPage />} />
+              <Route path="/terms" element={<LegalInfoPage />} />
+              <Route path="/accessibility" element={<LegalInfoPage />} />
+              <Route path="/disclaimer" element={<LegalInfoPage />} />
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignUpPage />} />
             </Route>

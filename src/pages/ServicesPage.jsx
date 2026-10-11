@@ -46,9 +46,18 @@ export default function ServicesPage() {
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setAiResult(data);
+      const contentType = res.headers.get('content-type') || '';
+      const isJson = contentType.includes('application/json');
+
+      if (res.ok && isJson) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          setAiResult(json.data);
+        } else if (json.data) {
+          setAiResult(json.data);
+        } else {
+          setAiResult(json);
+        }
       } else {
         // Fallback to client-side deterministic intent detector
         const local = detectServiceIntent(searchQuery, selectedState !== 'All' ? selectedState : null);

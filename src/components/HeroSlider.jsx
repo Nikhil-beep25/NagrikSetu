@@ -225,8 +225,8 @@ export default function HeroSlider() {
         <div className="w-1/3 bg-[#13865B]" />
       </div>
 
-      {/* Slide Container (desktop 540px - 600px height, mobile adaptive) */}
-      <div className="relative min-h-[500px] md:min-h-[560px] lg:min-h-[600px] flex items-center">
+      {/* Slide Container (desktop 540px - 600px height, mobile adaptive with clearance for controls) */}
+      <div className="relative min-h-[520px] sm:min-h-[540px] md:min-h-[560px] lg:min-h-[600px] flex items-center">
         {slides.map((slide, index) => {
           const isActive = index === currentSlide;
           return (
@@ -265,11 +265,11 @@ export default function HeroSlider() {
                 />
               </div>
 
-              {/* Content Box */}
-              <div className="relative h-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center py-12 md:py-16">
+              {/* Content Box with safe bottom clearance so buttons never hit carousel controls */}
+              <div className="relative h-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center pt-8 pb-20 sm:py-12 md:py-16">
                 <div className="max-w-2xl lg:max-w-3xl">
                   {/* Category / Highlight Badge */}
-                  <div className="mb-4 inline-flex items-center gap-2">
+                  <div className="mb-3 sm:mb-4 inline-flex items-center gap-2">
                     <span
                       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border backdrop-blur-md ${slide.badge.color}`}
                     >
@@ -279,27 +279,27 @@ export default function HeroSlider() {
                   </div>
 
                   {/* Main Title */}
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.18] mb-3 drop-shadow-md">
+                  <h1 className="text-xl xs:text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.2] mb-2 sm:mb-3 drop-shadow-md break-words">
                     {language === 'hi' ? slide.hiTitle : slide.title}
                   </h1>
 
                   {/* Subtitle */}
-                  <p className="text-sm sm:text-base md:text-lg font-bold text-[#F47721] mb-3 tracking-wide drop-shadow-sm">
+                  <p className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#F47721] mb-2 sm:mb-3 tracking-wide drop-shadow-sm">
                     {language === 'hi' ? slide.hiSubtitle : slide.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-sm sm:text-base text-slate-200 leading-relaxed mb-6 sm:mb-8 max-w-2xl font-medium drop-shadow-sm">
+                  <p className="text-xs sm:text-base text-slate-200 leading-relaxed mb-5 sm:mb-8 max-w-2xl font-medium drop-shadow-sm">
                     {language === 'hi' ? slide.hiDescription : slide.description}
                   </p>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <div className="flex flex-col xs:flex-row flex-wrap items-stretch xs:items-center gap-2.5 sm:gap-4">
                     {slide.buttons.map((btn, btnIdx) => (
                       <Link
                         key={btnIdx}
                         to={btn.to}
-                        className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-black transition-all duration-200 shadow-md ${
+                        className={`inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition-all duration-200 shadow-md ${
                           btn.primary
                             ? 'bg-[#F47721] hover:bg-[#d96617] text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]'
                             : 'bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md hover:border-white/40'

@@ -128,45 +128,66 @@ export default function ChatbotWidget() {
         }),
       });
 
-      if (response.ok) {
+      const contentType = response.headers.get('content-type') || '';
+      const isJson = contentType.includes('application/json');
+
+      if (response.ok && isJson) {
         const json = await response.json();
         const data = json.data;
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: getNextMessageId('assistant'),
-            role: 'assistant',
-            content: data.reply,
-            intent: data.intent,
-            isEmergency: data.isEmergency,
-            fallbackNotice: data.fallbackNotice,
-            suggestedActions: data.suggestedActions || [],
-            timestamp: getFormattedTimestamp(),
-          },
-        ]);
-      } else {
-        const fallback = processAssistantMessage(
-          textToSend,
-          updatedHistory.map((m) => ({ role: m.role, content: m.content })),
-          language
-        );
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: getNextMessageId('assistant'),
-            role: 'assistant',
-            content: fallback.reply,
-            intent: fallback.intent,
-            isEmergency: fallback.isEmergency,
-            fallbackNotice:
-              language === 'hi'
-                ? 'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन सक्रिय है।'
-                : 'AI assistance is temporarily unavailable. Basic guidance active.',
-            suggestedActions: fallback.suggestedActions || [],
-            timestamp: getFormattedTimestamp(),
-          },
-        ]);
+
+        if (json.success && data && data.reply) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: getNextMessageId('assistant'),
+              role: 'assistant',
+              content: data.reply,
+              intent: data.intent,
+              isEmergency: data.isEmergency,
+              fallbackNotice: data.fallbackNotice,
+              suggestedActions: data.suggestedActions || [],
+              timestamp: getFormattedTimestamp(),
+            },
+          ]);
+          return;
+        }
       }
+
+      let noticeMessage =
+        language === 'hi'
+          ? 'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन सक्रिय है।'
+          : 'AI assistance is temporarily unavailable. Basic guidance active.';
+
+      if (response.status === 429) {
+        noticeMessage =
+          language === 'hi'
+            ? 'AI सेवा पर वर्तमान में अधिक लोड है। बुनियादी मार्गदर्शन सक्रिय है।'
+            : 'AI service is busy right now. Basic guidance active.';
+      } else if (!isJson && contentType.includes('text/html')) {
+        noticeMessage =
+          language === 'hi'
+            ? 'AI बैकएंड सेवा से संपर्क नहीं हो पाया। बुनियादी मार्गदर्शन सक्रिय है।'
+            : 'AI backend connection pending. Basic offline guidance active.';
+      }
+
+      const fallback = processAssistantMessage(
+        textToSend,
+        updatedHistory.map((m) => ({ role: m.role, content: m.content })),
+        language
+      );
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: getNextMessageId('assistant'),
+          role: 'assistant',
+          content: fallback.reply,
+          intent: fallback.intent,
+          isEmergency: fallback.isEmergency,
+          fallbackNotice: noticeMessage,
+          suggestedActions: fallback.suggestedActions || [],
+          timestamp: getFormattedTimestamp(),
+        },
+      ]);
     } catch {
       const fallback = processAssistantMessage(
         textToSend,
@@ -183,8 +204,8 @@ export default function ChatbotWidget() {
           isEmergency: fallback.isEmergency,
           fallbackNotice:
             language === 'hi'
-              ? 'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन सक्रिय है।'
-              : 'AI assistance is temporarily unavailable. Basic guidance active.',
+              ? 'नेटवर्क समस्या के कारण AI सेवा से संपर्क नहीं हो सका। बुनियादी मार्गदर्शन सक्रिय है।'
+              : 'Network issue connecting to AI service. Basic guidance active.',
           suggestedActions: fallback.suggestedActions || [],
           timestamp: getFormattedTimestamp(),
         },
@@ -259,14 +280,14 @@ export default function ChatbotWidget() {
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none print:hidden">
       {/* =========================================================================
-          1. CHAT WINDOW (POPUP PANEL)
+          1. CHAT WINDOW (FULLSCREEN ON MOBILE, FLOATING CARD ON DESKTOP)
           ========================================================================= */}
       {isOpen && (
         <div
           role="dialog"
           aria-label="NagrikSetu AI Chatbot"
           aria-modal="true"
-          className="fixed bottom-16 sm:bottom-20 right-3 sm:right-6 w-[340px] sm:w-[410px] max-w-[calc(100vw-24px)] h-[520px] sm:h-[560px] max-h-[calc(100vh-90px)] bg-white rounded-2xl shadow-2xl border border-border flex flex-col overflow-hidden animate-fade-slide-up z-50"
+          className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-6 w-full sm:w-[410px] sm:max-w-[calc(100vw-24px)] h-[100dvh] sm:h-[560px] sm:max-h-[calc(100vh-90px)] bg-white rounded-none sm:rounded-2xl shadow-2xl border-0 sm:border border-border flex flex-col overflow-hidden animate-fade-slide-up z-50"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-chakra-900 to-chakra-800 text-white p-3.5 flex items-center justify-between shadow-xs">
@@ -501,7 +522,7 @@ export default function ChatbotWidget() {
       )}
 
       {/* =========================================================================
-          2. FLOATING TRIGGER BUTTON (CORNER BUBBLE)
+          2. FLOATING TRIGGER BUTTON (CORNER BUBBLE - HIDDEN ON MOBILE WHEN OPEN)
           ========================================================================= */}
       <button
         type="button"
@@ -509,7 +530,9 @@ export default function ChatbotWidget() {
         aria-label={isOpen ? "Close AI Citizen Assistant" : "Open AI Citizen Assistant"}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
-        className="group relative flex items-center gap-2 p-3 sm:px-4 sm:py-3.5 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20 focus:outline-hidden focus:ring-4 focus:ring-kesari-300"
+        className={`group relative items-center gap-2 p-3 sm:px-4 sm:py-3.5 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20 focus:outline-hidden focus:ring-4 focus:ring-kesari-300 ${
+          isOpen ? 'hidden sm:inline-flex' : 'inline-flex'
+        }`}
       >
         <span className="text-xl sm:text-2xl leading-none">🤖</span>
         <span className="font-extrabold text-xs sm:text-sm tracking-wide hidden sm:inline">

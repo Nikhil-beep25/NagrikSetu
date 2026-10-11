@@ -132,46 +132,68 @@ export default function AssistantPage() {
         }),
       });
 
-      if (response.ok) {
+      const contentType = response.headers.get('content-type') || '';
+      const isJson = contentType.includes('application/json');
+
+      if (response.ok && isJson) {
         const json = await response.json();
         const data = json.data;
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: getNextMessageId('assistant'),
-            role: 'assistant',
-            content: data.reply,
-            intent: data.intent,
-            isEmergency: data.isEmergency,
-            fallbackNotice: data.fallbackNotice,
-            suggestedActions: data.suggestedActions || [],
-            timestamp: getFormattedTimestamp(),
-          },
-        ]);
-      } else {
-        // Fallback to local deterministic assistant engine
-        const fallback = processAssistantMessage(
-          textToSend,
-          updatedHistory.map((m) => ({ role: m.role, content: m.content })),
-          language
-        );
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: getNextMessageId('assistant'),
-            role: 'assistant',
-            content: fallback.reply,
-            intent: fallback.intent,
-            isEmergency: fallback.isEmergency,
-            fallbackNotice:
-              language === 'hi'
-                ? 'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन प्रदान किया जा रहा है।'
-                : 'AI assistance is temporarily unavailable. Basic guidance is being provided.',
-            suggestedActions: fallback.suggestedActions || [],
-            timestamp: getFormattedTimestamp(),
-          },
-        ]);
+
+        if (json.success && data && data.reply) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: getNextMessageId('assistant'),
+              role: 'assistant',
+              content: data.reply,
+              intent: data.intent,
+              isEmergency: data.isEmergency,
+              fallbackNotice: data.fallbackNotice,
+              suggestedActions: data.suggestedActions || [],
+              timestamp: getFormattedTimestamp(),
+            },
+          ]);
+          return;
+        }
       }
+
+      // Handle specific HTTP status codes and provide contextual citizen notices
+      let noticeMessage =
+        language === 'hi'
+          ? 'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन प्रदान किया जा रहा है।'
+          : 'AI assistance is temporarily unavailable. Basic guidance is being provided.';
+
+      if (response.status === 429) {
+        noticeMessage =
+          language === 'hi'
+            ? 'AI सेवा पर वर्तमान में अधिक लोड है। बुनियादी मार्गदर्शन प्रदान किया जा रहा है।'
+            : 'AI service is experiencing high traffic. Basic guidance is being provided.';
+      } else if (!isJson && contentType.includes('text/html')) {
+        noticeMessage =
+          language === 'hi'
+            ? 'AI बैकएंड सेवा से संपर्क नहीं हो पाया। बुनियादी मार्गदर्शन सक्रिय है।'
+            : 'AI backend connection pending. Basic offline guidance is active.';
+      }
+
+      // Fallback to local deterministic assistant engine
+      const fallback = processAssistantMessage(
+        textToSend,
+        updatedHistory.map((m) => ({ role: m.role, content: m.content })),
+        language
+      );
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: getNextMessageId('assistant'),
+          role: 'assistant',
+          content: fallback.reply,
+          intent: fallback.intent,
+          isEmergency: fallback.isEmergency,
+          fallbackNotice: noticeMessage,
+          suggestedActions: fallback.suggestedActions || [],
+          timestamp: getFormattedTimestamp(),
+        },
+      ]);
     } catch {
       // Network / Offline fallback
       const fallback = processAssistantMessage(
@@ -189,8 +211,8 @@ export default function AssistantPage() {
           isEmergency: fallback.isEmergency,
           fallbackNotice:
             language === 'hi'
-              ? 'AI सेवा अस्थायी रूप से अनुपलब्ध है। बुनियादी मार्गदर्शन प्रदान किया जा रहा है।'
-              : 'AI assistance is temporarily unavailable. Basic guidance is being provided.',
+              ? 'नेटवर्क समस्या के कारण AI सेवा से संपर्क नहीं हो सका। बुनियादी मार्गदर्शन सक्रिय है।'
+              : 'Network issue connecting to AI service. Resilient basic guidance active.',
           suggestedActions: fallback.suggestedActions || [],
           timestamp: getFormattedTimestamp(),
         },

@@ -1,12 +1,14 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import { useComplaints, STATUS_OPTIONS } from '../context/ComplaintContext';
 import ComplaintTimeline from '../components/ComplaintTimeline';
 import PageHero from '../components/PageHero';
 
 export default function MyComplaintsPage() {
   const { language } = useLanguage();
+  const { currentUser, logout } = useAuth();
   const {
     confirmedComplaints,
     updateComplaintStatus,
@@ -211,7 +213,50 @@ export default function MyComplaintsPage() {
       </PageHero>
 
       {/* Main Content Container */}
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6 sm:space-y-8">
+        {/* ==================================================
+            DEMO ACCOUNT BANNER (PART 11.4)
+           ================================================== */}
+        {currentUser?.mode === 'demo' && (
+          <div className="rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 via-orange-50/60 to-amber-50 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#F47721] to-amber-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-xs">
+                👤
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-sm sm:text-base font-black text-[#0B1F50]">
+                    {language === 'hi' ? 'स्वागत है, डेमो नागरिक' : 'Welcome, Demo Citizen'}
+                  </h2>
+                  <span className="bg-amber-200 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full border border-amber-300">
+                    Demo Mode 🛡️
+                  </span>
+                </div>
+                <p className="text-xs text-amber-900 leading-relaxed font-medium">
+                  {language === 'hi'
+                    ? 'डेमो खाता: डेटा और पहुंच केवल प्रदर्शन हेतु हैं। यह कोई सत्यापित नागरिक पहचान नहीं है।'
+                    : 'Demo account: Data and access are for demonstration only. This is not a verified citizen identity.'}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+              <Link
+                to="/report"
+                className="px-3 py-1.5 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white text-xs font-bold transition-all shadow-xs"
+              >
+                {language === 'hi' ? '+ शिकायत दर्ज करें' : '+ Report'}
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className="px-3 py-1.5 rounded-xl border border-red-200 bg-white hover:bg-red-50 text-red-600 text-xs font-bold transition-colors cursor-pointer"
+              >
+                {language === 'hi' ? 'लॉग आउट' : 'Sign Out'}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* ==================================================
             SECTION 6: TRACKING DISCLAIMER (PROMINENT & CLEAR)
            ================================================== */}
@@ -245,7 +290,7 @@ export default function MyComplaintsPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {/* 1. TOTAL CARD */}
             <div className="relative overflow-hidden rounded-2xl border-2 border-[#0B1F50]/15 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[130px]">
               <div className="flex items-center justify-between gap-2">
