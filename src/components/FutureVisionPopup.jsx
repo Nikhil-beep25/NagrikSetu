@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const FIVE_MINUTES_MS = 5 * 60 * 1000; // 5 minutes in milliseconds (300,000 ms)
+const INITIAL_POPUP_DELAY_MS = 5000; // 5 seconds initial delay after opening the site
 
 export default function FutureVisionPopup() {
   const { language } = useLanguage();
@@ -15,14 +16,14 @@ export default function FutureVisionPopup() {
   locationRef.current = location.pathname;
 
   useEffect(() => {
-    // 1. Initial Opening: Show the notification popup when opening the site (smooth 800ms entrance)
+    // 1. Initial Opening: Show the notification popup after 5 seconds of opening the site
     const initialTimer = setTimeout(() => {
       if (locationRef.current !== '/future-vision') {
         setIsVisible(true);
         sessionStorage.setItem('nagriksetu_session_start_time', Date.now().toString());
         sessionStorage.setItem('nagriksetu_vision_popup_last_shown', Date.now().toString());
       }
-    }, 800);
+    }, INITIAL_POPUP_DELAY_MS);
 
     // 2. 5-Minute Looping: Re-trigger notification popup every 5 minutes in a continuous loop
     const loopInterval = setInterval(() => {
