@@ -172,6 +172,7 @@ app.post('/api/analyze-complaint', rateLimitMiddleware, async (req, res) => {
           ...(emergencyHazard ? {
             isEmergency: true,
             isSupported: emergencyHazard.isSupported,
+            hazardType: emergencyHazard.hazardType,
             category: emergencyHazard.category,
             subcategory: emergencyHazard.subcategory,
             safetyMessage: emergencyHazard.safetyMessage,

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useComplaints } from '../context/ComplaintContext';
@@ -17,6 +17,18 @@ export default function ComplaintForm() {
   const { saveConfirmedComplaint } = useComplaints();
   const routeLocation = useLocation();
   const prefill = routeLocation?.state || {};
+
+  // Clear routeLocation state from window.history after consuming prefill
+  // to prevent complaint state leakage on reload, back navigation, or subsequent reports
+  useEffect(() => {
+    if (routeLocation?.state) {
+      try {
+        window.history.replaceState({}, document.title);
+      } catch {
+        // ignore
+      }
+    }
+  }, []);
 
   // Voice recognition
   const {
@@ -333,11 +345,14 @@ export default function ComplaintForm() {
 
   const handleBackToInput = () => {
     setWorkflowStep('input');
+    setAuthorityRecommendation(null);
+    setConfirmedComplaint(null);
   };
 
   const handleConfirmComplaint = (finalData) => {
-    const category = analysisResult?.category || finalData.category;
-    const finalLocation = analysisResult?.location || finalData.location || location;
+    // User-confirmed / edited values take precedence over initial analysis
+    const category = finalData?.category || analysisResult?.category || 'Other';
+    const finalLocation = finalData?.location || analysisResult?.location || location;
 
     const rec = recommendAuthority(category, finalLocation, {
       city: selectedCity || undefined,
@@ -353,7 +368,7 @@ export default function ComplaintForm() {
       ...finalData,
       originalText: text,
       category,
-      priority: analysisResult?.priority || finalData.priority,
+      priority: finalData?.priority || analysisResult?.priority || 'Normal',
       recommendedAuthority: rec.recommendedAuthority || rec.authority,
       officialPortalUrl: rec.officialPortalUrl,
       portalName: rec.portalName,
@@ -385,6 +400,11 @@ export default function ComplaintForm() {
     setVoiceNotice(null);
     setWorkflowStep('input');
     if (fileInputRef.current) fileInputRef.current.value = '';
+    try {
+      window.history.replaceState({}, document.title);
+    } catch {
+      // ignore
+    }
   };
 
   const isSubmitDisabled = !text.trim() || isAnalyzing;

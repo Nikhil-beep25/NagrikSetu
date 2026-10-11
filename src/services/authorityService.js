@@ -53,10 +53,10 @@ export const PROTOTYPE_AUTHORITY_MAP = {
     officialPortalUrl: null,
   },
   Other: {
-    authority: 'Electricity Distribution Company (Discom) / Emergency Helplines (112 & 1912)',
-    reason: 'Acute hazards and power infrastructure require specialized utility or emergency first responders.',
-    portalName: 'National Emergency Response System (112) / Power Discom (1912)',
-    officialPortalUrl: null,
+    authority: 'Local Municipal / District Administration',
+    reason: 'This grievance appears to relate to general municipal administration or civic services.',
+    portalName: 'CPGRAMS — Public Grievance Portal',
+    officialPortalUrl: 'https://pgportal.gov.in/',
   },
 };
 
@@ -80,6 +80,9 @@ export function normalizeCategory(category) {
   }
   if (c.includes('drainage') || c.includes('sewer') || c.includes('sewage') || c.includes('nali') || c.includes('gutter') || c.includes('waterlog')) {
     return 'Drainage';
+  }
+  if (c.includes('electric') || c.includes('power') || c.includes('bijli') || c.includes('current') || c.includes('transformer') || c.includes('wire') || c.includes('spark')) {
+    return 'Electricity';
   }
   return 'Other';
 }
@@ -219,7 +222,7 @@ export function parseLocation(input) {
   }
 
   // Infrastructure Ownership Clues
-  const isArterialRoad = /\b(ring road|outer ring road|arterial|highway|nh\s*\d+|expressway|flyover|underpass|vikas marg|aurobindo marg|mathura road|mg road|master road|broad road|main road >\s*60|60\s*feet|100\s*feet|bypass)\b/i.test(lower);
+  const isArterialRoad = /\b(ring road|outer ring road|arterial|highway|nh\s*\d+|expressway|flyover|underpass|vikas marg|aurobindo marg|mathura road|mg road|master road|broad road|main road|60\s*feet|100\s*feet|bypass)\b/i.test(lower);
   const isADAArea = /\b(shastri puram|taj nagri|kalindi vihar|ada colony|ada scheme)\b/i.test(lower) || /(शास्त्रीपुरम|कालिंदी विहार)/u.test(raw);
   const isGDAScheme = /\b(indirapuram|vaishali|kaushambi|gda)\b/i.test(lower) || /(इंदिरापुरम|वैशाली)/u.test(raw);
   const isGMDACorridor = /\b(golf course road|sohna road|dwarka expressway|master sector road)\b/i.test(lower);
@@ -281,8 +284,15 @@ export function detectAuthority({
 
   // -------------------------------------------------------------------------
   // SCENARIO 1: EMERGENCY ELECTRICAL HAZARD (Phase 5 + Phase 6 Integration)
+  // Strictly applies ONLY to verified electrical hazards and electricity distribution.
+  // Must NEVER match road/pothole, garbage, water, drainage, or general civic issues!
   // -------------------------------------------------------------------------
-  if (normCategory === 'Other' || isEmergency || hazardType === 'electrical_hazard') {
+  const isElectricalHazard =
+    hazardType === 'electrical_hazard' ||
+    hazardType === 'electrical' ||
+    normCategory === 'Electricity';
+
+  if (isElectricalHazard) {
     if (effectiveCity === 'Agra') {
       const isRural = /\b(rural|dehat|fatehpur sikri|achhnera|etmadpur)\b/i.test(effectiveLocality);
       if (isRural) {
@@ -724,6 +734,7 @@ export function detectAuthority({
         verificationStatus: 'Verified',
         lastVerified: '2026-10-09',
         requiresConfirmation: false,
+        emergencyNumbers: isEmergency ? [{ label: 'National Emergency / Police', number: '112' }] : [],
         alternativeAuthorities: [
           {
             name: 'Agra Nagar Nigam (ANN)',
@@ -731,7 +742,9 @@ export function detectAuthority({
             officialPortalUrl: 'https://agranagarnigam.in/',
           },
         ],
-        disclaimer: 'UP PWD maintains major highway and arterial corridors in Agra.',
+        disclaimer: isEmergency
+          ? 'UP PWD maintains major arterial roads in Agra. For immediate road safety or accident emergencies, dial 112.'
+          : 'UP PWD maintains major highway and arterial corridors in Agra.',
       };
     }
 
@@ -745,16 +758,21 @@ export function detectAuthority({
       locality: effectiveLocality,
       jurisdiction: 'All 100 Municipal Wards of Agra City',
       category: normCategory,
-      confidence: 'High',
-      reason: 'Agra Nagar Nigam is the primary municipal corporation responsible for waste collection, municipal colony roads, streetlights, and sanitation across 100 city wards.',
+      confidence: normCategory === 'Other' ? 'Medium' : 'High',
+      reason: normCategory === 'Other'
+        ? 'For general civic grievances in Agra urban municipal area, Agra Nagar Nigam and UP Government Jansunwai (IGRS) portal are the designated public grievance redressal channels.'
+        : 'Agra Nagar Nigam is the primary municipal corporation responsible for waste collection, municipal colony roads, streetlights, and sanitation across 100 city wards.',
       officialWebsite: 'https://agranagarnigam.in/',
       complaintPortal: 'https://agranagarnigam.in/',
       officialPortalUrl: 'https://agranagarnigam.in/',
       portalName: 'Agra Nagar Nigam Official Portal',
       verificationStatus: 'Verified',
       lastVerified: '2026-10-09',
-      requiresConfirmation: !hasSpecificLocality,
-      disclaimer: 'Verified municipal corporation for Agra urban city.',
+      requiresConfirmation: normCategory === 'Other' || !hasSpecificLocality,
+      emergencyNumbers: isEmergency ? [{ label: 'National Emergency / Police', number: '112' }] : [],
+      disclaimer: isEmergency
+        ? 'Agra Nagar Nigam handles municipal road and civil repairs. For acute public safety accidents, dial 112.'
+        : 'Verified municipal corporation for Agra urban city.',
     };
   }
 
