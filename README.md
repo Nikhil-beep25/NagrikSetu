@@ -13,7 +13,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=flat&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.x-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
 [![Google Gemini](https://img.shields.io/badge/Google_Gemini_AI-Flash_3.5_%2F_2.5-4285F4?style=flat&logo=google&logoColor=white)](https://aistudio.google.com/)
-[![Tests](https://img.shields.io/badge/Tests-11%2F11_Passing-brightgreen?style=flat&logo=checkmarx&logoColor=white)](tests/runAllTests.mjs)
+[![Tests](https://img.shields.io/badge/Tests-12%2F12_Passing-brightgreen?style=flat&logo=checkmarx&logoColor=white)](tests/runAllTests.mjs)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](LICENSE)
 
 [**Live Demo Script**](DEMO_SCRIPT.md) · [**Project Overview**](PROJECT_OVERVIEW.md) · [**Technical Architecture**](TECHNICAL_ARCHITECTURE.md) · [**Judge Q&A**](HACKATHON_QA.md) · [**Checklist**](SUBMISSION_CHECKLIST.md)
@@ -24,10 +24,11 @@
 
 ## 📖 Table of Contents
 - [Executive Summary](#-executive-summary)
-- [The Problem We Solve](#-the-problem-we-solve)
+- [Design System — Bharat Connect](#-design-system--bharat-connect)
 - [Future Vision: AI Automation Platform](#-future-vision-ai-automation-platform)
 - [What Makes NagrikSetu Different (USP)](#-what-makes-nagriksetu-different-usp)
-- [Key Features](#-key-features)
+- [Key Features & Modules](#-key-features--modules)
+- [Platform Routes & Sitemap](#-platform-routes--sitemap)
 - [System Architecture](#-system-architecture)
 - [Tech Stack](#-tech-stack)
 - [Quick Start Guide](#-quick-start-guide)
@@ -41,18 +42,35 @@
 
 ## 🏛️ Executive Summary
 
-**NagrikSetu (नागरिकसेतु)** is an AI-powered citizen assistance platform designed to eliminate friction in Indian civic grievance reporting and public service navigation.
+**NagrikSetu (नागरिकसेतु)** is an independent, AI-powered citizen assistance platform designed to eliminate friction in Indian civic grievance reporting and public service navigation.
 
 The central vision is:
-> **"An AI-powered citizen automation platform where people can describe their problems in natural language, and AI helps complete the complex government service workflow."**
+> **"An AI-powered citizen automation platform where people describe their civic problems in natural language, and AI helps complete the complex government service workflow."**
 
 In India's complex urban landscape, citizens frequently face jurisdictional confusion, language barriers, and procedural opacity. NagrikSetu introduces a citizen-first digital layer between residents and public administrative bodies:
-- Translates informal, colloquial descriptions (in English, Hindi, or Hinglish) into structured, professional citizen-charter grievance letters.
-- Intelligently maps issues to the exact responsible government department (e.g., Agra Nagar Nigam, Jal Sansthan, DVVNL, MCD, PWD) based on location and road classification.
-- Pre-emptively intercepts life-threatening emergencies (e.g., exposed sparking electrical wires, deep open manholes) with immediate 112/1912 safety guidance before paperwork.
-- Provides interactive, state-specific document checklists and verified links to official government portals (`.gov.in` / `.nic.in`) for essential certificates and passport services.
-- Employs a **Dual-Engine Architecture**: Powered by Google Gemini AI with resilient local deterministic NLP fallbacks for 100% operational uptime.
-- Features an interactive **Future Vision & AI Automation Roadmap** (`/future-vision`) simulating citizen-authorized agentic workflow completion.
+- **Translates informal colloquial descriptions** (in English, Hindi, or Hinglish) into structured, professional citizen-charter grievance letters.
+- **Intelligently maps issues to the exact responsible government department** (e.g., Agra Nagar Nigam, UP Jal Nigam, DVVNL, MCD, PWD) based on location and road classification.
+- **Pre-emptively intercepts life-threatening emergencies** (e.g., sparking electrical lines, open deep manholes) with immediate 112/1912 safety guidance before paperwork.
+- **Provides interactive, state-specific document checklists and verified links** to official government portals (`.gov.in` / `.nic.in`) for essential certificates and public services.
+- **Employs a Dual-Engine Architecture**: Powered by Google Gemini AI with resilient local deterministic NLP fallbacks for 100% operational uptime.
+- **Features an interactive Future Vision & AI Automation Roadmap** (`/future-vision`) simulating citizen-authorized agentic workflow completion.
+
+---
+
+## 🇮🇳 Design System — Bharat Connect
+
+NagrikSetu implements a cohesive, culturally resonant visual identity built on the colors and spirit of India:
+
+| Design Token | Color Code | Application |
+| :--- | :--- | :--- |
+| **Primary Navy** | `#0B1F50` | Primary branding, deep footers, hero accents, high-contrast headings |
+| **Kesari Saffron** | `#F47721` | Call-to-action buttons, active stepper states, high-priority badges |
+| **India Green** | `#13865B` | Resolution indicators, safety confirmations, positive status pills |
+| **Warm Ivory** | `#FFF9F1` | Background canvas, card containers, hero banners |
+| **Soft Blue** | `#EEF4FF` | Secondary cards, informational highlight boxes |
+| **Border Gray** | `#E3E8EF` | Clean subtle borders, dividers, and card outlines |
+
+Subtle watermarks (Ashoka mandala, digital nodes, civic infrastructure) are embedded at 3%–6% opacity to celebrate Indian public institutions without compromising text readability.
 
 ---
 
@@ -64,12 +82,12 @@ NagrikSetu clearly distinguishes between the **Current Operational MVP** and the
 | :--- | :--- | :--- |
 | **Citizen Expression** | Voice/Text in English, Hindi, Hinglish | Voice-first conversational AI across Indian regional languages |
 | **Triage & Drafting** | AI categorizes, assesses urgency & drafts formal letters | Form field generation matching official government portal schemas |
-| **Authority Routing** | Location-aware authority recommendation (Agra, UP, Delhi) | Automated discovery & deep-linking of verified state submission endpoints |
+| **Authority Routing** | Location-aware authority recommendation (Agra, UP, Delhi, NCR) | Automated discovery & deep-linking of verified state submission endpoints |
 | **Workflow Completion**| Citizen manually submits on verified `.gov.in` portals | Citizen explicitly authorizes AI to assist with supported form fields |
 | **Status Verification**| Local client session ledger | Direct status retrieval through official government APIs |
 
 ### 4-Stage Product Roadmap
-1. **Stage 1: AI Guidance and Complaint Preparation (Current MVP)** — Operational today with 11/11 passing test suites.
+1. **Stage 1: AI Guidance and Complaint Preparation (Current MVP)** — Operational today with 12/12 passing test suites.
 2. **Stage 2: AI-Assisted Government Portal Navigation (Planned)** — Procedural overlays & deep-linking to state endpoints.
 3. **Stage 3: Citizen-Approved Form Automation (Planned)** — Pre-filling supported fields using citizen-approved details under explicit human consent.
 4. **Stage 4: Authorized Submission and Status Tracking (Long-Term)** — Authenticated citizen submission & live status tracking where supported by government APIs.
@@ -83,25 +101,16 @@ NagrikSetu clearly distinguishes between the **Current Operational MVP** and the
 3. **AI-Powered Complaint Preparation:** Transforms ordinary descriptions into structured, respectful, and legally sound complaints.
 4. **Intelligent Government Navigation:** Accurate jurisdiction matching across municipal, state, and central authorities.
 5. **Future Agentic Automation:** Aims to automate supported public workflows with explicit citizen authorization.
-6. **Human-in-Control Design:** Citizens always review, approve, and authorize every single action before any state interaction.
+6. **Human-in-Control Design:** Citizens always review, approve, and authorize every single action before any state interaction. Never bypasses CAPTCHA, OTPs, or authentication safeguards.
 
 ---
 
-## 🚨 The Problem We Solve
-
-1. **Jurisdictional Maze:** Municipal corporations, urban development authorities, state public works departments, water boards, and power distribution companies operate side-by-side. Citizens rarely know which agency maintains their specific street width or colony.
-2. **High Rejection Rates for Informal Complaints:** Grievances submitted in raw, unstructured language often omit key landmarks or statutory details, causing administrative delays or dismissal.
-3. **Emergency Hazards Lost in Administrative Queues:** Life-threatening hazards (e.g., hanging high-tension wires) often get queued alongside non-urgent routine maintenance tickets.
-4. **Information Asymmetry in Government Services:** Securing basic statutory documents (Income Certificates, Domicile Certificates, Passports) often forces citizens toward unauthorized touts due to opaque procedural requirements.
-
----
-
-## ✨ Key Features
+## ✨ Key Features & Modules
 
 ### 1. Multilingual Civic Grievance Triage
 - Accepts text and voice dictation in **English, Hindi (Devanagari), and Hinglish (Latin)**.
 - Analyzes complaints across core municipal categories: Garbage/Sanitation, Roads/Potholes, Streetlights, Water Supply, and Drainage/Sewage.
-- Evaluates urgency levels (Low, Medium, High) with contextual reasoning based on public health and transit impact.
+- Evaluates urgency levels (Low, Normal, High) with contextual reasoning based on public health and transit impact.
 
 ### 2. Standard Citizen Charter Grievance Generation
 - Automatically formats informal complaints into formal administrative representations.
@@ -130,7 +139,34 @@ NagrikSetu clearly distinguishes between the **Current Operational MVP** and the
 ### 7. Civic Grievance Tracking Ledger
 - Prototype citizen dashboard (`/complaints`) with SLA target countdowns.
 - Chronological status timeline (`Created` → `Prepared` → `Under Review` → `Resolved`).
-- Prefixed with `Local Ref: NS-XXXX` badges to distinguish local session records from official government tracking numbers.
+- Distinct prototype reference IDs to distinguish local session records from official government tracking numbers.
+
+### 8. Interactive 10-Question FAQ Knowledge Base
+- Globally accessible interactive FAQ accordion covering platform independence, AI drafting, pricing, emergency handling, and future automation.
+- Live keyword search across English and Hindi.
+
+### 9. Transparent Support & Trust Center
+- Comprehensive informational pages (`/privacy`, `/terms`, `/accessibility`, `/disclaimer`) detailing data security, WCAG 2.1 AA accessibility compliance, and non-governmental disclaimers.
+
+---
+
+## 🗺️ Platform Routes & Sitemap
+
+| Route | Page | Purpose |
+| :--- | :--- | :--- |
+| `/` | **Home** | Hero slider, 4 feature pillars, real-time action demo, Built for Bharat impact section |
+| `/how-it-works` | **How It Works** | Connected 4-step citizen timeline, real-life walkthrough, coming soon banner |
+| `/report` | **Report Complaint** | Balanced 2-column form, voice input, photo evidence dropzone, AI triage |
+| `/complaints` | **My Complaints** | Prototype tracking dashboard, metric summary cards, search & category filters |
+| `/complaints/:id` | **Complaint Details** | Complete letter review, assigned authority, and printable view |
+| `/services` | **Government Services** | Searchable catalog of administrative civic services with state filters |
+| `/services/:serviceId`| **Service Details** | Document checklist, eligibility rules, processing times, and verified links |
+| `/assistant` | **AI Citizen Assistant**| Multi-turn conversational chat with quick suggestion pills |
+| `/future-vision` | **Future Vision** | Interactive 6-step agentic automation simulator and safety ethics manifesto |
+| `/privacy` | **Privacy Policy** | Transparent local data storage and AI processing disclosure |
+| `/terms` | **Terms of Use** | User responsibility and non-emergency terms |
+| `/accessibility`| **Accessibility** | WCAG 2.1 AA statement, voice-first tools, and screen reader landmarks |
+| `/disclaimer` | **Disclaimer** | Independent non-governmental status statement and emergency numbers |
 
 ---
 
@@ -144,10 +180,6 @@ graph TD
         Speech[Web Speech API Dictation]
         State[ComplaintContext & LocalStorage]
         FallbackNLP[Client-Side Deterministic NLP Engine]
-    end
-
-    subgraph CDN ["Static Edge Delivery"]
-        Vercel[Vercel CDN / vercel.json SPA Rewrites]
     end
 
     subgraph Backend ["Backend Gateway (Node.js + Express)"]
@@ -170,7 +202,6 @@ graph TD
         CPGRAMS[pgportal.gov.in]
     end
 
-    UI --> Vercel
     UI --> State
     UI --> Speech
     UI --> FallbackNLP
@@ -205,7 +236,7 @@ graph TD
 | **Backend Runtime** | **Node.js 20+ / Express 4** | Secure API gateway, rate limiting, and AI proxy |
 | **AI Integration** | **@google/genai** | Multimodal comprehension via Gemini 3.5 / 2.5 Flash |
 | **Speech Engine** | **Web Speech API** | In-browser speech-to-text dictation |
-| **Linting & Code Quality** | **Oxlint** | High-performance static analysis (0 errors) |
+| **Testing** | **Node.js Test Runner** | Automated end-to-end regression across 12 suites |
 
 ---
 
@@ -259,10 +290,10 @@ Open your browser at `http://localhost:5173`.
 
 ## 🧪 Automated Testing & Verification
 
-NagrikSetu includes a unified test runner verifying 11 distinct test suites:
+NagrikSetu includes a unified test runner verifying all 12 test suites:
 
 ```bash
-# Run all 11 test suites
+# Run all 12 test suites
 npm test
 
 # Run linter
@@ -272,7 +303,7 @@ npm run lint
 npm run build
 ```
 
-### Test Suite Coverage:
+### Test Suite Coverage (12/12 Passing):
 1. `tests/testAnalyzer.mjs` — Keyword & NLP Engine
 2. `tests/testNavbar.mjs` — Navbar & Route Contracts (38/38 contract assertions passed)
 3. `tests/testPhase3.mjs` — Formal Grievance Generation Engine
@@ -284,6 +315,7 @@ npm run build
 9. `tests/testAuthorityDetection.mjs` — Location-Based Authority Detection
 10. `tests/testGovernmentServices.mjs` — Government Service Navigator
 11. `tests/testUnifiedAssistant.mjs` — Unified AI Citizen Assistant (63/63 assertions passed)
+12. `tests/testPhase13FutureVision.mjs` — Future Vision & AI Automation Contracts (100% passed)
 
 ---
 
@@ -321,7 +353,7 @@ See [DEMO_SCRIPT.md](DEMO_SCRIPT.md) for the exact step-by-step presenter walkth
 
 1. **Independent Civic Platform:** NagrikSetu is an independent citizen assistance prototype developed for educational and hackathon purposes. It is **not** an official government agency and is not formally affiliated with any municipal body.
 2. **Zero Sensitive Document Uploads:** NagrikSetu never asks for, collects, or stores citizen identity cards (Aadhaar, PAN, voter ID, passports). Checklists are purely interactive guides stored on your local device.
-3. **Local Reference Ledger:** Complaint reference IDs (`NS-XXXX`) in this prototype represent local session tracking drafts and are not official government registration numbers.
+3. **Local Reference Ledger:** Complaint reference IDs (`CIV-XXXX` / `NS-XXXX`) in this prototype represent local session tracking drafts and are not official government registration numbers.
 4. **Emergency Services:** NagrikSetu does not dispatch first responders. For active fires, medical emergencies, or physical hazards, citizens must contact emergency services directly via **112** or **1912**.
 
 ---
@@ -335,3 +367,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <div align="center">
   <b>Built with ❤️ for Indian Citizens and the Social Impact Hackathon 2026.</b>
 </div>
+# NagrikSetu
