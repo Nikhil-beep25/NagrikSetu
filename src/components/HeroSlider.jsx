@@ -202,6 +202,8 @@ export default function HeroSlider() {
     }
   };
 
+  const currentSlideData = slides[currentSlide];
+
   return (
     <section
       className="relative w-full overflow-hidden bg-[#0B1F50] text-white focus:outline-none"
@@ -225,8 +227,155 @@ export default function HeroSlider() {
         <div className="w-1/3 bg-[#13865B]" />
       </div>
 
-      {/* Slide Container (desktop 540px - 600px height, mobile adaptive with clearance for controls) */}
-      <div className="relative min-h-[520px] sm:min-h-[540px] md:min-h-[560px] lg:min-h-[600px] flex items-center">
+      {/* =========================================================================
+          1. AI AUTOMATION ANNOUNCEMENT STRIP (IN-FLOW, COMPACT, ACCESSIBLE)
+          Links directly to /future-vision on both mobile and desktop
+          ========================================================================= */}
+      <div className="w-full bg-gradient-to-r from-[#001c38] via-[#0b2847] to-[#001c38] border-b border-amber-400/30 relative z-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Link
+            to="/future-vision"
+            className="group py-2 sm:py-2.5 flex items-center justify-center gap-2 text-xs sm:text-sm font-black text-amber-300 hover:text-white transition-colors"
+            aria-label={language === 'hi' ? 'भविष्य दृष्टि: AI ऑटोमेशन — कमिंग सून' : 'Future Vision: AI Automation — Coming Soon'}
+          >
+            <span className="flex items-center gap-1.5 min-w-0">
+              <span className="text-amber-400 animate-pulse shrink-0">✨</span>
+              <span className="text-white font-black truncate">
+                {language === 'hi' ? 'AI ऑटोमेशन' : 'AI Automation'}
+              </span>
+              <span className="text-amber-300/60 font-normal shrink-0">—</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider shrink-0">
+                {language === 'hi' ? 'कमिंग सून' : 'Coming Soon'}
+              </span>
+            </span>
+            <span className="text-amber-400 text-xs font-black group-hover:translate-x-1 transition-transform shrink-0">
+              →
+            </span>
+          </Link>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          2. MOBILE HERO SECTION (< 768px): CLEAN VERTICAL COMPOSITION
+          Order:
+          1. Announcement strip (above)
+          2. Small AI-powered assistance label
+          3. Main heading (fluid typography)
+          4. Short supporting description
+          5. Primary CTA ("Report a Problem")
+          6. Secondary CTA ("Talk to AI Assistant")
+          7. Supporting image (Option A: Image below text, faces completely visible)
+          8. Carousel controls
+          ========================================================================= */}
+      <div className="md:hidden relative z-10">
+        <div className="px-4 pt-4 pb-2 space-y-3">
+          {/* Label Badge */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border backdrop-blur-md bg-emerald-500/20 text-emerald-200 border-emerald-400/30">
+            <span>🇮🇳</span>
+            <span>{language === 'hi' ? currentSlideData.badge.hiText : currentSlideData.badge.text}</span>
+          </div>
+
+          {/* Main Heading with Fluid Typography */}
+          <h1
+            className="font-black text-white tracking-tight leading-[1.2] break-words"
+            style={{ fontSize: 'clamp(1.75rem, 6vw, 2.4rem)' }}
+          >
+            {language === 'hi' ? currentSlideData.hiTitle : currentSlideData.title}
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-xs sm:text-sm font-bold text-[#F47721] tracking-wide">
+            {language === 'hi' ? currentSlideData.hiSubtitle : currentSlideData.subtitle}
+          </p>
+
+          {/* Short Supporting Description */}
+          <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+            {language === 'hi' ? currentSlideData.hiDescription : currentSlideData.description}
+          </p>
+
+          {/* CTA Buttons: Stacked on < 480px, width 100%, comfortable touch targets */}
+          <div className="pt-2 flex flex-col xs:flex-row items-stretch gap-2.5 w-full">
+            <Link
+              to="/report"
+              className="w-full flex-1 h-12 px-5 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white font-black text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all"
+            >
+              <span>📝</span>
+              <span>{language === 'hi' ? 'समस्या दर्ज करें' : 'Report a Problem'}</span>
+            </Link>
+            <Link
+              to="/assistant"
+              className="w-full flex-1 h-12 px-5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md font-black text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+            >
+              <span>🤖</span>
+              <span>{language === 'hi' ? 'AI सहायक से बात करें' : 'Talk to AI Assistant'}</span>
+            </Link>
+          </div>
+
+          {/* Supporting Image (Option A: Image below hero text so citizens' faces are never obscured) */}
+          <div className="pt-3">
+            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-xl border border-white/15 bg-black/40">
+              <img
+                src={currentSlideData.image}
+                alt={currentSlideData.alt}
+                loading="eager"
+                className="h-full w-full object-cover object-center filter brightness-[0.9] contrast-[1.05]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F50]/60 via-transparent to-transparent pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Carousel Controls (Neatly below image, comfortable touch targets, zero overlap) */}
+          <div className="pt-2 pb-20 sm:pb-6 flex items-center justify-between">
+            <div
+              className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15"
+              role="tablist"
+              aria-label="Mobile carousel pagination"
+            >
+              {slides.map((s, idx) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`transition-all duration-300 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F47721] ${
+                    idx === currentSlide ? 'w-6 h-2 bg-[#F47721]' : 'w-2 h-2 bg-white/40'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  role="tab"
+                  aria-selected={idx === currentSlide}
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={prevSlide}
+                className="h-10 w-10 rounded-full bg-black/40 hover:bg-[#F47721] text-white border border-white/15 flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                aria-label="Previous slide"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                className="h-10 w-10 rounded-full bg-black/40 hover:bg-[#F47721] text-white border border-white/15 flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                aria-label="Next slide"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          3. DESKTOP / TABLET HERO SECTION (>= 768px): FULL-WIDTH CINEMATIC CAROUSEL
+          ========================================================================= */}
+      <div className="hidden md:block relative min-h-[540px] lg:min-h-[600px]">
         {slides.map((slide, index) => {
           const isActive = index === currentSlide;
           return (
@@ -240,7 +389,7 @@ export default function HeroSlider() {
               aria-label={`${index + 1} of ${totalSlides}: ${slide.title}`}
               aria-hidden={!isActive}
             >
-              {/* Background Image with lazy-loading for non-initial slides */}
+              {/* Background Image */}
               <div className="absolute inset-0">
                 <img
                   src={slide.image}
@@ -249,27 +398,25 @@ export default function HeroSlider() {
                   decoding="async"
                   className="h-full w-full object-cover object-center filter brightness-[0.72] contrast-[1.05]"
                 />
-                {/* Multi-layered cinematic Bharat gradient overlay ensuring WCAG AAA text contrast */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-r from-[#0B1F50]/95 via-[#0B1F50]/80 to-[#0B1F50]/40 md:to-transparent"
+                  className="absolute inset-0 bg-gradient-to-r from-[#0B1F50]/95 via-[#0B1F50]/80 to-transparent"
                   aria-hidden="true"
                 />
                 <div
                   className="absolute inset-0 bg-gradient-to-t from-[#0B1F50] via-transparent to-black/30"
                   aria-hidden="true"
                 />
-                {/* Subtle Ashoka radial watermark overlay within slide */}
                 <div
                   className="absolute inset-0 bg-watermark-mandala opacity-20 pointer-events-none"
                   aria-hidden="true"
                 />
               </div>
 
-              {/* Content Box with safe bottom clearance so buttons never hit carousel controls */}
-              <div className="relative h-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center pt-8 pb-20 sm:py-12 md:py-16">
+              {/* Desktop Content Box */}
+              <div className="relative h-full mx-auto max-w-7xl px-6 lg:px-8 flex flex-col justify-center py-16">
                 <div className="max-w-2xl lg:max-w-3xl">
                   {/* Category / Highlight Badge */}
-                  <div className="mb-3 sm:mb-4 inline-flex items-center gap-2">
+                  <div className="mb-4 inline-flex items-center gap-2">
                     <span
                       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border backdrop-blur-md ${slide.badge.color}`}
                     >
@@ -279,27 +426,30 @@ export default function HeroSlider() {
                   </div>
 
                   {/* Main Title */}
-                  <h1 className="text-xl xs:text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.2] mb-2 sm:mb-3 drop-shadow-md break-words">
+                  <h1
+                    className="font-black text-white tracking-tight leading-[1.2] mb-3 drop-shadow-md break-words"
+                    style={{ fontSize: 'clamp(2.1rem, 4.5vw, 3.5rem)' }}
+                  >
                     {language === 'hi' ? slide.hiTitle : slide.title}
                   </h1>
 
                   {/* Subtitle */}
-                  <p className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#F47721] mb-2 sm:mb-3 tracking-wide drop-shadow-sm">
+                  <p className="text-base sm:text-lg font-bold text-[#F47721] mb-3 tracking-wide drop-shadow-sm">
                     {language === 'hi' ? slide.hiSubtitle : slide.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-xs sm:text-base text-slate-200 leading-relaxed mb-5 sm:mb-8 max-w-2xl font-medium drop-shadow-sm">
+                  <p className="text-sm sm:text-base text-slate-200 leading-relaxed mb-8 max-w-2xl font-medium drop-shadow-sm">
                     {language === 'hi' ? slide.hiDescription : slide.description}
                   </p>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-col xs:flex-row flex-wrap items-stretch xs:items-center gap-2.5 sm:gap-4">
+                  <div className="flex items-center gap-4">
                     {slide.buttons.map((btn, btnIdx) => (
                       <Link
                         key={btnIdx}
                         to={btn.to}
-                        className={`inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black transition-all duration-200 shadow-md ${
+                        className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-black transition-all duration-200 shadow-md ${
                           btn.primary
                             ? 'bg-[#F47721] hover:bg-[#d96617] text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]'
                             : 'bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md hover:border-white/40'
@@ -315,59 +465,55 @@ export default function HeroSlider() {
             </div>
           );
         })}
-      </div>
 
-      {/* Navigation Controls: Arrows and Indicators */}
-      <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Pagination Indicators / Pills */}
-          <div
-            className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10"
-            role="tablist"
-            aria-label="Carousel pagination"
-          >
-            {slides.map((slide, index) => {
-              const active = index === currentSlide;
-              return (
-                <button
-                  key={slide.id}
-                  type="button"
-                  onClick={() => setCurrentSlide(index)}
-                  className={`transition-all duration-300 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F47721] ${
-                    active
-                      ? 'w-8 h-2.5 bg-[#F47721]'
-                      : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                  aria-selected={active}
-                  role="tab"
-                />
-              );
-            })}
-          </div>
+        {/* Desktop Controls */}
+        <div className="absolute bottom-6 left-0 right-0 z-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 flex items-center justify-between">
+            <div
+              className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10"
+              role="tablist"
+              aria-label="Carousel pagination"
+            >
+              {slides.map((slide, index) => {
+                const active = index === currentSlide;
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    onClick={() => setCurrentSlide(index)}
+                    className={`transition-all duration-300 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F47721] ${
+                      active ? 'w-8 h-2.5 bg-[#F47721]' : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                    aria-selected={active}
+                    role="tab"
+                  />
+                );
+              })}
+            </div>
 
-          {/* Prev / Next Buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={prevSlide}
-              className="h-10 w-10 rounded-full bg-black/40 hover:bg-[#F47721] text-white border border-white/15 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F47721]"
-              aria-label="Previous slide"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={nextSlide}
-              className="h-10 w-10 rounded-full bg-black/40 hover:bg-[#F47721] text-white border border-white/15 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F47721]"
-              aria-label="Next slide"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <polyline points="9 18 15 12 9 6" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={prevSlide}
+                className="h-10 w-10 rounded-full bg-black/40 hover:bg-[#F47721] text-white border border-white/15 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F47721]"
+                aria-label="Previous slide"
+              >
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                className="h-10 w-10 rounded-full bg-black/40 hover:bg-[#F47721] text-white border border-white/15 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F47721]"
+                aria-label="Next slide"
+              >
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

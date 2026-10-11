@@ -355,34 +355,34 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* PRIMARY CTA */}
+              {/* PRIMARY CTA — Desktop only (moved to drawer on mobile to prevent navbar crowding) */}
               <Link
                 to="/report"
-                className="rounded-full px-3.5 sm:px-4 py-2 text-xs sm:text-[13px] font-bold bg-kesari-500 hover:bg-kesari-600 text-white shadow-sm hover:shadow-md active:scale-[0.98] transition-all flex items-center gap-1.5 shrink-0"
+                className="hidden md:inline-flex rounded-full px-4 py-2 text-[13px] font-bold bg-kesari-500 hover:bg-kesari-600 text-white shadow-sm hover:shadow-md active:scale-[0.98] transition-all items-center gap-1.5 shrink-0"
               >
-                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
-                <span className="hidden sm:inline">{language === 'hi' ? '+ शिकायत दर्ज करें' : '+ Report Complaint'}</span>
-                <span className="sm:hidden">{language === 'hi' ? 'शिकायत' : 'Report'}</span>
+                <span>{language === 'hi' ? '+ शिकायत दर्ज करें' : '+ Report Complaint'}</span>
               </Link>
 
-              {/* MOBILE HAMBURGER */}
+              {/* MOBILE HAMBURGER BUTTON (Right-aligned, clean, 44x44 tap target) */}
               <button
                 ref={hamburgerRef}
                 type="button"
-                className="md:hidden flex items-center justify-center h-9 w-9 rounded-lg text-slate-600 hover:bg-slate-100 border border-transparent hover:border-border transition-colors cursor-pointer"
+                className="md:hidden flex items-center justify-center h-10 w-10 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-kesari-600 border border-slate-200 transition-colors cursor-pointer shrink-0 ml-auto"
                 onClick={() => setMobileOpen((prev) => !prev)}
-                aria-label="Toggle navigation menu"
+                aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={mobileOpen}
+                aria-controls="mobile-navigation-drawer"
               >
                 {mobileOpen ? (
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <path d="M18 6L6 18M6 6l12 12" />
                   </svg>
                 ) : (
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
                     <path d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 )}
@@ -396,10 +396,37 @@ export default function Navbar() {
             ========================================================================= */}
         {mobileOpen && (
           <div
+            id="mobile-navigation-drawer"
             ref={menuRef}
-            className="md:hidden border-t border-border py-3 px-3 space-y-1 bg-white animate-fade-slide-up shadow-lg overflow-x-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label={language === 'hi' ? 'नागरिक मेनू' : 'Citizen Navigation Menu'}
+            className="md:hidden border-t border-border bg-white shadow-2xl animate-fade-slide-up overflow-x-hidden max-h-[calc(100dvh-100px)] overflow-y-auto"
           >
-            <div className="space-y-1">
+            {/* Drawer Header with Title & Accessible Close Button */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/70">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-black text-chakra-900 uppercase tracking-wider">
+                  {language === 'hi' ? 'नागरिक नेविगेशन' : 'Citizen Navigation'}
+                </span>
+                <span className="text-[10px] bg-kesari-100 text-kesari-800 font-bold px-2 py-0.5 rounded-full border border-kesari-200">
+                  NagrikSetu
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                className="h-8 w-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-colors cursor-pointer"
+                aria-label="Close navigation menu"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-3 space-y-1">
+              {/* Primary 4 core items */}
               {NAV_ITEMS.map((item) => {
                 const active = isItemActive(item);
                 return (
@@ -407,98 +434,110 @@ export default function Navbar() {
                     key={item.id}
                     to={item.path}
                     onClick={() => setMobileOpen(false)}
-                    className={`block rounded-lg px-4 py-3 text-sm transition-colors ${
+                    className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${
                       active
-                        ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold'
-                        : 'text-slate-800 hover:bg-surface-dim hover:text-kesari-600 font-bold'
+                        ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold shadow-2xs'
+                        : 'text-slate-800 hover:bg-slate-50 hover:text-kesari-600 font-bold'
                     }`}
                   >
-                    {language === 'hi' ? item.hiLabel : item.label}
+                    <span>{language === 'hi' ? item.hiLabel : item.label}</span>
+                    {active && <span className="text-kesari-600 font-black text-xs">●</span>}
                   </Link>
                 );
               })}
+
+              {/* Government Services */}
               <Link
                 to="/services"
                 onClick={() => setMobileOpen(false)}
-                className={`block rounded-lg px-4 py-3 text-sm transition-colors ${
+                className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${
                   location.pathname.startsWith('/services')
-                    ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold'
-                    : 'text-slate-800 hover:bg-surface-dim hover:text-kesari-600 font-bold'
+                    ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold shadow-2xs'
+                    : 'text-slate-800 hover:bg-slate-50 hover:text-kesari-600 font-bold'
                 }`}
               >
                 <span className="flex items-center gap-2">
                   <span>🏛️</span>
-                  <span>{language === 'hi' ? 'सरकारी सेवाएं' : 'Gov Services'}</span>
+                  <span>{language === 'hi' ? 'सरकारी सेवाएं' : 'Government Services'}</span>
                 </span>
+                {location.pathname.startsWith('/services') && (
+                  <span className="text-kesari-600 font-black text-xs">●</span>
+                )}
               </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  window.dispatchEvent(new CustomEvent('open-future-vision-popup'));
-                }}
-                className="animate-shine w-full text-left rounded-xl p-3 bg-gradient-to-r from-amber-400/15 via-kesari-500/15 to-amber-400/20 border border-amber-400/40 text-xs font-bold text-chakra-900 flex items-center justify-between cursor-pointer shadow-2xs"
+
+              {/* AI Assistant */}
+              <Link
+                to="/assistant"
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${
+                  location.pathname === '/assistant'
+                    ? 'bg-kesari-50 text-kesari-700 border-l-4 border-kesari-500 font-extrabold shadow-2xs'
+                    : 'text-slate-800 hover:bg-slate-50 hover:text-kesari-600 font-bold'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span>🤖</span>
+                  <span>{language === 'hi' ? 'AI नागरिक सहायक' : 'AI Assistant'}</span>
+                </span>
+                {location.pathname === '/assistant' && (
+                  <span className="text-kesari-600 font-black text-xs">●</span>
+                )}
+              </Link>
+
+              {/* Future Vision */}
+              <Link
+                to="/future-vision"
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm transition-all ${
+                  location.pathname === '/future-vision'
+                    ? 'bg-amber-50 text-amber-900 border-l-4 border-amber-500 font-extrabold shadow-2xs'
+                    : 'text-slate-800 hover:bg-slate-50 hover:text-amber-700 font-bold'
+                }`}
               >
                 <div className="flex items-center gap-2">
                   <span className="text-base">✨</span>
-                  <div>
-                    <span className="font-black block text-chakra-900">
-                      {language === 'hi' ? 'AI सहायक भविष्य विजन' : 'AI Assistant Vision'}
-                    </span>
-                    <span className="text-[10px] text-text-muted">
-                      {language === 'hi' ? 'स्वचालित नागरिक समाधान' : 'Autonomous Civic Workflows'}
-                    </span>
-                  </div>
+                  <span>{language === 'hi' ? 'AI ऑटोमेशन विजन' : 'Future Vision'}</span>
                 </div>
                 <span className="bg-gradient-to-r from-amber-400 to-kesari-500 text-chakra-900 text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-2xs">
-                  {language === 'hi' ? 'कमिंग सून' : 'Upcoming Soon'}
+                  {language === 'hi' ? 'कमिंग सून' : 'Coming Soon'}
                 </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  window.dispatchEvent(new CustomEvent('open-nagriksetu-chatbot'));
-                }}
-                className="w-full text-left rounded-lg px-4 py-3 text-sm transition-colors text-slate-800 hover:bg-surface-dim hover:text-kesari-600 font-bold flex items-center gap-2 cursor-pointer"
-              >
-                <span>🤖</span>
-                <span>{language === 'hi' ? 'AI सहायक चैटबॉट' : 'AI Assistant Chatbot'}</span>
-              </button>
+              </Link>
             </div>
 
-            {/* Mobile CTAs */}
-            <div className="pt-3 border-t border-border flex flex-col gap-2.5 px-1">
+            {/* Mobile Actions Section */}
+            <div className="p-3 border-t border-slate-100 bg-slate-50/50 space-y-2.5">
+              {/* Prominent Report Complaint Button */}
               <Link
                 to="/report"
                 onClick={() => setMobileOpen(false)}
-                className="w-full text-center py-2.5 rounded-full bg-kesari-500 hover:bg-kesari-600 text-white text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5"
+                className="w-full text-center py-3 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white text-sm font-black shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2"
               >
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
-                <span>{language === 'hi' ? '+ शिकायत दर्ज करें' : '+ Report Complaint'}</span>
+                <span>{language === 'hi' ? '+ समस्या दर्ज करें' : '+ Report Complaint'}</span>
               </Link>
 
+              {/* User Account / Demo Session or Sign In */}
               {currentUser ? (
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-surface-dim border border-border">
-                  <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-white border border-border shadow-xs">
+                  <div className="flex items-center gap-2.5 min-w-0">
                     <img
                       src={currentUser.avatar || '/assets/user_avatar.jpg'}
                       alt="Citizen Avatar"
-                      className="h-8 w-8 rounded-full object-cover border border-chakra-300 shrink-0"
+                      className="h-9 w-9 rounded-full object-cover border border-chakra-300 shrink-0"
                     />
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <p className="text-xs font-bold text-chakra-900 truncate max-w-[110px]">{currentUser.name}</p>
+                        <p className="text-xs font-black text-chakra-900 truncate max-w-[120px]">{currentUser.name}</p>
                         {currentUser.mode === 'demo' && (
                           <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full border border-amber-300 shrink-0">
-                            Demo Mode 🛡️
+                            DEMO 🛡️
                           </span>
                         )}
                       </div>
-                      <p className="text-[10px] text-text-muted truncate max-w-[130px]">{currentUser.ward || 'Agra Municipal Ward'}</p>
+                      <p className="text-[10px] text-text-muted truncate max-w-[140px]">{currentUser.ward || 'Agra Municipal Ward'}</p>
                     </div>
                   </div>
                   <button
@@ -507,7 +546,7 @@ export default function Navbar() {
                       logout();
                       setMobileOpen(false);
                     }}
-                    className="text-xs font-bold text-red-600 hover:text-red-700 px-2 py-1 rounded cursor-pointer shrink-0"
+                    className="text-xs font-bold text-red-600 hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-red-50 transition-colors cursor-pointer shrink-0"
                   >
                     {language === 'hi' ? 'लॉग आउट' : 'Sign Out'}
                   </button>
@@ -517,29 +556,29 @@ export default function Navbar() {
                   <Link
                     to="/signin"
                     onClick={() => setMobileOpen(false)}
-                    className={`flex-1 text-center py-2 rounded-full border text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 text-center py-2.5 rounded-xl border text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
                       location.pathname === '/signin'
                         ? 'border-chakra-700 bg-chakra-50 text-chakra-900'
-                        : 'border-border-input text-chakra-800 bg-surface-dim'
+                        : 'border-slate-300 text-chakra-800 bg-white hover:bg-slate-50'
                     }`}
                   >
                     <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                       <circle cx="12" cy="7" r="4" />
                     </svg>
-                    <span>{language === 'hi' ? 'साइन इन' : 'Sign In'}</span>
+                    <span>{language === 'hi' ? 'साइन इन / डेमो' : 'Sign In / Demo'}</span>
                   </Link>
 
                   <Link
                     to="/signup"
                     onClick={() => setMobileOpen(false)}
-                    className={`flex-1 text-center py-2 rounded-full border text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
+                    className={`flex-1 text-center py-2.5 rounded-xl border text-xs font-bold transition-colors flex items-center justify-center gap-1.5 ${
                       location.pathname === '/signup'
                         ? 'border-kesari-500 text-kesari-700 bg-kesari-50'
-                        : 'border-border-input text-chakra-800 bg-surface-dim'
+                        : 'border-slate-300 text-chakra-800 bg-white hover:bg-slate-50'
                     }`}
                   >
-                    <span>{language === 'hi' ? 'साइन अप' : 'Sign Up'}</span>
+                    <span>{language === 'hi' ? 'खाता बनाएं' : 'Sign Up'}</span>
                   </Link>
                 </div>
               )}

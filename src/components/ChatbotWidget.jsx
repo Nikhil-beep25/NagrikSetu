@@ -246,6 +246,18 @@ export default function ChatbotWidget() {
     }
   };
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   const handleClearChat = () => {
     try {
       sessionStorage.removeItem(STORAGE_KEY);
@@ -278,7 +290,10 @@ export default function ChatbotWidget() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none print:hidden">
+    <div
+      className="fixed right-4 md:right-6 z-40 select-none print:hidden"
+      style={{ bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}
+    >
       {/* =========================================================================
           1. CHAT WINDOW (FULLSCREEN ON MOBILE, FLOATING CARD ON DESKTOP)
           ========================================================================= */}
@@ -287,10 +302,13 @@ export default function ChatbotWidget() {
           role="dialog"
           aria-label="NagrikSetu AI Chatbot"
           aria-modal="true"
-          className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-6 w-full sm:w-[410px] sm:max-w-[calc(100vw-24px)] h-[100dvh] sm:h-[560px] sm:max-h-[calc(100vh-90px)] bg-white rounded-none sm:rounded-2xl shadow-2xl border-0 sm:border border-border flex flex-col overflow-hidden animate-fade-slide-up z-50"
+          className="fixed inset-0 sm:inset-auto md:bottom-20 md:right-6 sm:bottom-20 sm:right-6 w-full sm:w-[410px] md:w-[410px] sm:max-w-[calc(100vw-24px)] h-[100dvh] sm:h-[560px] md:h-[560px] sm:max-h-[calc(100vh-90px)] bg-white rounded-none sm:rounded-2xl shadow-2xl border-0 sm:border border-border flex flex-col overflow-hidden animate-fade-slide-up z-50"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-chakra-900 to-chakra-800 text-white p-3.5 flex items-center justify-between shadow-xs">
+          <div
+            className="bg-gradient-to-r from-chakra-900 to-chakra-800 text-white p-3.5 flex items-center justify-between shadow-xs shrink-0"
+            style={{ paddingTop: 'calc(12px + env(safe-area-inset-top, 0px))' }}
+          >
             <div className="flex items-center gap-2.5">
               <div className="h-9 w-9 rounded-xl bg-kesari-500 text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
                 🤖
@@ -480,7 +498,8 @@ export default function ChatbotWidget() {
               e.preventDefault();
               handleSendMessage();
             }}
-            className="p-2.5 bg-white border-t border-border flex items-center gap-1.5"
+            className="p-2.5 md:p-3 bg-white border-t border-border flex items-center gap-1.5 shrink-0"
+            style={{ paddingBottom: 'calc(10px + env(safe-area-inset-bottom, 0px))' }}
           >
             <input
               type="text"
@@ -522,7 +541,7 @@ export default function ChatbotWidget() {
       )}
 
       {/* =========================================================================
-          2. FLOATING TRIGGER BUTTON (CORNER BUBBLE - HIDDEN ON MOBILE WHEN OPEN)
+          2. FLOATING TRIGGER BUTTON (COMPACT 54px CIRCULAR ON MOBILE, PILL ON DESKTOP)
           ========================================================================= */}
       <button
         type="button"
@@ -530,15 +549,18 @@ export default function ChatbotWidget() {
         aria-label={isOpen ? "Close AI Citizen Assistant" : "Open AI Citizen Assistant"}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
-        className={`group relative items-center gap-2 p-3 sm:px-4 sm:py-3.5 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20 focus:outline-hidden focus:ring-4 focus:ring-kesari-300 ${
-          isOpen ? 'hidden sm:inline-flex' : 'inline-flex'
-        }`}
+        className={`group relative items-center justify-center gap-2 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20 focus:outline-hidden focus:ring-4 focus:ring-kesari-300 ${
+          isOpen ? 'hidden md:inline-flex' : 'inline-flex'
+        } w-[54px] h-[54px] md:w-auto md:h-auto p-0 md:px-4 md:py-3.5`}
       >
-        <span className="text-xl sm:text-2xl leading-none">🤖</span>
-        <span className="font-extrabold text-xs sm:text-sm tracking-wide hidden sm:inline">
+        <span className="text-2xl leading-none flex items-center justify-center">🤖</span>
+        <span className="font-extrabold text-xs md:text-sm tracking-wide hidden md:inline">
           {language === 'hi' ? 'AI नागरिक सहायक' : 'AI Assistant'}
         </span>
-        <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-400 border border-white shrink-0 animate-pulse" />
+        <span className="hidden md:inline-block h-2.5 w-2.5 rounded-full bg-emerald-400 border border-white shrink-0 animate-pulse" />
+
+        {/* Mobile active status dot */}
+        <span className="md:hidden absolute top-1 right-1 h-3 w-3 rounded-full bg-emerald-400 border-2 border-kesari-600 shrink-0" />
 
         {/* Floating Notification Indicator */}
         {!isOpen && (
