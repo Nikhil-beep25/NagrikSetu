@@ -48,12 +48,16 @@ export default function Footer() {
           </div>
 
           {/* Heading */}
-          <h2 className="text-2xl sm:text-4xl font-black text-[#0B1F50] tracking-tight leading-tight max-w-2xl mx-auto">
-            {isHindi ? 'आपकी आवाज़ मायने रखती है।' : 'Your Voice Matters. Let NagrikSetu Help.'}
+          <h2 className="font-display text-2xl sm:text-4xl font-extrabold text-[#0B1F50] tracking-tight leading-tight max-w-2xl mx-auto">
+            {isHindi ? (
+              <span>आपकी <span className="text-[#F47721]">आवाज़</span> मायने रखती है।</span>
+            ) : (
+              <span>Your <span className="font-handwritten text-[#F47721] text-3xl sm:text-5xl inline-block px-1">Voice</span> Matters. Let NagrikSetu Help.</span>
+            )}
           </h2>
 
           {/* Description */}
-          <p className="mt-3 text-xs sm:text-base text-[#596579] font-medium max-w-xl mx-auto leading-relaxed">
+          <p className="font-body mt-3 text-xs sm:text-base text-[#596579] font-medium max-w-xl mx-auto leading-relaxed">
             {isHindi
               ? 'नागरिक शिकायतों से लेकर सरकारी सेवाओं तक, एक AI-संचालित मंच के माध्यम से सरल मार्गदर्शन प्राप्त करें।'
               : 'From civic complaints to government services, get simpler guidance through one AI-powered platform.'}
@@ -63,7 +67,7 @@ export default function Footer() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4">
             <Link
               to="/assistant"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B1F50] hover:bg-[#071638] text-white px-7 py-3.5 text-xs sm:text-sm font-black shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+              className="font-friendly w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B1F50] hover:bg-[#071638] text-white px-7 py-3.5 text-xs sm:text-sm font-black shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
               <span>🤖</span>
               <span>{isHindi ? 'AI सहायक से बात करें' : 'Talk to AI Assistant'}</span>
@@ -72,7 +76,7 @@ export default function Footer() {
 
             <Link
               to="/report"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#F47721] to-[#e06616] hover:from-[#e06616] hover:to-[#c8560e] text-white px-7 py-3.5 text-xs sm:text-sm font-black shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
+              className="font-friendly w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#F47721] to-[#e06616] hover:from-[#e06616] hover:to-[#c8560e] text-white px-7 py-3.5 text-xs sm:text-sm font-black shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
             >
               <span>📝</span>
               <span>{isHindi ? 'समस्या रिपोर्ट करें' : 'Report a Problem'}</span>
@@ -124,10 +128,10 @@ export default function Footer() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-black text-2xl sm:text-3xl text-white tracking-tight leading-none">
+                  <span className="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight leading-none">
                     Nagrik<span className="text-[#F47721]">Setu</span>
                   </span>
-                  <span className="text-xs font-bold text-amber-300 mt-1">
+                  <span className="font-body text-xs font-bold text-amber-300 mt-1">
                     {isHindi
                       ? 'तकनीक जो हर नागरिक को समझती है।'
                       : 'Technology That Understands Every Citizen.'}
@@ -143,7 +147,7 @@ export default function Footer() {
               </div>
 
               {/* Brand Description */}
-              <p className="text-xs sm:text-sm text-[#B8C5D8] leading-relaxed max-w-md">
+              <p className="font-body text-xs sm:text-sm text-[#B8C5D8] leading-relaxed max-w-md">
                 {isHindi
                   ? 'एक स्वतंत्र AI-संचालित मंच जो नागरिकों को नागरिक शिकायतों और सरकारी सेवाओं को अधिक आसानी से नेविगेट करने में मदद करता है।'
                   : 'An independent AI-powered platform helping citizens navigate civic complaints and government services more easily.'}
@@ -152,14 +156,14 @@ export default function Footer() {
               {/* Startup-Grade Civic Bridge Badge */}
               <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3.5 py-1.5 text-xs text-[#B8C5D8]">
                 <span className="h-2 w-2 rounded-full bg-[#13865B] animate-pulse" />
-                <span className="font-medium">
+                <span className="font-body font-medium">
                   {isHindi ? 'नागरिक ↔ AI ↔ शासन प्रणाली' : 'Citizen ↔ AI ↔ Governance'}
                 </span>
               </div>
             </div>
 
             {/* RIGHT SIDE (3 Navigation Groups - 7 Columns) */}
-            <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-6">
+            <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-6 font-body">
               
               {/* GROUP 1: EXPLORE */}
               <div className="space-y-3.5">

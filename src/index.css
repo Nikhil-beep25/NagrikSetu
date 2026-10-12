@@ -87,8 +87,25 @@
   --color-warning: #f46036;
   --color-error: #ba1a1a;
 
-  /* Typography */
-  --font-sans: 'Plus Jakarta Sans', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+  /* Creative Bharat — 5 Assigned Typography Families */
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-handwritten: 'Satisfy', cursive;
+  --font-body: 'Outfit', sans-serif;
+  --font-friendly: 'Nunito', sans-serif;
+  --font-hindi: 'Noto Sans Devanagari', sans-serif;
+  --font-sans: 'Outfit', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+
+  /* Creative Bharat Color System (Section 7) */
+  --color-navy: #0B1F50;
+  --color-saffron: #F47721;
+  --color-green: #13865B;
+  --color-ivory: #FFF9F1;
+  --color-white: #FFFFFF;
+  --color-softblue: #EEF4FF;
+  --color-skyblue: #2D8CFF;
+  --color-softmint: #E8F7EF;
+  --color-softpeach: #FFF0E5;
+  --color-softlavender: #F1ECFF;
 
   /* Elevation Shadows from Stitch Design System */
   --shadow-level-0: none;
@@ -97,6 +114,54 @@
   --shadow-elevated: 0px 8px 24px -4px rgba(13, 71, 161, 0.08);
   --shadow-modal: 0px 12px 32px rgba(13, 59, 102, 0.12), 0px 2px 8px rgba(13, 59, 102, 0.06);
   --shadow-nav: 0 1px 4px rgba(13, 59, 102, 0.04);
+}
+
+:root {
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-handwritten: 'Satisfy', cursive;
+  --font-body: 'Outfit', sans-serif;
+  --font-friendly: 'Nunito', sans-serif;
+  --font-hindi: 'Noto Sans Devanagari', sans-serif;
+
+  --color-navy: #0B1F50;
+  --color-saffron: #F47721;
+  --color-green: #13865B;
+  --color-ivory: #FFF9F1;
+  --color-white: #FFFFFF;
+  --color-softblue: #EEF4FF;
+  --color-skyblue: #2D8CFF;
+  --color-softmint: #E8F7EF;
+  --color-softpeach: #FFF0E5;
+  --color-softlavender: #F1ECFF;
+}
+
+/* Reusable Typography Token Classes */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-handwritten {
+  font-family: var(--font-handwritten);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-friendly {
+  font-family: var(--font-friendly);
+}
+
+.font-hindi {
+  font-family: var(--font-hindi);
+}
+
+/* Guard against cursive distortion on Hindi Devanagari glyphs */
+[lang="hi"] .font-handwritten,
+:lang(hi) .font-handwritten {
+  font-family: var(--font-hindi), var(--font-display);
+  font-style: normal;
+  font-weight: 700;
 }
 
 /* Base styles */
@@ -108,7 +173,7 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   color: var(--color-text-primary);
   background-color: var(--color-surface-dim);
   overflow-x: hidden;

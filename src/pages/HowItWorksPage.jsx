@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import PageHero from '../components/PageHero';
+import { CurvedUnderline } from '../components/CreativeDecorations';
 
 export default function HowItWorksPage() {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const isHindi = language === 'hi';
 
   const journeySteps = [
@@ -21,7 +22,7 @@ export default function HowItWorksPage() {
     },
     {
       num: '02',
-      title: isHindi ? 'AI समस्या समझता है' : 'AI Understands Your Issue',
+      title: isHindi ? 'AI मार्गदर्शन प्राप्त करें' : 'Get AI Guidance',
       subtitle: isHindi ? 'सटीक डायग्नोस्टिक विश्लेषण' : 'Intelligent Triage',
       desc: isHindi
         ? 'नागरिकसेतु AI समस्या की श्रेणी (कचरा, सड़क, स्ट्रीट लाइट, जल, नाली), तात्कालिकता और स्थान का स्वतः विश्लेषण करता है।'
@@ -33,7 +34,7 @@ export default function HowItWorksPage() {
     },
     {
       num: '03',
-      title: isHindi ? 'सही विभाग की पहचान' : 'Find the Relevant Authority',
+      title: isHindi ? 'सही विभाग की पहचान' : 'Find the Right Authority',
       subtitle: isHindi ? 'सटीक प्रशासनिक मैपिंग' : 'Authority Mapping',
       desc: isHindi
         ? 'सड़क, नाली, बिजली या जल की समस्या के अनुसार सही नगर निगम, जल संस्थान या विद्युत विभाग की पहचान की जाती है।'
@@ -45,7 +46,7 @@ export default function HowItWorksPage() {
     },
     {
       num: '04',
-      title: isHindi ? 'शिकायत तैयार करें व आगे बढ़ें' : 'Prepare and Continue Your Complaint',
+      title: isHindi ? 'कार्यवाही करें' : 'Take Action',
       subtitle: isHindi ? 'औपचारिक पत्र व आधिकारिक पोर्टल' : 'Official Portal Guidance',
       desc: isHindi
         ? 'एक औपचारिक पत्र ड्राफ्ट तैयार होता है। आधिकारिक पोर्टल लिंक और शिकायत संदर्भ आईडी के साथ आगे बढ़ने का स्पष्ट मार्ग मिलता है।'
@@ -161,13 +162,23 @@ export default function HowItWorksPage() {
       <section className="relative py-16 sm:py-24 bg-white border-b border-[#E3E8EF]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="inline-flex items-center rounded-full bg-[#FFF9F1] border border-[#F47721]/30 px-3.5 py-1 text-xs font-black text-[#F47721] uppercase tracking-wider mb-2.5">
+            <span className="font-friendly inline-flex items-center rounded-full bg-[#FFF9F1] border border-[#F47721]/30 px-3.5 py-1 text-xs font-black text-[#F47721] uppercase tracking-wider mb-2.5">
               {isHindi ? '४-चरणीय नागरिक यात्रा' : '4-Step Citizen Journey'}
             </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-[#0B1F50] tracking-tight">
-              {isHindi ? 'समस्या से समाधान तक का स्पष्ट मार्ग' : 'From Problem to Action in Four Steps'}
+            <h2 className="font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B1F50] tracking-tight">
+              {isHindi ? (
+                <span>समस्या से <span className="text-[#F47721] font-bold">समाधान</span> तक</span>
+              ) : (
+                <span>
+                  From Problem to{' '}
+                  <span className="font-handwritten text-[#F47721] text-3xl sm:text-5xl inline-block px-1 relative">
+                    Progress
+                    <CurvedUnderline color="#F47721" className="-bottom-2" />
+                  </span>
+                </span>
+              )}
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-[#596579]">
+            <p className="font-body mt-3 text-xs sm:text-sm text-[#596579] font-medium leading-relaxed">
               {isHindi
                 ? 'बिना किसी बिचौलिए या जटिल तकनीकी ज्ञान के अपने नागरिक अधिकारों का उपयोग करें।'
                 : 'Navigate public grievances with dignity, transparency, and complete human control.'}
@@ -183,24 +194,24 @@ export default function HowItWorksPage() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-black text-[#0B1F50] bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-2xs">
+                    <span className="font-friendly text-xs font-black text-[#0B1F50] bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-2xs">
                       STEP {step.num}
                     </span>
                     <span className="text-2xl">{step.icon}</span>
                   </div>
 
-                  <h3 className="text-base font-black text-[#0B1F50]">
+                  <h3 className="font-display text-lg font-extrabold text-[#0B1F50] tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="text-xs font-bold text-[#F47721] mt-0.5">
+                  <p className="font-friendly text-xs font-bold text-[#F47721] mt-0.5">
                     {step.subtitle}
                   </p>
-                  <p className="mt-2.5 text-xs text-[#596579] leading-relaxed font-medium">
+                  <p className="font-body mt-2.5 text-xs text-[#596579] leading-relaxed font-normal">
                     {step.desc}
                   </p>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between">
+                <div className="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between font-friendly">
                   <span className="text-[10px] font-black uppercase text-[#0B1F50] bg-white px-2 py-0.5 rounded border border-slate-200">
                     {step.badge}
                   </span>

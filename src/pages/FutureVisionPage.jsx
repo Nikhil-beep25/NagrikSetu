@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import AutomationVisionDemo from '../components/AutomationVisionDemo';
+import { AccentWord } from '../components/Typography';
 
 export default function FutureVisionPage() {
   const { language } = useLanguage();
@@ -300,15 +301,23 @@ export default function FutureVisionPage() {
             <span className="text-emerald-300">COMING SOON</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
-            {isHindi ? 'नागरिक सेवाओं का भविष्य संवादात्मक है।' : 'The Future of Citizen Services Is Conversational.'}
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+            {isHindi ? (
+              <span>
+                एक सशक्त <AccentWord color="saffron">भारत</AccentWord> का निर्माण
+              </span>
+            ) : (
+              <span>
+                A Smarter <AccentWord color="saffron">Bharat</AccentWord> Together
+              </span>
+            )}
           </h1>
 
-          <p className="text-lg sm:text-2xl font-black text-[#F47721] tracking-wide">
+          <p className="font-friendly text-lg sm:text-2xl font-bold text-amber-300 tracking-wide">
             {isHindi ? 'एक बातचीत। सरल सरकारी कार्यप्रवाह।' : 'One Conversation. Simpler Government Workflows.'}
           </p>
 
-          <p className="text-base sm:text-lg text-slate-200 max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="font-body text-base sm:text-lg text-slate-200 max-w-3xl mx-auto font-normal leading-relaxed">
             {isHindi
               ? 'एक ऐसा AI-संचालित नागरिक ऑटोमेशन मंच, जहाँ लोग अपनी भाषा में समस्या बता सकें और AI जटिल सरकारी प्रक्रिया को पूरा करने में सहायता करे।'
               : 'An AI-powered citizen automation platform where people describe their problems in natural language, and AI helps complete the complex government service workflow with citizen authorization.'}

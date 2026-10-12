@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import ComplaintForm from '../components/ComplaintForm';
 import PageHero from '../components/PageHero';
+import { AccentWord } from '../components/Typography';
 
 export default function ReportComplaintPage() {
   const { language } = useLanguage();
@@ -23,11 +23,21 @@ export default function ReportComplaintPage() {
         badge={language === 'hi' ? 'नागरिक शिकायत समाधान' : 'Civic Grievance Assistant'}
         badgeIcon="🇮🇳"
         locationBadge={language === 'hi' ? 'आगरा, उत्तर प्रदेश' : 'Agra, Uttar Pradesh'}
-        title={language === 'hi' ? 'नागरिक समस्या दर्ज करें' : 'Report a Civic Problem'}
+        title={
+          language === 'hi' ? (
+            <span>
+              आपकी समस्या। हमारा <AccentWord color="saffron">मार्गदर्शन</AccentWord>।
+            </span>
+          ) : (
+            <span>
+              Your Problem. Our <AccentWord color="saffron">Guidance</AccentWord>.
+            </span>
+          )
+        }
         subtitle={
           language === 'hi'
             ? 'आपकी समस्या। आपकी आवाज़। AI-संचालित सहायता।'
-            : 'Your Problem. Your Voice. AI-Powered Assistance.'
+            : 'AI-assisted civic grievance guidance for every Indian citizen.'
         }
         description={
           language === 'hi'

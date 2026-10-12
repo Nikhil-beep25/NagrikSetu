@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
+import { CurvedUnderline, SparkShape } from './CreativeDecorations';
 
 export default function HeroSlider() {
   const { language } = useLanguage();
@@ -202,6 +203,115 @@ export default function HeroSlider() {
     }
   };
 
+  const renderHeroHeadline = (slide, lang) => {
+    if (slide.id === 1) {
+      if (lang === 'hi') {
+        return (
+          <span className="font-hindi font-extrabold">
+            <span>हर नागरिक की </span>
+            <span className="relative inline-block text-[#F47721] px-1">
+              आवाज
+              <CurvedUnderline color="#F47721" />
+            </span>
+            <span>, हर समस्या का </span>
+            <span className="relative inline-block text-[#2ee59d] px-1">
+              समाधान
+              <CurvedUnderline color="#13865B" />
+            </span>
+            <span>।</span>
+          </span>
+        );
+      }
+      return (
+        <span className="font-display font-black">
+          <span>Har Nagrik Ki </span>
+          <span className="relative inline-block font-handwritten text-[#F47721] font-normal px-1 text-[1.12em] transform -rotate-1 select-none">
+            Awaaz
+            <CurvedUnderline color="#F47721" />
+          </span>
+          <span>, Har Samasya Ka </span>
+          <span className="relative inline-block font-handwritten text-[#2ee59d] font-normal px-1 text-[1.12em] transform rotate-1 select-none">
+            Samadhan
+            <CurvedUnderline color="#13865B" />
+          </span>
+          <span>.</span>
+        </span>
+      );
+    }
+
+    if (slide.id === 2) {
+      if (lang === 'hi') {
+        return (
+          <span className="font-hindi font-extrabold">
+            <span>सरकारी सेवाएं, अब हर नागरिक के लिए </span>
+            <span className="relative inline-block text-sky-300 px-1">
+              आसान
+              <CurvedUnderline color="#2D8CFF" />
+            </span>
+            <span>।</span>
+          </span>
+        );
+      }
+      return (
+        <span className="font-display font-black">
+          <span>Government Services, </span>
+          <span className="relative inline-block font-handwritten text-sky-400 font-normal px-1 text-[1.1em] select-none">
+            Made Simple
+            <CurvedUnderline color="#2D8CFF" />
+          </span>
+          <span>.</span>
+        </span>
+      );
+    }
+
+    if (slide.id === 3) {
+      if (lang === 'hi') {
+        return (
+          <span className="font-hindi font-extrabold">
+            <span>AI जो समझता है </span>
+            <span className="relative inline-block text-[#F47721] px-1">
+              आपकी अपनी भाषा
+              <CurvedUnderline color="#F47721" />
+            </span>
+            <span>।</span>
+          </span>
+        );
+      }
+      return (
+        <span className="font-display font-black">
+          <span>AI That Understands </span>
+          <span className="relative inline-block font-handwritten text-[#F47721] font-normal px-1 text-[1.1em] select-none">
+            Your Voice
+            <CurvedUnderline color="#F47721" />
+          </span>
+          <span>.</span>
+        </span>
+      );
+    }
+
+    // Slide 4: Coming soon
+    if (lang === 'hi') {
+      return (
+        <span className="font-hindi font-extrabold">
+          <span>कमिंग सून: AI-संचालित </span>
+          <span className="relative inline-block text-amber-300 px-1">
+            सरकारी ऑटोमेशन
+            <CurvedUnderline color="#F59E0B" />
+          </span>
+        </span>
+      );
+    }
+    return (
+      <span className="font-display font-black">
+        <span>Coming Soon: AI-Powered </span>
+        <span className="relative inline-block font-handwritten text-amber-300 font-normal px-1 text-[1.05em] select-none">
+          Government Automation
+          <CurvedUnderline color="#F59E0B" />
+        </span>
+      </span>
+    );
+  };
+
   const currentSlideData = slides[currentSlide];
 
   return (
@@ -277,19 +387,19 @@ export default function HeroSlider() {
 
           {/* Main Heading with Fluid Typography */}
           <h1
-            className="font-black text-white tracking-tight leading-[1.2] break-words"
+            className="font-display font-black text-white tracking-tight leading-[1.25] break-words"
             style={{ fontSize: 'clamp(1.75rem, 6vw, 2.4rem)' }}
           >
-            {language === 'hi' ? currentSlideData.hiTitle : currentSlideData.title}
+            {renderHeroHeadline(currentSlideData, language)}
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xs sm:text-sm font-bold text-[#F47721] tracking-wide">
+          <p className="text-xs sm:text-sm font-friendly font-bold text-[#F47721] tracking-wide">
             {language === 'hi' ? currentSlideData.hiSubtitle : currentSlideData.subtitle}
           </p>
 
           {/* Short Supporting Description */}
-          <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+          <p className="text-xs sm:text-sm font-body text-slate-200 leading-relaxed font-normal">
             {language === 'hi' ? currentSlideData.hiDescription : currentSlideData.description}
           </p>
 
@@ -297,14 +407,14 @@ export default function HeroSlider() {
           <div className="pt-2 flex flex-col xs:flex-row items-stretch gap-2.5 w-full">
             <Link
               to="/report"
-              className="w-full flex-1 h-12 px-5 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white font-black text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all"
+              className="w-full flex-1 h-12 px-5 rounded-2xl bg-[#F47721] hover:bg-[#d96617] text-white font-friendly font-extrabold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all"
             >
               <span>📝</span>
               <span>{language === 'hi' ? 'समस्या दर्ज करें' : 'Report a Problem'}</span>
             </Link>
             <Link
               to="/assistant"
-              className="w-full flex-1 h-12 px-5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md font-black text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="w-full flex-1 h-12 px-5 rounded-2xl bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md font-friendly font-extrabold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
               <span>🤖</span>
               <span>{language === 'hi' ? 'AI सहायक से बात करें' : 'Talk to AI Assistant'}</span>
@@ -418,28 +528,29 @@ export default function HeroSlider() {
                   {/* Category / Highlight Badge */}
                   <div className="mb-4 inline-flex items-center gap-2">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border backdrop-blur-md ${slide.badge.color}`}
+                      className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-friendly font-extrabold uppercase tracking-wider border backdrop-blur-md shadow-xs ${slide.badge.color}`}
                     >
                       <span>🇮🇳</span>
                       <span>{language === 'hi' ? slide.badge.hiText : slide.badge.text}</span>
+                      <SparkShape color="#F47721" size={13} className="ml-1" />
                     </span>
                   </div>
 
                   {/* Main Title */}
                   <h1
-                    className="font-black text-white tracking-tight leading-[1.2] mb-3 drop-shadow-md break-words"
+                    className="font-display font-black text-white tracking-tight leading-[1.25] mb-4 drop-shadow-md break-words"
                     style={{ fontSize: 'clamp(2.1rem, 4.5vw, 3.5rem)' }}
                   >
-                    {language === 'hi' ? slide.hiTitle : slide.title}
+                    {renderHeroHeadline(slide, language)}
                   </h1>
 
                   {/* Subtitle */}
-                  <p className="text-base sm:text-lg font-bold text-[#F47721] mb-3 tracking-wide drop-shadow-sm">
+                  <p className="text-base sm:text-lg font-friendly font-bold text-[#F47721] mb-3 tracking-wide drop-shadow-sm">
                     {language === 'hi' ? slide.hiSubtitle : slide.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-sm sm:text-base text-slate-200 leading-relaxed mb-8 max-w-2xl font-medium drop-shadow-sm">
+                  <p className="text-sm sm:text-base font-body text-slate-200 leading-relaxed mb-8 max-w-2xl font-normal drop-shadow-sm">
                     {language === 'hi' ? slide.hiDescription : slide.description}
                   </p>
 
@@ -449,16 +560,32 @@ export default function HeroSlider() {
                       <Link
                         key={btnIdx}
                         to={btn.to}
-                        className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-black transition-all duration-200 shadow-md ${
+                        className={`inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-friendly font-extrabold transition-all duration-200 shadow-md ${
                           btn.primary
-                            ? 'bg-[#F47721] hover:bg-[#d96617] text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]'
-                            : 'bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md hover:border-white/40'
+                            ? 'bg-[#F47721] hover:bg-[#d96617] text-white hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
+                            : 'bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur-md hover:border-white/40 active:scale-[0.98]'
                         }`}
                       >
                         <span>{btn.icon}</span>
                         <span>{language === 'hi' ? btn.hiLabel : btn.label}</span>
                       </Link>
                     ))}
+                  </div>
+
+                  {/* Small supporting feature indicators (Section 5) */}
+                  <div className="mt-8 pt-5 border-t border-white/15 flex flex-wrap items-center gap-4 text-xs text-slate-200/90 font-friendly font-semibold">
+                    <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
+                      <span className="text-amber-400">🎙️</span>
+                      <span>{language === 'hi' ? 'ध्वनि व सरल भाषा' : 'Voice & Plain Words'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
+                      <span className="text-[#2D8CFF]">🇮🇳</span>
+                      <span>{language === 'hi' ? 'हिंदी, अंग्रेज़ी व हिंग्लिश' : 'Hindi, English & Hinglish'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
+                      <span className="text-[#2ee59d]">🔒</span>
+                      <span>{language === 'hi' ? '१००% नागरिक नियंत्रण' : '100% Citizen Control'}</span>
+                    </div>
                   </div>
                 </div>
               </div>

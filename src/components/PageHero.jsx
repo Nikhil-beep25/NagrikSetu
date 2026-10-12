@@ -102,7 +102,7 @@ export default function PageHero({
 
             {/* Title */}
             <h1
-              className={`text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight ${
+              className={`font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight ${
                 isLight ? 'text-[#0B1F50]' : 'text-white'
               }`}
             >
@@ -112,7 +112,7 @@ export default function PageHero({
             {/* Subtitle */}
             {subtitle && (
               <p
-                className={`text-sm sm:text-base lg:text-lg font-bold tracking-wide ${
+                className={`font-friendly text-sm sm:text-base lg:text-lg font-bold tracking-wide ${
                   isLight ? 'text-[#F47721]' : 'text-[#F47721]'
                 }`}
               >
@@ -123,7 +123,7 @@ export default function PageHero({
             {/* Description */}
             {description && (
               <p
-                className={`text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl font-medium ${
+                className={`font-body text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl font-normal ${
                   isLight ? 'text-[#596579]' : 'text-slate-200'
                 }`}
               >
@@ -139,7 +139,7 @@ export default function PageHero({
                     <Link
                       to={primaryAction.to}
                       onClick={primaryAction.onClick}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white px-6 py-3 text-xs sm:text-sm font-black shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
+                      className="font-friendly inline-flex items-center justify-center gap-2 rounded-2xl bg-[#F47721] hover:bg-[#d96617] text-white px-6 py-3 text-xs sm:text-sm font-extrabold shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
                     >
                       {primaryAction.icon && <span>{primaryAction.icon}</span>}
                       <span>{primaryAction.label}</span>
@@ -148,7 +148,7 @@ export default function PageHero({
                     <button
                       type="button"
                       onClick={primaryAction.onClick}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white px-6 py-3 text-xs sm:text-sm font-black shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
+                      className="font-friendly inline-flex items-center justify-center gap-2 rounded-2xl bg-[#F47721] hover:bg-[#d96617] text-white px-6 py-3 text-xs sm:text-sm font-extrabold shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
                     >
                       {primaryAction.icon && <span>{primaryAction.icon}</span>}
                       <span>{primaryAction.label}</span>
@@ -161,7 +161,7 @@ export default function PageHero({
                     <Link
                       to={secondaryAction.to}
                       onClick={secondaryAction.onClick}
-                      className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs sm:text-sm font-black transition-all shadow-xs ${
+                      className={`font-friendly inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-xs sm:text-sm font-extrabold transition-all shadow-xs ${
                         isLight
                           ? 'bg-white hover:bg-slate-50 text-[#0B1F50] border border-[#E3E8EF]'
                           : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md'
@@ -174,7 +174,7 @@ export default function PageHero({
                     <button
                       type="button"
                       onClick={secondaryAction.onClick}
-                      className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs sm:text-sm font-black transition-all shadow-xs ${
+                      className={`font-friendly inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-xs sm:text-sm font-extrabold transition-all shadow-xs ${
                         isLight
                           ? 'bg-white hover:bg-slate-50 text-[#0B1F50] border border-[#E3E8EF]'
                           : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md'

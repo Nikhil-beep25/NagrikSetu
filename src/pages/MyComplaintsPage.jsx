@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useComplaints, STATUS_OPTIONS } from '../context/ComplaintContext';
 import ComplaintTimeline from '../components/ComplaintTimeline';
 import PageHero from '../components/PageHero';
+import { AccentWord } from '../components/Typography';
 
 export default function MyComplaintsPage() {
   const { language } = useLanguage();
@@ -97,14 +98,14 @@ export default function MyComplaintsPage() {
     switch (status) {
       case 'Resolved':
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-800 shadow-2xs">
+          <span className="font-friendly inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-800 shadow-2xs">
             <span className="h-2 w-2 rounded-full bg-emerald-600" />
             {language === 'hi' ? 'समाधानित' : 'Resolved'}
           </span>
         );
       case 'Under Review':
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800 shadow-2xs">
+          <span className="font-friendly inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800 shadow-2xs">
             <span className="h-2 w-2 rounded-full bg-amber-600 animate-pulse" />
             {language === 'hi' ? 'समीक्षाधीन' : 'Under Review'}
           </span>
@@ -113,7 +114,7 @@ export default function MyComplaintsPage() {
       case 'Pending':
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-black text-slate-700 shadow-2xs">
+          <span className="font-friendly inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-black text-slate-700 shadow-2xs">
             <span className="h-2 w-2 rounded-full bg-slate-500" />
             {language === 'hi' ? 'निर्मित' : status || 'Created'}
           </span>
@@ -161,7 +162,17 @@ export default function MyComplaintsPage() {
         badge={language === 'hi' ? 'नागरिक शिकायत खाता • आगरा पायलट' : 'Civic Complaint Ledger • Pilot'}
         badgeIcon="📋"
         locationBadge={language === 'hi' ? 'आगरा, उत्तर प्रदेश' : 'Agra, Uttar Pradesh'}
-        title={language === 'hi' ? 'मेरी शिकायतें' : 'My Complaints'}
+        title={
+          language === 'hi' ? (
+            <span>
+              मेरी <AccentWord color="saffron">शिकायतें</AccentWord>
+            </span>
+          ) : (
+            <span>
+              My <AccentWord color="saffron">Complaints</AccentWord>
+            </span>
+          )
+        }
         subtitle={
           language === 'hi'
             ? 'नागरिकसेतु द्वारा तैयार की गई नागरिक समस्याओं को देखें और ट्रैक करें।'

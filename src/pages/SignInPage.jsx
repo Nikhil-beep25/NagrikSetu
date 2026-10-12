@@ -10,10 +10,7 @@ export default function SignInPage() {
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const [loginMethod, setLoginMethod] = useState('demo'); // 'demo' | 'password' | 'otp'
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [demoCode, setDemoCode] = useState('');
   const [demoCodeError, setDemoCodeError] = useState('');
@@ -181,10 +178,10 @@ export default function SignInPage() {
 
                 {/* Heading & Subtitle */}
                 <div className="space-y-1">
-                  <h1 className="text-2xl sm:text-3xl font-black text-[#0B1F50] tracking-tight">
+                  <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0B1F50] tracking-tight">
                     {language === 'hi' ? 'नागरिक पोर्टल में प्रवेश करें' : 'Citizen Sign In'}
                   </h1>
-                  <p className="text-xs sm:text-sm text-slate-600">
+                  <p className="font-body text-xs sm:text-sm text-slate-600">
                     {language === 'hi'
                       ? 'अपनी शिकायतों को ट्रैक करने व स्थिति देखने हेतु प्रवेश करें'
                       : 'Sign in to access your civic grievance ledger & track SLA status'}
@@ -192,13 +189,13 @@ export default function SignInPage() {
                 </div>
 
                 {/* Prominent Demo Notice Box (Part 11.4 & Security Integrity) */}
-                <div className="rounded-xl border border-amber-300 bg-amber-50/90 p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
+                <div className="font-body rounded-xl border border-amber-300 bg-amber-50/90 p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
                   <span className="text-base shrink-0">🛡️</span>
                   <div className="space-y-0.5">
-                    <p className="font-black text-amber-950">
+                    <p className="font-black text-amber-950 font-friendly">
                       {language === 'hi' ? 'प्रदर्शन एवं मूल्यांकन सत्र' : 'Demonstration & Evaluation Access'}
                     </p>
-                    <p className="text-[11px] text-amber-800 leading-relaxed">
+                    <p className="text-[11px] text-amber-800 leading-relaxed font-normal">
                       {language === 'hi'
                         ? 'डेमो खाता: डेटा और पहुंच केवल प्रदर्शन हेतु हैं। यह कोई सत्यापित नागरिक पहचान नहीं है।'
                         : 'Demo account: Data and access are for demonstration only. This is not a verified citizen identity.'}
@@ -214,7 +211,7 @@ export default function SignInPage() {
                     type="button"
                     onClick={handleDemoLogin}
                     disabled={submitted}
-                    className="w-full h-13 rounded-2xl bg-gradient-to-r from-[#F47721] via-[#e56813] to-[#d95d08] hover:from-[#d95d08] hover:to-[#c04e03] text-white font-black text-sm shadow-md hover:shadow-lg transition-all transform active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer border border-amber-300/40"
+                    className="font-friendly w-full h-13 rounded-2xl bg-gradient-to-r from-[#F47721] via-[#e56813] to-[#d95d08] hover:from-[#d95d08] hover:to-[#c04e03] text-white font-extrabold text-sm shadow-md hover:shadow-lg transition-all transform active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer border border-amber-300/40"
                   >
                     {submitted ? (
                       <>

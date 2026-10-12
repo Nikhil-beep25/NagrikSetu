@@ -291,7 +291,7 @@ export default function ChatbotWidget() {
 
   return (
     <div
-      className="fixed right-4 md:right-6 z-40 select-none print:hidden"
+      className="fixed right-3.5 sm:right-5 md:right-6 z-40 select-none print:hidden"
       style={{ bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}
     >
       {/* =========================================================================
@@ -310,15 +310,15 @@ export default function ChatbotWidget() {
             style={{ paddingTop: 'calc(12px + env(safe-area-inset-top, 0px))' }}
           >
             <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-xl bg-kesari-500 text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
+              <div className="h-9 w-9 rounded-xl bg-[#13865B] text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
                 🤖
               </div>
               <div className="leading-tight">
-                <div className="font-extrabold text-sm flex items-center gap-1.5">
+                <div className="font-display font-extrabold text-sm flex items-center gap-1.5 tracking-tight">
                   <span>NagrikSetu AI</span>
                   <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
-                <div className="text-[10px] text-slate-300 font-medium">
+                <div className="text-[10px] text-slate-300 font-body font-medium">
                   {language === 'hi' ? 'नागरिक सहायता चैटबॉट' : 'Citizen Assistance Assistant'}
                 </div>
               </div>
@@ -361,7 +361,7 @@ export default function ChatbotWidget() {
                 )}
 
                 <div
-                  className={`max-w-[85%] rounded-2xl p-3 space-y-2 text-xs leading-relaxed ${
+                  className={`max-w-[85%] rounded-2xl p-3 space-y-2 text-xs leading-relaxed font-body ${
                     msg.role === 'user'
                       ? 'bg-chakra-800 text-white rounded-br-none shadow-xs'
                       : msg.isEmergency
@@ -371,7 +371,7 @@ export default function ChatbotWidget() {
                 >
                   {/* Emergency Warning Header */}
                   {msg.isEmergency && (
-                    <div className="flex items-center gap-1.5 text-[11px] font-black text-red-700 pb-1 border-b border-red-200">
+                    <div className="flex items-center gap-1.5 text-[11px] font-friendly font-black text-red-700 pb-1 border-b border-red-200">
                       <span>⚠️</span>
                       <span>{language === 'hi' ? 'आपातकालीन चेतावनी' : 'EMERGENCY SAFETY ALERT'}</span>
                     </div>
@@ -394,7 +394,7 @@ export default function ChatbotWidget() {
                           key={idx}
                           type="button"
                           onClick={() => handleActionClick(act)}
-                          className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all shadow-2xs flex items-center gap-1 cursor-pointer ${
+                          className={`px-2.5 py-1 rounded-md text-[11px] font-friendly font-bold transition-all shadow-2xs flex items-center gap-1 cursor-pointer ${
                             act.type === 'call_emergency'
                               ? 'bg-red-600 hover:bg-red-700 text-white'
                               : act.type === 'navigate_report'
@@ -416,7 +416,7 @@ export default function ChatbotWidget() {
                   )}
 
                   <div
-                    className={`text-[9px] text-right ${
+                    className={`text-[9px] text-right font-body ${
                       msg.role === 'user' ? 'text-slate-300' : 'text-slate-400'
                     }`}
                   >
@@ -453,7 +453,7 @@ export default function ChatbotWidget() {
           </div>
 
           {/* Quick Prompts Bar */}
-          <div className="bg-white px-3 py-1.5 border-t border-border/60 flex items-center gap-1.5 overflow-x-auto text-[10px]">
+          <div className="bg-white px-3 py-1.5 border-t border-border/60 flex items-center gap-1.5 overflow-x-auto text-[10px] font-friendly">
             <span className="text-slate-400 font-bold whitespace-nowrap">
               {language === 'hi' ? 'सुझाव:' : 'Quick:'}
             </span>
@@ -462,7 +462,7 @@ export default function ChatbotWidget() {
               onClick={() =>
                 handleSendMessage(language === 'hi' ? 'सड़क पर गड्ढा है' : 'How do I report a pothole?')
               }
-              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium whitespace-nowrap cursor-pointer"
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold whitespace-nowrap cursor-pointer transition-colors"
             >
               {language === 'hi' ? 'सड़क गड्ढा' : 'Pothole'}
             </button>
@@ -473,7 +473,7 @@ export default function ChatbotWidget() {
                   language === 'hi' ? 'मुझे आय प्रमाण पत्र बनवाना है' : 'Mujhe income certificate banwana hai'
                 )
               }
-              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium whitespace-nowrap cursor-pointer"
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold whitespace-nowrap cursor-pointer transition-colors"
             >
               {language === 'hi' ? 'आय प्रमाण पत्र' : 'Income Cert'}
             </button>
@@ -486,7 +486,7 @@ export default function ChatbotWidget() {
                     : 'What documents do I need for domicile certificate?'
                 )
               }
-              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium whitespace-nowrap cursor-pointer"
+              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold whitespace-nowrap cursor-pointer transition-colors"
             >
               {language === 'hi' ? 'दस्तावेज' : 'Documents'}
             </button>
@@ -509,7 +509,7 @@ export default function ChatbotWidget() {
                 language === 'hi' ? 'अपनी समस्या या सवाल पूछें...' : 'Ask question or report issue...'
               }
               disabled={loading}
-              className="flex-1 px-3 py-2 text-xs rounded-xl border border-border-input bg-surface-dim hover:bg-white focus:bg-white focus:border-chakra-500 focus:outline-hidden text-slate-900"
+              className="flex-1 px-3 py-2 text-xs font-body rounded-xl border border-border-input bg-surface-dim hover:bg-white focus:bg-white focus:border-chakra-500 focus:outline-hidden text-slate-900"
             />
 
             {/* Voice Input Button */}
@@ -532,7 +532,7 @@ export default function ChatbotWidget() {
             <button
               type="submit"
               disabled={loading || !inputText.trim()}
-              className="px-3.5 py-2 rounded-xl bg-kesari-500 hover:bg-kesari-600 disabled:opacity-40 text-white font-bold text-xs shadow-2xs transition-all cursor-pointer shrink-0"
+              className="px-3.5 py-2 rounded-xl bg-[#13865B] hover:bg-[#0E6C48] disabled:opacity-40 text-white font-friendly font-bold text-xs shadow-2xs transition-all cursor-pointer shrink-0"
             >
               →
             </button>
@@ -541,7 +541,7 @@ export default function ChatbotWidget() {
       )}
 
       {/* =========================================================================
-          2. FLOATING TRIGGER BUTTON (COMPACT 54px CIRCULAR ON MOBILE, PILL ON DESKTOP)
+          2. FLOATING TRIGGER BUTTON (SIMPLE GREEN CHATBOT BUTTON — COMPATIBLE WITH ALL RATIOS)
           ========================================================================= */}
       <button
         type="button"
@@ -549,26 +549,51 @@ export default function ChatbotWidget() {
         aria-label={isOpen ? "Close AI Citizen Assistant" : "Open AI Citizen Assistant"}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
-        className={`group relative items-center justify-center gap-2 rounded-full bg-gradient-to-r from-kesari-500 to-kesari-600 hover:from-kesari-600 hover:to-kesari-700 text-white shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/20 focus:outline-hidden focus:ring-4 focus:ring-kesari-300 ${
+        className={`group relative flex items-center justify-center rounded-full bg-[#13865B] hover:bg-[#0E6C48] active:bg-[#0A5236] text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer border border-white/25 focus:outline-hidden focus:ring-4 focus:ring-[#13865B]/30 ${
           isOpen ? 'hidden md:inline-flex' : 'inline-flex'
-        } w-[54px] h-[54px] md:w-auto md:h-auto p-0 md:px-4 md:py-3.5`}
+        } w-[52px] h-[52px] sm:w-auto sm:h-auto p-0 sm:px-4 sm:py-3`}
       >
-        <span className="text-2xl leading-none flex items-center justify-center">🤖</span>
-        <span className="font-extrabold text-xs md:text-sm tracking-wide hidden md:inline">
+        {/* Simple Clean Chatbot Icon */}
+        <span className="flex items-center justify-center">
+          {isOpen ? (
+            <svg
+              className="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg
+              className="w-6 h-6 sm:w-5 sm:h-5 transition-transform duration-200 group-hover:scale-110"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              <circle cx="9" cy="12" r="1.25" fill="currentColor" stroke="none" />
+              <circle cx="15" cy="12" r="1.25" fill="currentColor" stroke="none" />
+            </svg>
+          )}
+        </span>
+
+        {/* Text for tablet and desktop viewports */}
+        <span className="font-friendly font-extrabold text-xs sm:text-sm tracking-wide hidden sm:inline ml-2">
           {language === 'hi' ? 'AI नागरिक सहायक' : 'AI Assistant'}
         </span>
-        <span className="hidden md:inline-block h-2.5 w-2.5 rounded-full bg-emerald-400 border border-white shrink-0 animate-pulse" />
 
-        {/* Mobile active status dot */}
-        <span className="md:hidden absolute top-1 right-1 h-3 w-3 rounded-full bg-emerald-400 border-2 border-kesari-600 shrink-0" />
-
-        {/* Floating Notification Indicator */}
-        {!isOpen && (
-          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-kesari-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-kesari-600 border border-white" />
-          </span>
-        )}
+        {/* Simple live status dot */}
+        <span className="hidden sm:inline-block h-2 w-2 rounded-full bg-emerald-300 ml-2 shrink-0 animate-pulse" />
       </button>
     </div>
   );

@@ -67,15 +67,15 @@ export default function SignUpPage() {
               className="h-20 w-auto object-contain rounded-2xl shadow-xs group-hover:scale-105 transition-transform duration-200"
             />
           </Link>
-          <h1 className="text-2xl font-extrabold text-chakra-900 tracking-tight">
+          <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-[#0B1F50] tracking-tight">
             {language === 'hi' ? 'नागरिक खाता बनाएं' : 'Create Citizen Account'}
           </h1>
-          <p className="text-xs sm:text-sm text-text-muted">
+          <p className="font-body text-xs sm:text-sm text-[#596579]">
             {language === 'hi'
               ? 'AI नागरिक सहायता केंद्र में शामिल हों व आगरा नगर क्षेत्र की समस्याओं का समाधान पाएं'
               : 'Join the AI Civic Redressal portal for Agra, Uttar Pradesh to report issues & track resolutions'}
           </p>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold">
+          <div className="font-body inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold">
             <span>🛡️</span>
             <span>
               {language === 'hi'
@@ -86,10 +86,14 @@ export default function SignUpPage() {
         </div>
 
         {/* Main Material Card */}
-        <div className="rounded-2xl border border-border bg-white shadow-card overflow-hidden">
-          <div className="tricolor-ribbon-3px w-full" aria-hidden="true" />
+        <div className="rounded-3xl border border-[#E3E8EF] bg-white shadow-xl overflow-hidden">
+          <div className="h-1.5 w-full flex" aria-hidden="true">
+            <div className="w-1/3 bg-[#F47721]" />
+            <div className="w-1/3 bg-white border-y border-slate-100" />
+            <div className="w-1/3 bg-[#13865B]" />
+          </div>
 
-          <div className="p-6 sm:p-8 space-y-5">
+          <div className="p-6 sm:p-8 space-y-5 font-body">
             {error && (
               <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-semibold">
                 ⚠️ {error}

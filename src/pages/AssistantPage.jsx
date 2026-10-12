@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import { processAssistantMessage } from '../services/unifiedAssistantEngine';
 import { getApiEndpoint } from '../utils/apiConfig';
+import { AccentWord } from '../components/Typography';
 
 const STORAGE_KEY = 'nagriksetu_assistant_history';
 let messageSeq = 0;
@@ -298,14 +299,22 @@ export default function AssistantPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg sm:text-xl font-black text-[#0B1F50] tracking-tight">
-                  {t('assistantTitle')}
+                <h1 className="font-display text-lg sm:text-2xl font-extrabold text-[#0B1F50] tracking-tight">
+                  {language === 'hi' ? (
+                    <span>
+                      आपका व्यक्तिगत <AccentWord color="blue">नागरिक मार्गदर्शक</AccentWord>
+                    </span>
+                  ) : (
+                    <span>
+                      Your Personal <AccentWord color="blue">Civic Guide</AccentWord>
+                    </span>
+                  )}
                 </h1>
-                <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-black bg-[#13865B]/15 text-[#13865B]">
+                <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-black bg-[#13865B]/15 text-[#13865B] font-friendly">
                   Live AI Active
                 </span>
               </div>
-              <p className="text-[11px] sm:text-xs text-[#596579]">
+              <p className="font-body text-[11px] sm:text-xs text-[#596579]">
                 {t('assistantSubtitle')}
               </p>
             </div>
@@ -314,7 +323,7 @@ export default function AssistantPage() {
           <button
             type="button"
             onClick={handleClearChat}
-            className="px-3.5 py-1.5 rounded-xl border border-[#E3E8EF] hover:border-slate-400 bg-white hover:bg-slate-50 text-xs font-black text-[#0B1F50] transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
+            className="font-friendly px-3.5 py-1.5 rounded-xl border border-[#E3E8EF] hover:border-slate-400 bg-white hover:bg-slate-50 text-xs font-black text-[#0B1F50] transition-colors shadow-xs cursor-pointer flex items-center gap-1.5"
             title="Reset conversation"
           >
             <span>🗑️</span>
@@ -358,13 +367,13 @@ export default function AssistantPage() {
                 )}
 
                 {/* Message Body */}
-                <div className="text-xs sm:text-sm whitespace-pre-line leading-relaxed font-medium">
+                <div className="font-body text-xs sm:text-sm whitespace-pre-line leading-relaxed font-medium">
                   {msg.content}
                 </div>
 
                 {/* Fallback Transparent Notice */}
                 {msg.fallbackNotice && (
-                  <div className="p-2 rounded-lg bg-amber-50 border border-amber-200 text-[10px] text-amber-900 font-bold flex items-center gap-1">
+                  <div className="font-body p-2 rounded-lg bg-amber-50 border border-amber-200 text-[10px] text-amber-900 font-bold flex items-center gap-1">
                     <span>ℹ️</span>
                     <span>{msg.fallbackNotice}</span>
                   </div>
@@ -378,7 +387,7 @@ export default function AssistantPage() {
                         key={idx}
                         type="button"
                         onClick={() => handleActionClick(act)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
+                        className={`font-friendly px-3 py-1.5 rounded-xl text-xs font-black transition-all shadow-xs flex items-center gap-1.5 cursor-pointer active:scale-[0.98] ${
                           act.type === 'call_emergency'
                             ? 'bg-red-600 hover:bg-red-700 text-white'
                             : act.type === 'navigate_report'
@@ -458,13 +467,13 @@ export default function AssistantPage() {
               onChange={(e) => setInputText(e.target.value)}
               placeholder={t('assistantInputPlaceholder')}
               disabled={loading}
-              className="flex-1 px-4 py-3 text-xs sm:text-sm rounded-xl border border-[#E3E8EF] bg-[#EEF4FF]/40 hover:bg-white focus:bg-white focus:border-[#F47721] focus:ring-2 focus:ring-[#F47721]/20 focus:outline-hidden transition-all text-[#1D2939]"
+              className="font-body flex-1 px-4 py-3 text-xs sm:text-sm rounded-xl border border-[#E3E8EF] bg-[#EEF4FF]/40 hover:bg-white focus:bg-white focus:border-[#F47721] focus:ring-2 focus:ring-[#F47721]/20 focus:outline-hidden transition-all text-[#1D2939]"
             />
             <button
               id="assistant-send-button"
               type="submit"
               disabled={loading || !inputText.trim()}
-              className="px-6 py-3 rounded-xl bg-[#F47721] hover:bg-[#d96617] disabled:opacity-50 text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+              className="font-friendly px-6 py-3 rounded-xl bg-[#F47721] hover:bg-[#d96617] disabled:opacity-50 text-white font-black text-xs sm:text-sm flex items-center gap-1.5 shadow-md hover:shadow-lg transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
             >
               <span>{t('assistantSendBtn')}</span>
               <span>→</span>
@@ -473,34 +482,34 @@ export default function AssistantPage() {
 
           {/* Quick Action Suggestion Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto pt-1 pb-1">
-            <span className="text-[10px] font-black uppercase text-[#596579] whitespace-nowrap">
+            <span className="font-friendly text-[10px] font-black uppercase text-[#596579] whitespace-nowrap">
               {t('assistantSuggestedHeading')}:
             </span>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'सड़क पर गड्ढा है' : 'How do I report a pothole?')}
-              className="px-2.5 py-1 rounded-lg bg-[#EEF4FF] hover:bg-[#dce9ff] text-[#0B1F50] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
+              className="font-friendly px-2.5 py-1 rounded-lg bg-[#EEF4FF] hover:bg-[#dce9ff] text-[#0B1F50] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionCivic')}
             </button>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'मुझे आय प्रमाण पत्र बनवाना है' : 'Mujhe income certificate banwana hai')}
-              className="px-2.5 py-1 rounded-lg bg-[#FFF9F1] hover:bg-[#ffeecf] text-[#F47721] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
+              className="font-friendly px-2.5 py-1 rounded-lg bg-[#FFF9F1] hover:bg-[#ffeecf] text-[#F47721] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionServices')}
             </button>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'मूल निवास प्रमाण पत्र के दस्तावेज क्या हैं?' : 'What documents do I need for a domicile certificate?')}
-              className="px-2.5 py-1 rounded-lg bg-[#EDF9F3] hover:bg-[#d5f5e3] text-[#13865B] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
+              className="font-friendly px-2.5 py-1 rounded-lg bg-[#EDF9F3] hover:bg-[#d5f5e3] text-[#13865B] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionDocs')}
             </button>
             <button
               type="button"
               onClick={() => handleSendMessage(language === 'hi' ? 'पासपोर्ट अपॉइंटमेंट कैसे बुक करें?' : 'Passport appointment kaise book kare?')}
-              className="px-2.5 py-1 rounded-lg bg-[#F5F0FF] hover:bg-[#ebdcfc] text-[#7C3AED] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
+              className="font-friendly px-2.5 py-1 rounded-lg bg-[#F5F0FF] hover:bg-[#ebdcfc] text-[#7C3AED] text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer"
             >
               {t('assistantActionAppointment')}
             </button>
@@ -510,7 +519,7 @@ export default function AssistantPage() {
         {/* =========================================================================
             DISCLAIMER & TRUST FOOTER
             ========================================================================= */}
-        <div className="text-center text-[11px] text-[#596579] px-2 font-medium">
+        <div className="font-body text-center text-[11px] text-[#596579] px-2 font-medium">
           <span>🛡️ {t('serviceDisclaimerNotice')}</span>
         </div>
       </div>

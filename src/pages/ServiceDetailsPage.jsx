@@ -119,21 +119,21 @@ export default function ServiceDetailsPage() {
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-chakra-900 tracking-tight">
+            <h1 className="font-display text-2xl sm:text-4xl font-extrabold text-[#0B1F50] tracking-tight">
               {language === 'hi' ? service.hiName : service.name}
             </h1>
 
-            <p className="text-xs sm:text-sm font-semibold text-chakra-700">
+            <p className="font-body text-xs sm:text-sm font-semibold text-[#0B1F50]">
               🏛️ {t('serviceDepartmentLabel')}: <span className="text-slate-800">{service.department}</span>
             </p>
           </div>
 
-          <p className="text-sm sm:text-base text-text-secondary leading-relaxed pt-1">
+          <p className="font-body text-sm sm:text-base text-[#596579] leading-relaxed pt-1">
             {language === 'hi' ? service.hiDescription : service.description}
           </p>
 
           {/* Quick Jump Action Pills */}
-          <div className="pt-4 border-t border-border flex flex-wrap items-center gap-2.5">
+          <div className="pt-4 border-t border-border flex flex-wrap items-center gap-2.5 font-friendly">
             <a
               href="#documents"
               className="px-3.5 py-1.5 rounded-lg bg-surface-dim hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all"

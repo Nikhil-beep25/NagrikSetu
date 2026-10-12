@@ -123,11 +123,11 @@ export default function ServicesPage() {
               <span>{language === 'hi' ? 'सत्यापित सरकारी सेवा नेविगेटर' : 'Verified GovTech Service Navigator'}</span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+            <h1 className="font-display text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               {t('servicesTitle')}
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
+            <p className="font-body text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
               {t('servicesSubtitle')}
             </p>
           </div>
@@ -151,14 +151,14 @@ export default function ServicesPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('servicesSearchPlaceholder')}
-                className="w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl border border-[#E3E8EF] bg-[#EEF4FF]/50 hover:bg-white focus:bg-white focus:border-[#F47721] focus:ring-2 focus:ring-[#F47721]/20 focus:outline-hidden transition-all text-[#1D2939]"
+                className="font-body w-full pl-11 pr-4 py-3 text-sm sm:text-base rounded-xl border border-[#E3E8EF] bg-[#EEF4FF]/50 hover:bg-white focus:bg-white focus:border-[#F47721] focus:ring-2 focus:ring-[#F47721]/20 focus:outline-hidden transition-all text-[#1D2939]"
               />
             </div>
             <button
               id="ai-search-button"
               type="submit"
               disabled={aiLoading || !searchQuery.trim()}
-              className="px-6 py-3 rounded-xl bg-[#0B1F50] hover:bg-[#18367d] disabled:opacity-50 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+              className="font-friendly px-6 py-3 rounded-xl bg-[#0B1F50] hover:bg-[#18367d] disabled:opacity-50 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
             >
               {aiLoading ? (
                 <>
@@ -402,18 +402,18 @@ export default function ServicesPage() {
 
                   {/* Service Title */}
                   <div>
-                    <h3 className="text-lg font-black text-[#0B1F50] group-hover:text-[#F47721] transition-colors">
+                    <h3 className="font-display text-lg font-extrabold text-[#0B1F50] group-hover:text-[#F47721] transition-colors">
                       <Link to={`/services/${service.id}`}>
                         {language === 'hi' ? service.hiName : service.name}
                       </Link>
                     </h3>
-                    <p className="text-[11px] font-semibold text-[#596579] mt-0.5">
+                    <p className="font-body text-[11px] font-semibold text-[#596579] mt-0.5">
                       {service.department}
                     </p>
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs text-[#596579] line-clamp-3 leading-relaxed">
+                  <p className="font-body text-xs text-[#596579] line-clamp-3 leading-relaxed font-normal">
                     {language === 'hi' ? service.hiDescription : service.description}
                   </p>
 

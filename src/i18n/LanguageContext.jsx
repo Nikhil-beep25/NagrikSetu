@@ -19,6 +19,9 @@ export function LanguageProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem(LANG_STORAGE_KEY, language);
+      if (typeof document !== 'undefined' && document.documentElement) {
+        document.documentElement.lang = language;
+      }
     } catch {
       // Ignore if localStorage unavailable
     }

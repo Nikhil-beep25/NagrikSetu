@@ -1,74 +1,75 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n/LanguageContext';
 import ComplaintForm from '../components/ComplaintForm';
 import AutomationVisionDemo from '../components/AutomationVisionDemo';
 import HeroSlider from '../components/HeroSlider';
 import BuiltForBharatSection from '../components/BuiltForBharatSection';
+import { CurvedUnderline, SparkShape, HandDrawnArrow } from '../components/CreativeDecorations';
 
 export default function HomePage() {
   const { language } = useLanguage();
 
-  // Interactive sample selector for AI In Action demo
-  const [activeActionDemo, setActiveActionDemo] = useState('streetlight');
-
-  // STEP 6: 4 Premium Feature Cards (Saffron, Blue, Green, Purple/Gold)
+  // STEP 6: 4 Enhanced Feature Cards (Soft Pastels per Section 7 & 9)
   const premiumFeatures = [
     {
       id: 'complaint-assistance',
-      title: language === 'hi' ? 'AI शिकायत सहायता' : 'AI Complaint Assistance',
+      title: language === 'hi' ? 'नागरिक समस्या दर्ज करें' : 'Report a Civic Problem',
       desc:
         language === 'hi'
           ? 'अपनी रोजमर्रा की सरल भाषा या आवाज में समस्या बताएं। AI स्वतः समस्या का विश्लेषण कर औपचारिक प्रशासनिक शिकायत पत्र तैयार करता है।'
           : 'Describe civic problems in everyday words or voice. AI triages issues, extracts key details, and prepares formal complaints.',
       accentColor: 'border-t-4 border-[#F47721]',
-      pastelBg: 'bg-[#FFF9F1]',
+      pastelBg: 'bg-[#FFF0E5]',
       badgeColor: 'bg-[#F47721]/15 text-[#F47721]',
+      badgeText: language === 'hi' ? 'नागरिक सहायता' : 'Civic Triage',
       icon: '📝',
       link: '/report',
       btnLabel: language === 'hi' ? 'शिकायत दर्ज करें' : 'Report Complaint',
     },
     {
+      id: 'unified-assistant',
+      title: language === 'hi' ? 'AI नागरिक सहायक' : 'AI Citizen Assistant',
+      desc:
+        language === 'hi'
+          ? 'हिन्दी व अंग्रेजी में 24/7 नागरिक संवादात्मक मार्गदर्शन। आपातकालीन सुरक्षा जांच और सरकारी प्रक्रियाओं का स्पष्टीकरण।'
+          : 'Bilingual voice-ready AI companion answering civic queries, verifying emergency safety, and navigating public workflows.',
+      accentColor: 'border-t-4 border-[#2D8CFF]',
+      pastelBg: 'bg-[#EEF4FF]',
+      badgeColor: 'bg-[#2D8CFF]/15 text-[#0B1F50]',
+      badgeText: language === 'hi' ? '२४/७ सक्रिय' : 'Active 24x7',
+      icon: '🤖',
+      link: '/assistant',
+      btnLabel: language === 'hi' ? 'AI सहायक से पूछें' : 'Talk to AI Assistant',
+    },
+    {
       id: 'gov-navigator',
-      title: language === 'hi' ? 'सरकारी सेवा नेविगेटर' : 'Government Service Navigator',
+      title: language === 'hi' ? 'सरकारी सेवाएं' : 'Government Services',
       desc:
         language === 'hi'
           ? 'आय प्रमाण पत्र, राशन कार्ड, पेंशन और नगर निगम सेवाओं के लिए पात्रता, आवश्यक दस्तावेज व आधिकारिक पोर्टल गाइड खोजें।'
           : 'Discover citizen certificates, welfare schemes, required document checklists, and verified official government portal links.',
-      accentColor: 'border-t-4 border-[#244A85]',
-      pastelBg: 'bg-[#EEF4FF]',
-      badgeColor: 'bg-[#244A85]/15 text-[#0B1F50]',
+      accentColor: 'border-t-4 border-[#13865B]',
+      pastelBg: 'bg-[#E8F7EF]',
+      badgeColor: 'bg-[#13865B]/15 text-[#13865B]',
+      badgeText: language === 'hi' ? 'सत्यापित सेवाएं' : 'Verified Portals',
       icon: '🏛️',
       link: '/services',
       btnLabel: language === 'hi' ? 'सरकारी सेवाएं देखें' : 'Explore Services',
     },
     {
-      id: 'authority-guidance',
-      title: language === 'hi' ? 'स्मार्ट प्राधिकरण मार्गदर्शन' : 'Intelligent Authority Guidance',
+      id: 'future-automation',
+      title: language === 'hi' ? 'भविष्य का AI ऑटोमेशन' : 'Future AI Automation',
       desc:
         language === 'hi'
-          ? 'सड़क, नाली, बिजली या जल की समस्या में सही नगर निगम विभाग या लोक निर्माण विभाग तक बिना किसी बिचौलिए के पहुंचें।'
-          : 'Instant routing to the responsible municipal department, Jal Sansthan, or power utility based on your locality.',
-      accentColor: 'border-t-4 border-[#13865B]',
-      pastelBg: 'bg-[#EDF9F3]',
-      badgeColor: 'bg-[#13865B]/15 text-[#13865B]',
-      icon: '🧭',
-      link: '/how-it-works',
-      btnLabel: language === 'hi' ? 'प्रक्रिया जानें' : 'Learn How It Works',
-    },
-    {
-      id: 'unified-assistant',
-      title: language === 'hi' ? 'एकीकृत AI नागरिक सहायक' : 'Unified AI Citizen Assistant',
-      desc:
-        language === 'hi'
-          ? 'हिन्दी व अंग्रेजी में 24/7 नागरिक संवादात्मक मार्गदर्शन। आपातकालीन सुरक्षा जांच और भविष्य के एजेंटिक ऑटोमेशन का पूर्वावलोकन।'
-          : 'Bilingual voice-ready AI companion answering civic queries, verifying emergency safety, and navigating public workflows.',
+          ? 'नागरिक की पूर्व-सहमति से समर्थित सरकारी पोर्टल्स पर फॉर्म भरने व वर्कफ़्लो पूरे करने की संकल्पना (कमिंग सून)।'
+          : 'Upcoming citizen-authorized automation vision to assist with supported government portal forms and workflows.',
       accentColor: 'border-t-4 border-[#7C3AED]',
-      pastelBg: 'bg-[#F5F0FF]',
+      pastelBg: 'bg-[#F1ECFF]',
       badgeColor: 'bg-[#7C3AED]/15 text-[#7C3AED]',
-      icon: '🤖',
-      link: '/assistant',
-      btnLabel: language === 'hi' ? 'AI सहायक से पूछें' : 'Talk to AI Assistant',
+      badgeText: language === 'hi' ? 'कमिंग सून' : 'Coming Soon',
+      icon: '✨',
+      link: '/future-vision',
+      btnLabel: language === 'hi' ? 'रोडमैप देखें' : 'View Vision & Roadmap',
     },
   ];
 
@@ -126,18 +127,18 @@ export default function HomePage() {
     },
   ];
 
-  // How NagrikSetu Works (4 core steps)
+  // How NagrikSetu Works (4 core steps per Section 10)
   const howSteps = [
     {
       step: '01',
-      label: language === 'hi' ? 'बताएं' : 'Tell Us',
-      desc: language === 'hi' ? 'अपनी भाषा में अपनी नागरिक समस्या बताएं।' : 'Describe your civic problem in your own words.',
+      label: language === 'hi' ? 'अपनी समस्या बताएं' : 'Describe Your Problem',
+      desc: language === 'hi' ? 'अपनी रोजमर्रा की सरल भाषा में नागरिक समस्या बताएं।' : 'Describe your civic problem in your own words.',
       subtext: language === 'hi' ? 'हिंदी, अंग्रेजी या हिंग्लिश में बोलें या लिखें।' : 'Speak or type naturally without government jargon.',
       icon: '🗣️',
     },
     {
       step: '02',
-      label: language === 'hi' ? 'AI समझ' : 'AI Understands',
+      label: language === 'hi' ? 'AI मार्गदर्शन पाएं' : 'Get AI Guidance',
       desc: language === 'hi' ? 'नागरिकसेतु समस्या, श्रेणी व प्राथमिकता की पहचान करता है।' : 'NagrikSetu identifies the issue, category and priority.',
       subtext: language === 'hi' ? 'स्वचालित विश्लेषण और जरूरी विवरण निष्कर्षण।' : 'Automatic NLP entity extraction & priority scoring.',
       icon: '🧠',
@@ -151,68 +152,10 @@ export default function HomePage() {
     },
     {
       step: '04',
-      label: language === 'hi' ? 'ट्रैक करें' : 'Track',
-      desc: language === 'hi' ? 'अपनी शिकायत यात्रा पर नज़र रखें।' : 'Follow your complaint journey.',
+      label: language === 'hi' ? 'कार्रवाई करें' : 'Take Action',
+      desc: language === 'hi' ? 'तैयार शिकायत पत्र लेकर आधिकारिक पोर्टल पर आगे बढ़ें।' : 'Take the prepared formal letter to official channels.',
       subtext: language === 'hi' ? 'शिकायत ड्राफ्ट व संदर्भ आईडी सुरक्षित रखें।' : 'Reference ID and formal complaint draft preserved.',
-      icon: '📊',
-    },
-  ];
-
-  // Action demo presets
-  const actionDemos = {
-    streetlight: {
-      citizenText: language === 'hi' ? 'मेरे एरिया की स्ट्रीट लाइट काम नहीं कर रही है।' : 'Mere area ki street light kaam nahi kar rahi hai.',
-      problem: language === 'hi' ? 'स्ट्रीट लाइट बंद / खराब' : 'Streetlight not working',
-      category: language === 'hi' ? 'स्ट्रीट लाइट' : 'Streetlight',
-      priority: language === 'hi' ? 'सामान्य' : 'Normal',
-      location: language === 'hi' ? 'आगरा, उत्तर प्रदेश' : 'Agra, Uttar Pradesh',
-      nextStep: language === 'hi' ? 'स्थानीय नगर निकाय को निर्देशित करें' : 'Route to Local Municipal Authority',
-    },
-    garbage: {
-      citizenText: language === 'hi' ? 'हमारे मोहल्ले में ३ दिन से कचरा नहीं उठाया गया।' : 'Mere area mein 3 din se kachra nahi uthaya gaya.',
-      problem: language === 'hi' ? 'कचरा संग्रहण में देरी' : 'Missed garbage collection for 3 days',
-      category: language === 'hi' ? 'कचरा प्रबंधन' : 'Waste Management',
-      priority: language === 'hi' ? 'सामान्य' : 'Normal',
-      location: language === 'hi' ? 'आगरा, उत्तर प्रदेश' : 'Agra, Uttar Pradesh',
-      nextStep: language === 'hi' ? 'स्थानीय नगर निकाय स्वच्छता विभाग को निर्देशित करें' : 'Route to Local Municipal Authority',
-    },
-    drainage: {
-      citizenText: language === 'hi' ? 'नाली ब्लॉक होने की वजह से पानी रोड पर जमा हो रहा है।' : 'Nali block hone ki wajah se paani road par jama ho raha hai.',
-      problem: language === 'hi' ? 'नाली जाम व जलभराव' : 'Blocked drain & sewage overflow on street',
-      category: language === 'hi' ? 'नालियां व जल निकासी' : 'Drainage',
-      priority: language === 'hi' ? 'उच्च (सड़क पर जलभराव)' : 'High',
-      location: language === 'hi' ? 'आगरा, उत्तर प्रदेश' : 'Agra, Uttar Pradesh',
-      nextStep: language === 'hi' ? 'जल निकासी व सीवरेज सेल को अग्रसारित करें' : 'Assign to Municipal Drainage Cell',
-    },
-  };
-
-  const currentDemo = actionDemos[activeActionDemo] || actionDemos.streetlight;
-
-  // Prototype Capabilities (4 items, no fake stats)
-  const capabilityCards = [
-    {
-      metric: '5',
-      label: language === 'hi' ? 'नागरिक शिकायत श्रेणियां' : 'Civic complaint categories',
-      subtext: language === 'hi' ? 'कचरा, सड़क, स्ट्रीट लाइट, जल व नाली' : 'Garbage, Roads, Lighting, Water, Drainage',
-      badge: 'Civic Scope',
-    },
-    {
-      metric: '3',
-      label: language === 'hi' ? 'भाषा माध्यम' : 'Language modes',
-      subtext: language === 'hi' ? 'अंग्रेजी, हिंदी व बोलचाल की हिंग्लिश' : 'English, Hindi & Hinglish with voice support',
-      badge: 'Multilingual',
-    },
-    {
-      metric: 'AI',
-      label: language === 'hi' ? 'शिकायत की समझ' : 'Complaint understanding',
-      subtext: language === 'hi' ? 'समस्या पहचान, श्रेणी निर्धारण व प्राथमिकीकरण' : 'Issue classification, priority & entity extraction',
-      badge: 'NLP Triage',
-    },
-    {
-      metric: 'Guided',
-      label: language === 'hi' ? 'शिकायत प्रक्रिया' : 'Complaint journey',
-      subtext: language === 'hi' ? 'औपचारिक पत्र ड्राफ्ट और विभाग मार्गदर्शन' : 'Structured complaint draft and official portal advice',
-      badge: 'Citizen-First',
+      icon: '🚀',
     },
   ];
 
@@ -240,24 +183,41 @@ export default function HomePage() {
             
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white border border-[#F47721]/30 px-3.5 py-1 text-xs font-black text-[#F47721] shadow-xs">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white border border-[#F47721]/30 px-3.5 py-1 text-xs font-friendly font-extrabold text-[#F47721] shadow-2xs">
                 <span>🇮🇳</span>
                 <span>{language === 'hi' ? 'डिजिटल भारत — हर नागरिक के लिए तकनीक' : 'Digital Bharat — Technology for Every Citizen'}</span>
+                <SparkShape color="#F47721" size={13} />
               </div>
 
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#0B1F50] tracking-tight leading-tight">
-                {language === 'hi'
-                  ? 'तकनीक जो समझती है हर नागरिक को।'
-                  : 'Technology That Understands Every Citizen.'}
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-[#0B1F50] tracking-tight leading-tight">
+                {language === 'hi' ? (
+                  <span>
+                    तकनीक जो समझती है{' '}
+                    <span className="text-[#F47721] relative inline-block font-hindi font-black">
+                      हर नागरिक
+                      <CurvedUnderline color="#F47721" />
+                    </span>{' '}
+                    को।
+                  </span>
+                ) : (
+                  <span>
+                    A Smarter{' '}
+                    <span className="font-handwritten text-[#F47721] font-normal px-1.5 text-[1.14em] relative inline-block select-none">
+                      Bharat
+                      <CurvedUnderline color="#F47721" />
+                    </span>{' '}
+                    Together.
+                  </span>
+                )}
               </h2>
 
-              <p className="text-base sm:text-lg font-bold text-[#F47721]">
+              <p className="text-base sm:text-lg font-friendly font-bold text-[#F47721]">
                 {language === 'hi'
                   ? 'प्रशासनिक जटिलता और नागरिक के बीच का विश्वसनीय डिजिटल सेतु।'
                   : 'A trustworthy digital bridge between complex administration and everyday citizens.'}
               </p>
 
-              <p className="text-sm sm:text-base text-[#596579] leading-relaxed font-normal">
+              <p className="text-sm sm:text-base font-body text-[#596579] leading-relaxed font-normal">
                 {language === 'hi'
                   ? 'नागरिकसेतु एक ऐसा AI-सहायक मंच है जो ग्रामीण, बुजुर्ग और पहली बार इंटरनेट का उपयोग करने वाले नागरिकों को नागरिक समस्याएं समझने, सही विभाग तक शिकायत पहुंचाने और आवश्यक सरकारी सेवाएं खोजने में सशक्त बनाता है।'
                   : 'NagrikSetu is an AI-powered citizen assistance platform designed to help rural residents, senior citizens, and first-time digital users easily understand civic issues, prepare formal complaints, and access public services without intermediaries.'}
@@ -265,43 +225,43 @@ export default function HomePage() {
 
               {/* Citizen-Centered Pillars */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div className="p-3.5 rounded-xl bg-white border border-[#E3E8EF] shadow-xs flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-[#EEF4FF] text-[#0B1F50] flex items-center justify-center text-lg shrink-0">
+                <div className="p-3.5 rounded-2xl bg-white border border-[#E3E8EF] shadow-xs flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-[#EEF4FF] text-[#0B1F50] flex items-center justify-center text-lg shrink-0">
                     🗣️
                   </div>
                   <div>
-                    <span className="text-xs font-black text-[#0B1F50] block">
+                    <span className="text-xs font-friendly font-extrabold text-[#0B1F50] block">
                       {language === 'hi' ? 'सरल भाषा' : 'Everyday Speech'}
                     </span>
-                    <span className="text-[11px] text-[#596579]">
+                    <span className="text-[11px] font-body text-[#596579]">
                       {language === 'hi' ? 'बिना किसी तकनीकी ज्ञान के' : 'No government jargon'}
                     </span>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white border border-[#E3E8EF] shadow-xs flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-[#FFF9F1] text-[#F47721] flex items-center justify-center text-lg shrink-0">
+                <div className="p-3.5 rounded-2xl bg-white border border-[#E3E8EF] shadow-xs flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-[#FFF9F1] text-[#F47721] flex items-center justify-center text-lg shrink-0">
                     🎙️
                   </div>
                   <div>
-                    <span className="text-xs font-black text-[#0B1F50] block">
+                    <span className="text-xs font-friendly font-extrabold text-[#0B1F50] block">
                       {language === 'hi' ? 'आवाज से इनपुट' : 'Voice-Enabled'}
                     </span>
-                    <span className="text-[11px] text-[#596579]">
+                    <span className="text-[11px] font-body text-[#596579]">
                       {language === 'hi' ? 'वरिष्ठ नागरिकों के अनुकूल' : 'Senior-friendly accessibility'}
                     </span>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white border border-[#E3E8EF] shadow-xs flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-[#EDF9F3] text-[#13865B] flex items-center justify-center text-lg shrink-0">
+                <div className="p-3.5 rounded-2xl bg-white border border-[#E3E8EF] shadow-xs flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-[#E8F7EF] text-[#13865B] flex items-center justify-center text-lg shrink-0">
                     ⚖️
                   </div>
                   <div>
-                    <span className="text-xs font-black text-[#0B1F50] block">
+                    <span className="text-xs font-friendly font-extrabold text-[#0B1F50] block">
                       {language === 'hi' ? 'पूर्ण नियंत्रण' : 'Citizen Control'}
                     </span>
-                    <span className="text-[11px] text-[#596579]">
+                    <span className="text-[11px] font-body text-[#596579]">
                       {language === 'hi' ? 'आपकी सहमति से ही आगे' : '100% human-in-the-loop'}
                     </span>
                   </div>
@@ -312,18 +272,22 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-3 pt-3">
                 <a
                   href="#report-workspace"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white px-6 py-3 text-sm font-black shadow-md hover:shadow-lg transition-all"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-[#F47721] hover:bg-[#d96617] text-white px-6 py-3.5 text-sm font-friendly font-extrabold shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   <span>📝</span>
                   <span>{language === 'hi' ? 'समस्या दर्ज करें' : 'Report a Problem'}</span>
                 </a>
                 <Link
                   to="/assistant"
-                  className="inline-flex items-center gap-2 rounded-xl bg-white hover:bg-slate-50 border border-[#0B1F50] text-[#0B1F50] px-6 py-3 text-sm font-black transition-all shadow-xs"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#0B1F50] text-[#0B1F50] px-6 py-3.5 text-sm font-friendly font-extrabold transition-all shadow-xs active:scale-[0.98]"
                 >
                   <span>🤖</span>
                   <span>{language === 'hi' ? 'AI सहायक से पूछें' : 'Talk to AI Assistant'}</span>
                 </Link>
+                <div className="hidden xl:flex items-center gap-1.5 text-xs font-friendly font-bold text-[#F47721] pl-2">
+                  <HandDrawnArrow color="#F47721" className="w-8 h-6 rotate-12" />
+                  <span>{language === 'hi' ? 'सीधा समाधान' : 'Quick Start'}</span>
+                </div>
               </div>
             </div>
 
@@ -403,41 +367,58 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="inline-flex items-center rounded-full bg-[#EEF4FF] border border-[#244A85]/20 px-3.5 py-1 text-xs font-black text-[#0B1F50] uppercase tracking-wider mb-3">
+            <span className="inline-flex items-center rounded-full bg-[#EEF4FF] border border-[#244A85]/20 px-3.5 py-1 text-xs font-friendly font-extrabold text-[#0B1F50] uppercase tracking-wider mb-3 shadow-2xs">
               {language === 'hi' ? 'नागरिक सुविधाएं' : 'Core Capabilities'}
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#0B1F50] tracking-tight">
-              {language === 'hi' ? 'नागरिकसेतु क्या कर सकता है?' : 'What Can NagrikSetu Do?'}
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-[#0B1F50] tracking-tight leading-tight">
+              {language === 'hi' ? (
+                <span>
+                  नागरिकसेतु क्या{' '}
+                  <span className="text-[#F47721] relative inline-block font-hindi font-black">
+                    कर सकता है
+                    <CurvedUnderline color="#F47721" />
+                  </span>
+                  ?
+                </span>
+              ) : (
+                <span>
+                  Your Personal{' '}
+                  <span className="font-handwritten text-[#2D8CFF] font-normal px-1 text-[1.12em] relative inline-block select-none">
+                    Civic Guide
+                    <CurvedUnderline color="#2D8CFF" />
+                  </span>
+                </span>
+              )}
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#596579]">
+            <p className="mt-2 text-sm sm:text-base font-body text-[#596579]">
               {language === 'hi'
                 ? 'नागरिक समस्याओं के समाधान और सरकारी सेवाओं तक सीधी पहुंच के चार प्रमुख स्तंभ।'
                 : 'Four specialized capabilities built to empower citizens across Bharat.'}
             </p>
           </div>
 
-          {/* 4 Feature Cards Grid */}
+          {/* 4 Feature Cards Grid per Section 9 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {premiumFeatures.map((feat) => (
               <div
                 key={feat.id}
-                className={`rounded-2xl border border-[#E3E8EF] ${feat.pastelBg} ${feat.accentColor} p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between`}
+                className={`rounded-3xl border border-[#E3E8EF] ${feat.pastelBg} ${feat.accentColor} p-6 shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl p-2 rounded-xl bg-white shadow-2xs border border-slate-100">
+                    <span className="text-2xl p-2.5 rounded-2xl bg-white shadow-2xs border border-slate-100">
                       {feat.icon}
                     </span>
-                    <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${feat.badgeColor}`}>
-                      Official Guide
+                    <span className={`text-[10px] font-friendly font-extrabold uppercase px-2.5 py-1 rounded-full shadow-2xs ${feat.badgeColor}`}>
+                      {feat.badgeText || 'Official Guide'}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-black text-[#0B1F50] tracking-tight">
+                  <h3 className="text-xl font-display font-black text-[#0B1F50] tracking-tight">
                     {feat.title}
                   </h3>
 
-                  <p className="mt-3 text-xs sm:text-sm text-[#596579] leading-relaxed font-medium">
+                  <p className="mt-3 text-xs sm:text-sm font-body text-[#596579] leading-relaxed font-normal">
                     {feat.desc}
                   </p>
                 </div>
@@ -445,7 +426,7 @@ export default function HomePage() {
                 <div className="mt-6 pt-4 border-t border-slate-200/60">
                   <Link
                     to={feat.link}
-                    className="inline-flex items-center justify-between w-full text-xs font-black text-[#0B1F50] hover:text-[#F47721] transition-colors group"
+                    className="inline-flex items-center justify-between w-full text-xs font-friendly font-extrabold text-[#0B1F50] hover:text-[#F47721] transition-colors group"
                   >
                     <span>{feat.btnLabel}</span>
                     <span className="transform group-hover:translate-x-1 transition-transform">→</span>
@@ -459,7 +440,7 @@ export default function HomePage() {
 
       {/* ================================================================
           SECTION 4 — HOW NAGRIKSETU WORKS
-          Preserves 4 steps and test contracts
+          "From Problem to Progress" (Section 10)
           ================================================================ */}
       <section id="how-it-works" className="relative py-16 sm:py-24 bg-[#FFF9F1] border-b border-[#E3E8EF] overflow-hidden">
         {/* Ashoka radial watermark */}
@@ -470,54 +451,71 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="inline-flex items-center rounded-full bg-white border border-[#F47721]/30 px-3.5 py-1 text-xs font-black text-[#F47721] uppercase tracking-wider mb-3 shadow-2xs">
-              {language === 'hi' ? '3-चरणीय नागरिक कार्यप्रवाह' : 'Simple 4-Step Process'}
+            <span className="inline-flex items-center rounded-full bg-white border border-[#F47721]/30 px-3.5 py-1 text-xs font-friendly font-extrabold text-[#F47721] uppercase tracking-wider mb-3 shadow-2xs">
+              {language === 'hi' ? '४-चरणीय नागरिक कार्यप्रवाह' : 'Simple 4-Step Process'}
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#0B1F50] tracking-tight">
-              {language === 'hi' ? 'समस्या से सही अगले कदम तक।' : 'From a problem to the right next step.'}
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-[#0B1F50] tracking-tight leading-tight">
+              {language === 'hi' ? (
+                <span>
+                  समस्या से{' '}
+                  <span className="text-[#F47721] relative inline-block font-hindi font-black">
+                    समाधान
+                    <CurvedUnderline color="#F47721" />
+                  </span>{' '}
+                  तक।
+                </span>
+              ) : (
+                <span>
+                  From Problem to{' '}
+                  <span className="font-handwritten text-[#F47721] font-normal px-1.5 text-[1.12em] relative inline-block select-none">
+                    Progress
+                    <CurvedUnderline color="#F47721" />
+                  </span>
+                </span>
+              )}
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#596579]">
+            <p className="mt-2 text-sm sm:text-base font-body text-[#596579]">
               {language === 'hi'
                 ? 'नागरिकसेतु कैसे काम करता है — बताएं, समझें, और सही कार्रवाई करें।'
                 : 'How NagrikSetu guides your grievance from voice or text to structured action.'}
             </p>
           </div>
 
-          {/* 4 Steps Grid */}
+          {/* 4 Steps Grid: Vertically stacked on mobile, connected on desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
             {howSteps.map((step, idx) => (
               <div
                 key={step.step}
-                className="relative rounded-2xl border border-[#E3E8EF] bg-white p-6 shadow-md hover:shadow-lg transition-all flex flex-col justify-between"
+                className="relative rounded-3xl border border-[#E3E8EF] bg-white p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-black text-[#F47721] tracking-wider bg-[#FFF9F1] px-2.5 py-1 rounded border border-[#F47721]/20">
+                    <span className="text-xs font-friendly font-extrabold text-[#F47721] tracking-wider bg-[#FFF9F1] px-3 py-1 rounded-full border border-[#F47721]/20">
                       STEP {step.step}
                     </span>
-                    <span className="text-2xl">{step.icon}</span>
+                    <span className="text-2xl p-2 rounded-2xl bg-[#EEF4FF] border border-[#244A85]/10">{step.icon}</span>
                   </div>
 
-                  <h3 className="text-base font-black text-[#0B1F50]">
+                  <h3 className="text-lg font-display font-black text-[#0B1F50]">
                     {step.label}
                   </h3>
-                  <p className="mt-2 text-xs font-bold text-[#F47721] leading-snug">
+                  <p className="mt-2 text-xs font-friendly font-bold text-[#F47721] leading-snug">
                     “{step.desc}”
                   </p>
-                  <p className="mt-2 text-xs text-[#596579] leading-relaxed">
+                  <p className="mt-2 text-xs font-body text-[#596579] leading-relaxed font-normal">
                     {step.subtext}
                   </p>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-[#13865B]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#13865B]" />
+                <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-friendly font-bold text-[#13865B]">
+                  <span className="h-2 w-2 rounded-full bg-[#13865B]" />
                   <span>Guided Journey</span>
                 </div>
 
                 {/* Connecting arrow for steps 1, 2, 3 on desktop */}
                 {idx < 3 && (
-                  <div className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-10 hidden lg:flex h-7 w-7 rounded-full bg-white border border-[#E3E8EF] items-center justify-center shadow-xs text-[#0B1F50]">
-                    <span className="text-xs font-bold">→</span>
+                  <div className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-10 hidden lg:flex h-8 w-8 rounded-full bg-white border border-[#E3E8EF] items-center justify-center shadow-md text-[#F47721] font-bold">
+                    <span>→</span>
                   </div>
                 )}
               </div>
@@ -1175,13 +1173,29 @@ export default function HomePage() {
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            {language === 'hi'
-              ? 'आपकी समस्या महत्वपूर्ण है। आपकी आवाज सुनी जानी चाहिए।'
-              : 'Your Problem Matters. Your Voice Deserves to Be Heard.'}
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white tracking-tight leading-tight">
+            {language === 'hi' ? (
+              <span>
+                आपकी समस्या महत्वपूर्ण है। आपकी{' '}
+                <span className="text-[#F47721] relative inline-block font-hindi font-black">
+                  आवाज
+                  <CurvedUnderline color="#F47721" />
+                </span>{' '}
+                सुनी जानी चाहिए।
+              </span>
+            ) : (
+              <span>
+                Your Problem Matters. Your{' '}
+                <span className="font-handwritten text-[#F47721] font-normal px-1 text-[1.12em] relative inline-block select-none">
+                  Voice
+                  <CurvedUnderline color="#F47721" />
+                </span>{' '}
+                Deserves to Be Heard.
+              </span>
+            )}
           </h2>
 
-          <p className="text-sm sm:text-base lg:text-lg text-slate-200 max-w-xl mx-auto leading-relaxed font-normal">
+          <p className="text-sm sm:text-base lg:text-lg font-body text-slate-200 max-w-xl mx-auto leading-relaxed font-normal">
             {language === 'hi'
               ? 'नागरिकसेतु को अपनी समस्या बताएं। हम आपको सही विभाग और अगला कदम बताएंगे।'
               : "Tell NagrikSetu what happened. We'll help you understand the next step without confusion."}
@@ -1190,7 +1204,7 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
             <a
               href="#report-workspace"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F47721] hover:bg-[#d96617] text-white px-8 py-3.5 text-sm sm:text-base font-black shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#F47721] hover:bg-[#d96617] text-white px-8 py-3.5 text-sm sm:text-base font-friendly font-extrabold shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all active:scale-[0.98]"
             >
               <span>📝</span>
               <span>{language === 'hi' ? 'नागरिक समस्या दर्ज करें' : 'Report a Civic Issue'}</span>
@@ -1198,7 +1212,7 @@ export default function HomePage() {
 
             <Link
               to="/services"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white px-7 py-3.5 text-sm sm:text-base font-black transition-all shadow-xs"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/15 hover:bg-white/25 border border-white/25 text-white px-7 py-3.5 text-sm sm:text-base font-friendly font-extrabold transition-all shadow-xs hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>🏛️</span>
               <span>{language === 'hi' ? 'सरकारी सेवाएं देखें' : 'Explore Government Services'}</span>
@@ -1206,7 +1220,7 @@ export default function HomePage() {
 
             <Link
               to="/assistant"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#13865B] hover:bg-[#0f6b49] text-white px-7 py-3.5 text-sm sm:text-base font-black transition-all shadow-md active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#13865B] hover:bg-[#0f6b49] text-white px-7 py-3.5 text-sm sm:text-base font-friendly font-extrabold transition-all shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>🤖</span>
               <span>{language === 'hi' ? 'AI सहायक से पूछें' : 'Talk to AI Assistant'}</span>

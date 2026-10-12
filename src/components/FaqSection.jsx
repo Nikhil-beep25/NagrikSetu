@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { AccentWord } from './Typography';
 
 export default function FaqSection() {
   const { language } = useLanguage();
@@ -149,26 +150,34 @@ export default function FaqSection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
           {/* Tricolor Tag */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-white border border-[#F47721]/30 px-3.5 py-1 text-xs font-bold text-[#F47721] shadow-2xs mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white border border-[#F47721]/30 px-3.5 py-1 text-xs font-friendly font-bold text-[#F47721] shadow-2xs mb-3">
             <span className="h-1.5 w-1.5 rounded-full bg-[#F47721] animate-ping" />
             <span>{isHindi ? 'नागरिक सहायता ज्ञानकोष' : 'Citizen Assistance Knowledge Base'}</span>
           </div>
 
           <h2
             id="faq-section-heading"
-            className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B1F50] tracking-tight"
+            className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-[#0B1F50] tracking-tight"
           >
-            {isHindi ? 'अक्सर पूछे जाने वाले प्रश्न' : 'Frequently Asked Questions'}
+            {isHindi ? (
+              <>
+                अक्सर पूछे जाने वाले <AccentWord color="saffron">प्रश्न</AccentWord>
+              </>
+            ) : (
+              <>
+                Frequently Asked <AccentWord color="saffron">Questions</AccentWord>
+              </>
+            )}
           </h2>
 
-          <p className="mt-2.5 text-sm sm:text-base font-medium text-[#596579]">
+          <p className="mt-2.5 text-sm sm:text-base font-body font-medium text-[#596579]">
             {isHindi
               ? 'नागरिकसेतु के बारे में वो सब कुछ जो आपको जानना आवश्यक है'
               : 'Everything You Need to Know About NagrikSetu'}
           </p>
 
           {/* Quick Search Input */}
-          <div className="mt-6 max-w-md mx-auto relative">
+          <div className="mt-6 max-w-md mx-auto relative font-body">
             <input
               type="text"
               value={searchQuery}
@@ -197,14 +206,14 @@ export default function FaqSection() {
         </div>
 
         {/* FAQ Accordion List */}
-        <div className="space-y-3.5" role="region" aria-label="FAQ Accordion">
+        <div className="space-y-3.5 font-body" role="region" aria-label="FAQ Accordion">
           {filteredFaqs.length === 0 ? (
             <div className="text-center py-8 bg-white rounded-2xl border border-dashed border-[#E3E8EF] text-[#596579] text-sm">
               <p>{isHindi ? 'कोई प्रासंगिक प्रश्न नहीं मिला।' : 'No matching questions found.'}</p>
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="mt-2 text-xs font-bold text-[#F47721] hover:underline"
+                className="mt-2 text-xs font-friendly font-bold text-[#F47721] hover:underline"
               >
                 {isHindi ? 'सभी प्रश्न देखें' : 'View all questions'}
               </button>
@@ -236,7 +245,7 @@ export default function FaqSection() {
                     >
                       <div className="flex items-center gap-3 pr-2">
                         <span
-                          className={`flex items-center justify-center h-6 w-6 rounded-full text-xs font-black shrink-0 transition-colors ${
+                          className={`flex items-center justify-center h-6 w-6 rounded-full text-xs font-friendly font-black shrink-0 transition-colors ${
                             isOpen
                               ? 'bg-[#F47721] text-white'
                               : 'bg-[#EEF4FF] text-[#0B1F50]'
@@ -246,10 +255,10 @@ export default function FaqSection() {
                           {idx + 1}
                         </span>
                         <div>
-                          <span className="text-sm sm:text-base font-bold text-[#0B1F50] leading-snug block">
+                          <span className="text-sm sm:text-base font-display font-bold text-[#0B1F50] leading-snug block">
                             {qText}
                           </span>
-                          <span className="text-[10px] font-semibold text-[#596579] uppercase tracking-wider mt-0.5 inline-block">
+                          <span className="text-[10px] font-friendly font-bold text-[#596579] uppercase tracking-wider mt-0.5 inline-block">
                             {catText}
                           </span>
                         </div>
@@ -283,7 +292,7 @@ export default function FaqSection() {
                     role="region"
                     aria-labelledby={`faq-btn-${faq.id}`}
                     hidden={!isOpen}
-                    className={`px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm text-[#1D2939] leading-relaxed border-t border-[#E3E8EF]/60 bg-[#FFF9F1]/40 ${
+                    className={`px-5 sm:px-6 pb-5 pt-1 text-xs sm:text-sm font-body text-[#1D2939] leading-relaxed border-t border-[#E3E8EF]/60 bg-[#FFF9F1]/40 ${
                       isOpen ? 'block' : 'hidden'
                     }`}
                   >
@@ -300,10 +309,10 @@ export default function FaqSection() {
           <div className="flex items-center gap-3">
             <span className="text-2xl" aria-hidden="true">💡</span>
             <div>
-              <p className="text-xs sm:text-sm font-bold text-[#0B1F50]">
+              <p className="text-xs sm:text-sm font-display font-bold text-[#0B1F50]">
                 {isHindi ? 'क्या आपका कोई और सवाल है?' : 'Have a different question or need guidance?'}
               </p>
-              <p className="text-[11px] sm:text-xs text-[#596579]">
+              <p className="text-[11px] sm:text-xs font-body text-[#596579]">
                 {isHindi
                   ? 'हमारे एकीकृत AI नागरिक सहायक से अपनी भाषा में कभी भी पूछें।'
                   : 'Ask our Unified AI Citizen Assistant anytime in Hindi, English, or Hinglish.'}
@@ -312,7 +321,7 @@ export default function FaqSection() {
           </div>
           <a
             href="/assistant"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0B1F50] text-white text-xs font-bold hover:bg-[#0a2b4c] transition-colors shrink-0 shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0B1F50] text-white text-xs font-friendly font-bold hover:bg-[#0a2b4c] transition-colors shrink-0 shadow-xs"
           >
             <span>💬</span>
             <span>{isHindi ? 'AI सहायक से पूछें' : 'Chat with AI Assistant'}</span>
